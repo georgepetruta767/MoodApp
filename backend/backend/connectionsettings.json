@@ -1,0 +1,5 @@
+﻿{
+  "postgresql": {
+    "connectionString": "Host=localhost;Username=postgres;Password=postgres;Database=moodapp;Timeout=900;CommandTimeout=900;"
+  }
+}
