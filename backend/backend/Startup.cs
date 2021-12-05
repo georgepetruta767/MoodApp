@@ -33,7 +33,7 @@ namespace backend
                     .EnableSensitiveDataLogging(true), ServiceLifetime.Transient);
             services.AddControllers();
             services.AddTransient<Class1>();
-     
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +43,12 @@ namespace backend
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials());
 
             app.UseHttpsRedirection();
 

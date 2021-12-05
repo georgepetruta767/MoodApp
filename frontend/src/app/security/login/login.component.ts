@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {SecurityService} from "../security.service";
+import {UserModel} from "../user-model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -7,9 +10,10 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  private form: FormGroup;
+  public form!: FormGroup;
 
-  constructor() { }
+  constructor(private securityService: SecurityService,
+              private router: Router) { }
 
   ngOnInit() {
     this.setupForm();
@@ -22,8 +26,13 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  public onSubmit() {
-    console.log(this.form.value);
+  public async onSubmit() {
+    if (this.form.valid) {
+      let bearerToken = await this.securityService.getLoginResult({
+        email: this.form.controls.email.value,
+        password: this.form.controls.password.value
+      }).catch(err => console.log(err));
+      this.router.navigateByUrl('dashboard');
+    }
   }
-
 }
