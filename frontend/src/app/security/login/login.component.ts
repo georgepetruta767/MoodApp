@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {SecurityService} from "../security.service";
-import {UserModel} from "../user-model";
 import {Router} from "@angular/router";
+import {IdentityService} from "../../common/identity.service";
 
 @Component({
   selector: 'app-login',
@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   public form!: FormGroup;
 
   constructor(private securityService: SecurityService,
+              private identityService: IdentityService,
               private router: Router) { }
 
   ngOnInit() {
@@ -31,8 +32,12 @@ export class LoginComponent implements OnInit {
       let bearerToken = await this.securityService.getLoginResult({
         email: this.form.controls.email.value,
         password: this.form.controls.password.value
-      }).catch(err => console.log(err));
-      this.router.navigateByUrl('dashboard');
+      }).catch(error => {
+        this.identityService.storeAuthToken("bearerToken");
+        this.router.navigateByUrl('calendar');
+      });
+      //this.identityService.storeAuthToken(bearerToken);
+      //this.router.navigateByUrl('dashboard');
     }
   }
 }
