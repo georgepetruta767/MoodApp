@@ -1,6 +1,6 @@
 ﻿using System;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Repository.Entities;
 
 #nullable disable
@@ -25,9 +25,7 @@ namespace Repository.EF
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-            }
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,6 +33,13 @@ namespace Repository.EF
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasPostgresExtension("uuid-ossp");
 
+           
+           
+           
+           
+          
+           
+           
             modelBuilder.Entity<Event>(entity =>
             {
                 entity.ToTable("events");

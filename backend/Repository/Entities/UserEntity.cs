@@ -7,5 +7,6 @@ namespace Repository.Entities
 {
     public class UserEntity : IdentityUser
     {
+
     }
 }
