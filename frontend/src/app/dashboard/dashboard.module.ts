@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
 import {IonicModule} from "@ionic/angular";
 import {FormsModule} from "@angular/forms";
 import {PlannerComponent} from "./planner/planner.component";
 import {PlannerModule} from "./planner/planner.module";
-import {PeopleComponent} from "./people/people.component";
+import {PeopleListComponent} from "./people/people-list/people-list.component";
 import {CreateEventComponent} from "./create-event/create-event.component";
+import {CommonModule} from "@angular/common";
 
 const routes: Routes = [
   {
@@ -16,7 +16,7 @@ const routes: Routes = [
   },
   {
     path: 'people',
-    component: PeopleComponent
+    component: PeopleListComponent
   },
   {
     path: 'event',
@@ -29,13 +29,13 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [],
+  declarations: [PeopleListComponent],
   imports: [
-    CommonModule,
     RouterModule.forChild(routes),
     PlannerModule,
     IonicModule,
-    FormsModule
+    FormsModule,
+    CommonModule
   ]
 })
 export class DashboardModule { }

@@ -6,9 +6,6 @@ namespace Worker
 {
     public class PeopleWorker
     {
-        public List<PersonModel> GetPeople()
-        {
-
-        }
+        
     }
 }

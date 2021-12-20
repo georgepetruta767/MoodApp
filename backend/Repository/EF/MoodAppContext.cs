@@ -1,12 +1,13 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+using Repository.Entities;
 
 #nullable disable
 
 namespace Repository.EF
 {
-    public partial class MoodAppContext : DbContext
+    public partial class MoodAppContext : IdentityDbContext<UserEntity>
     {
         public MoodAppContext()
         {
@@ -31,6 +32,7 @@ namespace Repository.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.HasPostgresExtension("uuid-ossp");
 
             modelBuilder.Entity<Event>(entity =>

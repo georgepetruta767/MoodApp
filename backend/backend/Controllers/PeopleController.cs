@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Worker;
+using System.Collections.Generic;
+using Worker.Models;
 using System.Threading.Tasks;
 
 namespace backend.Controllers
@@ -9,17 +11,21 @@ namespace backend.Controllers
     [Route("moodapp/api/[controller]/[action]")]
     public class PeopleController : ControllerBase
     {
-        private PeopleWorker _peopleWorker;
+        //private PeopleWorker _peopleWorker;
 
-        public PeopleController(PeopleWorker peopleWorker)
+        public PeopleController()
         {
-            _peopleWorker = peopleWorker;
+            //_peopleWorker = peopleWorker;
         }
+        
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetPeople()
+        public async Task<List<PersonModel>> Get()
         {
-            return _peopleWorker.GetPeople();
+            List<PersonModel> people = new List<PersonModel>();
+            people.Add(new PersonModel("aoifsj", "oaishc", 32));
+            people.Add(new PersonModel("sofiduh", "iufhofuh", 83));
+            return await Task.FromResult(people);
         }
     }
 }
