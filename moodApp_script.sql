@@ -32,7 +32,10 @@ create table event_person_relation(
 );
 
 
-drop table events;
+/*drop table events;
 drop table locations;
 drop table people;
-drop table event_person_relation;
+drop table event_person_relation;*/
+
+
+/*delete from people where firstName = 'Griz';*/

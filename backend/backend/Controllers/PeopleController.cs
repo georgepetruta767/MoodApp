@@ -9,23 +9,26 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("moodapp/api/[controller]/[action]")]
+   // [Authorize]
     public class PeopleController : ControllerBase
     {
-        //private PeopleWorker _peopleWorker;
+        private PeopleWorker _peopleWorker;
 
-        public PeopleController()
+        public PeopleController(PeopleWorker peopleWorker)
         {
-            //_peopleWorker = peopleWorker;
+            _peopleWorker = peopleWorker;
         }
         
         [HttpGet]
-        [AllowAnonymous]
         public async Task<List<PersonModel>> Get()
         {
-            List<PersonModel> people = new List<PersonModel>();
-            people.Add(new PersonModel("aoifsj", "oaishc", 32));
-            people.Add(new PersonModel("sofiduh", "iufhofuh", 83));
-            return await Task.FromResult(people);
+            return _peopleWorker.GetPeople();
+        }
+
+        [HttpPost]
+        public void Add([FromBody] PersonModel personModel)
+        {
+            _peopleWorker.AddPerson(personModel);
         }
     }
 }

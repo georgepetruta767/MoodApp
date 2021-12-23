@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
 import {IonicModule} from "@ionic/angular";
-import {FormsModule} from "@angular/forms";
+import {ReactiveFormsModule} from "@angular/forms";
 import {PlannerComponent} from "./planner/planner.component";
 import {PlannerModule} from "./planner/planner.module";
 import {PeopleListComponent} from "./people/people-list/people-list.component";
 import {CreateEventComponent} from "./create-event/create-event.component";
 import {CommonModule} from "@angular/common";
+import {PeopleAddComponent} from "./people/people-add/people-add.component";
 
 const routes: Routes = [
   {
@@ -29,13 +30,13 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [PeopleListComponent],
+  declarations: [PeopleListComponent, PeopleAddComponent],
   imports: [
     RouterModule.forChild(routes),
     PlannerModule,
     IonicModule,
-    FormsModule,
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule
   ]
 })
 export class DashboardModule { }

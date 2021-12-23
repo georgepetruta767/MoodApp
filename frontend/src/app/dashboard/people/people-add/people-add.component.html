@@ -4,21 +4,27 @@
   </ion-toolbar>
 </ion-header>
 <ion-content fullscreen class="ion-padding-top">
-  <ion-list lines="full" class="ion-no-margin">
-    <ion-item>
-      <ion-label position="floating">First Name</ion-label>
-      <ion-input placeholder="First Name"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Last Name</ion-label>
-      <ion-input placeholder="Last Name"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Age</ion-label>
-      <ion-input type='number' placeholder="Age"></ion-input>
-    </ion-item>
-  </ion-list>
-  <ion-button color="success">Save</ion-button>
-  <ion-button color="warning">Cancel</ion-button>
+  <form [formGroup]="form" (ngSubmit)="addPerson()">
+    <ion-list lines="full" class="ion-no-margin">
+      <ion-item>
+        <ion-label position="floating">First Name</ion-label>
+        <ion-input formControlName="firstName" placeholder="First Name" type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Last Name</ion-label>
+        <ion-input formControlName="lastName" placeholder="Last Name" type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Age</ion-label>
+        <ion-input formControlName="age" type='number' placeholder="Age" type="number"></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" color="danger" expand="block">Add</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-button color="warning">Cancel</ion-button>
+  </form>
 </ion-content>
 

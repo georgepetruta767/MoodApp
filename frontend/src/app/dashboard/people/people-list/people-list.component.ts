@@ -17,7 +17,6 @@ export class PeopleListComponent implements OnInit {
 
   ngOnInit() {
     this.loadPeople();
-   // this.presentModal();
   }
 
   private setupForm() {

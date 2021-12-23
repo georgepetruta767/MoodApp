@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
 
   private setupForm() {
     this.form = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
+      email: new FormControl('', [Validators.required, Validators.pattern("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")]),
       password: new FormControl('', [Validators.required])
     });
   }
@@ -33,11 +33,12 @@ export class LoginComponent implements OnInit {
         email: this.form.controls.email.value,
         password: this.form.controls.password.value
       }).catch(error => {
-        this.identityService.storeAuthToken("bearerToken");
+        console.log(error);
+      })
+      if(bearerToken) {
+        this.identityService.storeAuthToken(bearerToken);
         this.router.navigateByUrl('calendar');
-      });
-      //this.identityService.storeAuthToken(bearerToken);
-      //this.router.navigateByUrl('dashboard');
+      }
     }
   }
 }

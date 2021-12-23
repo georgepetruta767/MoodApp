@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -5,9 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Repository;
 using Repository.EF;
 using Repository.Entities;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace backend
@@ -24,16 +30,17 @@ namespace backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
+            services.AddCors();
+
             services.AddDbContext<MoodAppContext>(options => options.UseNpgsql(Configuration["postgresql:connectionString"])
                     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                     .EnableSensitiveDataLogging(true), ServiceLifetime.Transient);
 
-            services.AddIdentity<UserEntity, IdentityRole>()
-                .AddEntityFrameworkStores<MoodAppContext>();
+            SetupDependencyInjection(services);
 
-            services.AddControllers();
-            services.AddTransient<Class1>();
-            services.AddCors();
+            SetupAutoMapper(services);
+
 
             var serviceProvider = services.BuildServiceProvider();
             var userManager = serviceProvider.GetService<UserManager<UserEntity>>();
@@ -41,6 +48,64 @@ namespace backend
 
             SeedRolesAsync(userManager, roleManager).Wait();
             SeedSuperAdminAsync(userManager, roleManager).Wait();
+
+            var key = ConfigureOptions();
+
+            SetupAuthorization(services, key);
+
+            ///SetupAuthorization(services, )
+        }
+
+        private static void SetupAutoMapper(IServiceCollection services)
+        {
+            var assemblyNames = new List<AssemblyName>()
+            {
+                new AssemblyName("backend"),
+                new AssemblyName("Worker"),
+                new AssemblyName("Repository")
+            };
+
+            List<Assembly> assemblies = new List<Assembly>();
+            foreach (var assembly in assemblyNames)
+            {
+                assemblies.Add(Assembly.Load(assembly));
+            }
+            services.AddAutoMapper(assemblies);
+        }
+
+        public byte[] ConfigureOptions()
+        {
+            var settingsapp = Configuration.GetSection("AppSettings");
+            var key = Encoding.ASCII.GetBytes(settingsapp["Authorization:Secret"]);
+            return key;
+        }
+
+        public void SetupAuthorization(IServiceCollection services, byte[] key)
+        {
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+           .AddJwtBearer(x =>
+           {
+               x.RequireHttpsMetadata = false;
+               x.SaveToken = true;
+               x.TokenValidationParameters = new TokenValidationParameters
+               {
+                   ValidateIssuerSigningKey = true,
+                   IssuerSigningKey = new SymmetricSecurityKey(key),
+                   ValidateIssuer = false,
+                   ValidateAudience = false
+               };
+           });
+        }
+
+        public void SetupDependencyInjection(IServiceCollection services)
+        {
+            services.AddTransient<Repository.PeopleRepository>();
+            services.AddTransient<Worker.PeopleWorker>();
+            services.AddIdentity<UserEntity, IdentityRole>().AddEntityFrameworkStores<MoodAppContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

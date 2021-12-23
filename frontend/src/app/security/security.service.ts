@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {UserModel} from './login/user.model';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 
 @Injectable({
@@ -11,6 +11,6 @@ export class SecurityService {
   constructor(private http: HttpClient) { }
 
   public getLoginResult(user: UserModel): Promise<string> {
-    return this.http.post<string>(environment.api + '/Account/CheckLogin', user).toPromise();
+    return this.http.post(environment.api + '/Account/CheckLogin', user, {responseType: 'text'}).toPromise();
   }
 }
