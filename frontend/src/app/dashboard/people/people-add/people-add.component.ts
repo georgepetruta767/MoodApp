@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {PeopleService} from "../people.service";
+import {PeopleService} from "../../common/services/people.service";
 
 @Component({
   selector: 'app-people-add',
@@ -35,7 +35,11 @@ export class PeopleAddComponent implements OnInit {
         age: this.form.controls.age.value
       });
 
-
+      this.emitCloseModalEvent();
     }
+  }
+
+  public emitCloseModalEvent() {
+    this.closeModalEvent.emit();
   }
 }

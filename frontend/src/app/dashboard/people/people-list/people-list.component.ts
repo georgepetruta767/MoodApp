@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {PersonModel} from "../person.model";
-import {PeopleService} from "../people.service";
+import { Component, EventEmitter, OnInit } from '@angular/core';
+import {PersonModel} from "../../common/models/person.model";
+import {PeopleService} from "../../common/services/people.service";
 import {IonRouterOutlet, ModalController} from "@ionic/angular";
 import {PeopleAddComponent} from "../people-add/people-add.component";
 
@@ -12,23 +12,35 @@ import {PeopleAddComponent} from "../people-add/people-add.component";
 export class PeopleListComponent implements OnInit {
   public people: Array<PersonModel>;
 
+  public closeModalEmitter = new EventEmitter();
+
   constructor(private peopleService: PeopleService,
               private modalController: ModalController) { }
 
   ngOnInit() {
     this.loadPeople();
+    this.handleCloseModalEvent();
   }
 
-  private setupForm() {
-  }
-
-  async presentModal() {
+  public async presentModal() {
     const modal = await this.modalController.create({
       component: PeopleAddComponent,
       breakpoints: [0.3, 0.5, 0.8, 1],
-      initialBreakpoint: 0.9
+      initialBreakpoint: 0.9,
+      componentProps: {
+        closeModalEvent: this.closeModalEmitter
+      }
     });
     return await modal.present();
+  }
+
+  public handleCloseModalEvent() {
+    this.closeModalEmitter.subscribe(() => {
+      this.modalController.dismiss({
+        'dismissed': true
+      });
+      this.loadPeople();
+    })
   }
 
   private async loadPeople() {

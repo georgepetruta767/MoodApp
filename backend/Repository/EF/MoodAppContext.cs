@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Repository.Entities;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
@@ -61,6 +62,10 @@ namespace Repository.EF
                     .HasColumnName("starting_time");
 
                 entity.Property(e => e.Status).HasColumnName("status");
+
+                entity.Property(e => e.Title)
+                    .HasMaxLength(500)
+                    .HasColumnName("title");
 
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Events)

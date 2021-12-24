@@ -1,3 +1,26 @@
-<p>
-  create-event works!
-</p>
+<ion-content fullscreen>
+  <form [formGroup]="form" (ngSubmit)="addEvent()">
+    <ion-item>
+      <ion-label position="floating">Title</ion-label>
+      <ion-input formControlName="title"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>People</ion-label>
+      <ion-select formControlName="people" multiple="true" cancelText="Nah" okText="Okay!">
+        <ion-select-option *ngFor="let person of people" [value]="person"> {{person.firstName}} </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <div class="grid-item">
+      <h2>Starting time</h2>
+      <ion-datetime></ion-datetime>
+    </div>
+
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" color="danger" expand="block">Add</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

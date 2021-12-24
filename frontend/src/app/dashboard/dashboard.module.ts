@@ -30,7 +30,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [PeopleListComponent, PeopleAddComponent],
+  declarations: [PeopleListComponent, PeopleAddComponent, CreateEventComponent],
   imports: [
     RouterModule.forChild(routes),
     PlannerModule,

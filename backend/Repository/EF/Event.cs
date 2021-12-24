@@ -13,10 +13,11 @@ namespace Repository.EF
         }
 
         public Guid Id { get; set; }
+        public string Title { get; set; }
         public Guid LocationId { get; set; }
         public int? Grade { get; set; }
-        public short? Status { get; set; }
-        public DateTime? StartingTime { get; set; }
+        public int Status { get; set; }
+        public DateTime StartingTime { get; set; }
         public DateTime? EndingTime { get; set; }
 
         public virtual Location Location { get; set; }
