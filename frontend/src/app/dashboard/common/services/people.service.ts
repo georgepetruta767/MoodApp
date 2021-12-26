@@ -13,7 +13,7 @@ export class PeopleService {
   public getPeople(): Promise<Array<PersonModel>> {
     return this.http.get<Array<PersonModel>>(environment.api + '/People/Get',{
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + sessionStorage.getItem('bearerToken')
+        "Authorization": `Bearer ${sessionStorage.getItem('bearerToken')}`
       })
     }).toPromise();
   }

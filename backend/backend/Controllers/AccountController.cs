@@ -10,15 +10,18 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("moodapp/api/[controller]/[action]")]
+    [Authorize]
     public class AccountController : ControllerBase
     {
         private SignInManager<UserEntity> _signInManager;
         private UserManager<UserEntity> _userManager;
+        //private readonly AppSettings _appSettings;
 
         public AccountController(SignInManager<UserEntity> signInManager, UserManager<UserEntity> userManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            //_appSettings = appSettings.Value;
         }
 
         [HttpPost]
@@ -34,6 +37,7 @@ namespace backend.Controllers
             if(result.Succeeded)
             {
                 JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+                //var key = Encoding.ASCII.GetBytes(_appSettings)
                 SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor { };
                 return Ok(tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor)));
             }

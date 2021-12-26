@@ -7,10 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Repository;
 using Repository.EF;
 using Repository.Entities;
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -30,8 +28,9 @@ namespace backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
             services.AddCors();
+
+            services.AddControllers();
 
             services.AddDbContext<MoodAppContext>(options => options.UseNpgsql(Configuration["postgresql:connectionString"])
                     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
@@ -41,6 +40,7 @@ namespace backend
 
             SetupAutoMapper(services);
 
+            //services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
             var serviceProvider = services.BuildServiceProvider();
             var userManager = serviceProvider.GetService<UserManager<UserEntity>>();
@@ -52,8 +52,6 @@ namespace backend
             var key = ConfigureOptions();
 
             SetupAuthorization(services, key);
-
-            ///SetupAuthorization(services, )
         }
 
         private static void SetupAutoMapper(IServiceCollection services)

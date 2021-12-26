@@ -24,7 +24,7 @@ export class CreateEventComponent implements OnInit {
     this.form = new FormGroup({
       title: new FormControl('', [Validators.required]),
       people: new FormControl(),
-      startingTime: new FormControl('', [Validators.required])
+      startingTime: new FormControl('',[Validators.required])
     })
   }
 
@@ -33,6 +33,7 @@ export class CreateEventComponent implements OnInit {
   }
 
   public async addEvent() {
+    console.log(this.form.controls.people.value);
     console.log(this.form.controls.startingTime.value);
   }
 }
