@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,7 +33,7 @@ namespace backend
 
             services.AddControllers();
 
-            services.AddDbContext<MoodAppContext>(options => options.UseNpgsql(Configuration["postgresql:connectionString"])
+            services.AddDbContext<MoodAppContext>(options => options.UseNpgsql(Configuration["postgresql:connectionString"],o=>o.MigrationsAssembly("Repository"))
                     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                     .EnableSensitiveDataLogging(true), ServiceLifetime.Transient);
 
@@ -45,13 +46,6 @@ namespace backend
             var serviceProvider = services.BuildServiceProvider();
             var userManager = serviceProvider.GetService<UserManager<UserEntity>>();
             var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
-
-            SeedRolesAsync(userManager, roleManager).Wait();
-            SeedSuperAdminAsync(userManager, roleManager).Wait();
-
-            var key = ConfigureOptions();
-
-            SetupAuthorization(services, key);
         }
 
         private static void SetupAutoMapper(IServiceCollection services)
