@@ -1,10 +1,17 @@
-﻿using System;
+﻿using Repository.EF;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Repository
 {
-    class EventsRepository
+    public class EventsRepository
     {
+        private readonly MoodAppContext _moodAppContext;
+
+        public EventsRepository(MoodAppContext moodAppContext)
+        {
+            _moodAppContext = moodAppContext;
+        }
     }
 }
