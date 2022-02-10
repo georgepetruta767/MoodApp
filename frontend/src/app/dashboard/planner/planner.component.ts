@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {CalendarComponent, CalendarComponentOptions, CalendarOptions, DayConfig} from "ion2-calendar";
+import {CalendarComponentOptions, DayConfig} from "ion2-calendar";
 import {EventModel} from "../common/models/event.model";
+import {EventsService} from "../common/services/events.service";
 
 @Component({
   selector: 'app-planner',
@@ -15,19 +16,27 @@ export class PlannerComponent implements OnInit {
   dateMulti: string[];
   type: 'string';
 
-  public events!: EventModel;
+  public events!: Array<EventModel>;
 
-  constructor() { }
+  constructor(private eventsService: EventsService) { }
 
-  ngOnInit() {
-    this.calendarConfig.daysConfig.push({
-      date: new Date(2022, 1, 11),
-      marked: true
-    })
-    this.loadEvents();
+  public async ngOnInit() {
+    await this.loadEvents();
+
+    this.setupCalendarConfig();
   }
 
-  public loadEvents() {
-    this.events = this/
+  public setupCalendarConfig() {
+    this.events.forEach(event => {
+      this.calendarConfig.daysConfig.push({
+        date: event.date,
+        marked: true
+      })
+    })
+  }
+
+  public async loadEvents() {
+    this.events = await this.eventsService.getEvents();
+    console.log(this.events);
   }
 }

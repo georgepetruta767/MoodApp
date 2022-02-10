@@ -3,7 +3,6 @@ using Repository.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Repository
 {
@@ -34,7 +33,8 @@ namespace Repository
                 Id = Guid.NewGuid(),
                 Firstname = personEntity.FirstName,
                 Lastname = personEntity.LastName,
-                Age = personEntity.Age
+                Age = personEntity.Age,
+                Gender = (int)personEntity.Gender
             };
 
             _moodAppContext.People.Add(dbEntity);

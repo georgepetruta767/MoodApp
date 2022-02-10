@@ -42,13 +42,13 @@ namespace Repository
         }
         public List<EventEntity> GetEvents()
         {
-            return (List<EventEntity>)_moodAppContext.Events.Select(x => new EventEntity
+            return _moodAppContext.Events.Select(x => new EventEntity
             {
                 Id = x.Id,
                 Title = x.Title,
                 PeopleIds = _moodAppContext.EventPersonRelations.Select(y => y).Where(y => y.EventId == x.Id).Select(y => y.PersonId).ToList(),
-                Date = (DateTime)x.StartingTime
-            });
+                Date = x.StartingTime
+            }).ToList();
 
         }
     }

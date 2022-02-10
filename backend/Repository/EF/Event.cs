@@ -11,6 +11,7 @@ namespace Repository.EF
         {
             EventPersonRelations = new HashSet<EventPersonRelation>();
         }
+
         public Guid Id { get; set; }
         public string Title { get; set; }
         public Guid? LocationId { get; set; }

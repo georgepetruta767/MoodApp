@@ -10,14 +10,28 @@
         <ion-label position="floating">First Name</ion-label>
         <ion-input formControlName="firstName" placeholder="First Name" type="text"></ion-input>
       </ion-item>
+
       <ion-item>
         <ion-label position="floating">Last Name</ion-label>
         <ion-input formControlName="lastName" placeholder="Last Name" type="text"></ion-input>
       </ion-item>
+
       <ion-item>
         <ion-label position="floating">Age</ion-label>
-        <ion-input formControlName="age" type='number' placeholder="Age" type="number"></ion-input>
+        <ion-input formControlName="age" placeholder="Age" type="number"></ion-input>
       </ion-item>
+
+      <ion-item>
+        <ion-segment formControlName="gender">
+          <ion-segment-button value=1>
+            <ion-label>Male</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value=0>
+            <ion-label>Female</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-item>
+
     </ion-list>
     <ion-row>
       <ion-col>

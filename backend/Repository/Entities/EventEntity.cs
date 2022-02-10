@@ -8,6 +8,6 @@ namespace Repository.Entities
         public Guid Id { get; set; }
         public string Title { get; set; }
         public List<Guid> PeopleIds { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
     }
 }

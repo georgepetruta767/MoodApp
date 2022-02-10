@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {PeopleService} from "../../common/services/people.service";
+import {Gender} from "../../common/enums/gender.enum";
 
 @Component({
   selector: 'app-people-add',
@@ -23,7 +24,8 @@ export class PeopleAddComponent implements OnInit {
     this.form = new FormGroup({
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
-      age: new FormControl('', [Validators.required, Validators.min(0), Validators.max(150)])
+      age: new FormControl('', [Validators.required, Validators.min(0), Validators.max(150)]),
+      gender: new FormControl( -1, [Validators.required])
     });
   }
 
@@ -32,7 +34,8 @@ export class PeopleAddComponent implements OnInit {
       await this.peopleService.addPerson({
         firstName: this.form.controls.firstName.value,
         lastName: this.form.controls.lastName.value,
-        age: this.form.controls.age.value
+        age: this.form.controls.age.value,
+        gender: Number(this.form.controls.gender.value)
       });
 
       this.emitCloseModalEvent();

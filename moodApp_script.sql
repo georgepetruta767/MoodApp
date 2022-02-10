@@ -23,7 +23,8 @@ create table people (
     id uuid primary key not null,
 	firstName varchar(300),
 	lastName varchar(300),
-	age int not null
+	age int not null,
+	gender int not null
 );
 
 create table event_person_relation(
@@ -32,8 +33,7 @@ create table event_person_relation(
 	person_id uuid constraint FK_people_person_id references people(id) not null
 );
 
-
-/*drop table event_person_relation;
+drop table event_person_relation;
 drop table people;
 drop table events;
-drop table locations;*/
+drop table locations;

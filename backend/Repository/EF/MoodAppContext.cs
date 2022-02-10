@@ -130,6 +130,8 @@ namespace Repository.EF
                     .HasMaxLength(300)
                     .HasColumnName("firstname");
 
+                entity.Property(e => e.Gender).HasColumnName("gender");
+
                 entity.Property(e => e.Lastname)
                     .HasMaxLength(300)
                     .HasColumnName("lastname");

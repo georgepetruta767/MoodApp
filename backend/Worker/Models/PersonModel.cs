@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Global;
 using Repository.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,6 @@ namespace Worker.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int Age { get; set; }
+        public Gender Gender { get; set; }
     }
 }
