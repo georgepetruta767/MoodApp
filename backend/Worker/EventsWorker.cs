@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Repository;
 using Repository.Entities;
+using System.Collections.Generic;
 using Worker.Models;
 
 namespace Worker
@@ -21,5 +22,11 @@ namespace Worker
             var _eventEntity = _mapper.Map<EventEntity>(eventModel);
             _eventsRepository.AddEvent(_eventEntity);
         }
+        public List<EventModel> GetEvents()
+        {
+            var eventsEntity = _eventsRepository.GetEvents();
+            return _mapper.Map<List<EventModel>>(eventsEntity);
+        }
+
     }
 }

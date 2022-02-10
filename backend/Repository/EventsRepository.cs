@@ -2,7 +2,7 @@
 using Repository.Entities;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Repository
 {
@@ -39,6 +39,17 @@ namespace Repository
             }
 
             _moodAppContext.SaveChanges();
+        }
+        public List<EventEntity> GetEvents()
+        {
+            return (List<EventEntity>)_moodAppContext.Events.Select(x => new EventEntity
+            {
+                Id = x.Id,
+                Title = x.Title,
+                PeopleIds = _moodAppContext.EventPersonRelations.Select(y => y).Where(y => y.EventId == x.Id).Select(y => y.PersonId).ToList(),
+                Date = (DateTime)x.StartingTime
+            });
+
         }
     }
 }
