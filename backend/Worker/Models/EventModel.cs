@@ -1,13 +1,17 @@
-﻿using System;
+﻿using AutoMapper;
+using Repository.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Worker.Models
 {
+    [AutoMap(typeof(EventEntity), ReverseMap = true)]
+    [AutoMap(typeof(List<EventEntity>), ReverseMap = true)]
     public class EventModel
     {
-        public String Title;
-        public DateTime date;
-        public List<Guid> peopleIds;
+        public String Title { get; set; }
+        public List<Guid> PeopleIds { get; set; }
+        public DateTime Date { get; set; }
     }
 }

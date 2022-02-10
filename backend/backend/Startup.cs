@@ -46,6 +46,8 @@ namespace backend
             var serviceProvider = services.BuildServiceProvider();
             var userManager = serviceProvider.GetService<UserManager<UserEntity>>();
             var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
+
+            SeedSuperAdminAsync(userManager, roleManager).Wait();
         }
 
         private static void SetupAutoMapper(IServiceCollection services)
@@ -97,6 +99,10 @@ namespace backend
         {
             services.AddTransient<Repository.PeopleRepository>();
             services.AddTransient<Worker.PeopleWorker>();
+
+            services.AddTransient<Repository.EventsRepository>();
+            services.AddTransient<Worker.EventsWorker>();
+
             services.AddIdentity<UserEntity, IdentityRole>().AddEntityFrameworkStores<MoodAppContext>();
         }
 
@@ -132,6 +138,7 @@ namespace backend
             if (x == null)
                 await roleManager.CreateAsync(new IdentityRole("SuperAdmin"));
         }
+
         public static async Task SeedSuperAdminAsync(UserManager<UserEntity> userManager, RoleManager<IdentityRole> roleManager)
         {
             var defaultUser = new UserEntity

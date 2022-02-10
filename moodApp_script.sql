@@ -12,10 +12,10 @@ create table locations (
 create table events (
 	id uuid PRIMARY KEY NOT NULL,
 	title varchar(500),
-	location_id uuid constraint FK_locations_location_id references locations(id) not null,
+	location_id uuid constraint FK_locations_location_id references locations(id),
 	grade int,
 	status int not null,
-	starting_time timestamptz not null,
+	starting_time timestamptz,
 	ending_time timestamptz
 );
 
@@ -34,7 +34,6 @@ create table event_person_relation(
 
 
 /*drop table event_person_relation;
-drop table events;
 drop table people;
+drop table events;
 drop table locations;*/
-

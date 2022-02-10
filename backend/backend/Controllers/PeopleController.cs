@@ -9,7 +9,7 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("moodapp/api/[controller]/[action]")]
-    //[Authorize]
+   // [Authorize]
     public class PeopleController : ControllerBase
     {
         private PeopleWorker _peopleWorker;

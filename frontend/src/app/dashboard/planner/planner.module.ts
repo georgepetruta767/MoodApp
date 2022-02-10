@@ -4,7 +4,7 @@ import {RouterModule, Routes} from "@angular/router";
 import {PlannerComponent} from "./planner.component";
 import {CalendarModule} from "ion2-calendar";
 import {FormsModule} from "@angular/forms";
-import {IonicModule} from "@ionic/angular";
+import {IonDatetime, IonicModule} from "@ionic/angular";
 
 const routes: Routes = [
   {

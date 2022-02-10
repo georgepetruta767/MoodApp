@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {PeopleService} from "../common/services/people.service";
 import {PersonModel} from "../common/models/person.model";
+import {EventsService} from "../common/services/events.service";
 
 @Component({
   selector: 'app-create-event',
@@ -13,7 +14,8 @@ export class CreateEventComponent implements OnInit {
 
   public people!: Array<PersonModel>;
 
-  constructor(private peopleService: PeopleService) { }
+  constructor(private peopleService: PeopleService,
+              private eventsService: EventsService) { }
 
   async ngOnInit() {
     this.setupForm();
@@ -24,7 +26,7 @@ export class CreateEventComponent implements OnInit {
     this.form = new FormGroup({
       title: new FormControl('', [Validators.required]),
       people: new FormControl(),
-      startingTime: new FormControl('',[Validators.required])
+      eventDate: new FormControl('', [Validators.required])
     })
   }
 
@@ -33,7 +35,12 @@ export class CreateEventComponent implements OnInit {
   }
 
   public async addEvent() {
-    console.log(this.form.controls.people.value);
-    console.log(this.form.controls.startingTime.value);
+    if(this.form.valid) {
+      await this.eventsService.addEvent({
+        title: this.form.controls.title.value,
+        peopleIds: this.form.controls.people.value.map(x => x.id),
+        date: this.form.controls.eventDate.value
+      });
+    }
   }
 }

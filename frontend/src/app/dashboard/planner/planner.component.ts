@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {CalendarComponentOptions} from "ion2-calendar";
+import {Component, OnInit} from '@angular/core';
+import {CalendarComponent, CalendarComponentOptions, CalendarOptions, DayConfig} from "ion2-calendar";
 
 @Component({
   selector: 'app-planner',
@@ -7,25 +7,26 @@ import {CalendarComponentOptions} from "ion2-calendar";
   styleUrls: ['./planner.component.scss'],
 })
 export class PlannerComponent implements OnInit {
-  public calendarOptions!: CalendarComponentOptions;
-  date!: string;
-  type: 'string';
-  public isModalVisible = false;
+  public calendarConfig: CalendarComponentOptions = {
+    daysConfig: Array<DayConfig>()
+  };
 
-  onChange($event) {
-    console.log('fojiasf');
-    this.isModalVisible = true;
-  }
+  dateMulti: string[];
+  type: 'string'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
+  /*optionsMulti: CalendarComponentOptions = {
+  };*/
 
   constructor() { }
 
   ngOnInit() {
-    this.setupCalendarOptions();
-  }
+/*
+    this.calendarConfig.daysConfig = new Array<DayConfig>();
+*/
+    this.calendarConfig.daysConfig.push({
+      date: new Date(2022, 1, 11),
+      marked: true
+    })
 
-  private setupCalendarOptions() {
-    this.calendarOptions = {
-      color: 'danger'
-    }
+    console.log(this.calendarConfig.daysConfig);
   }
 }

@@ -11,7 +11,7 @@ export class PeopleAddComponent implements OnInit {
   @Output()
   public closeModalEvent = new EventEmitter<string>();
 
-  private form!: FormGroup;
+  public form!: FormGroup;
 
   constructor(private peopleService: PeopleService) { }
 

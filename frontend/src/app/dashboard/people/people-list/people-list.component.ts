@@ -44,6 +44,9 @@ export class PeopleListComponent implements OnInit {
   }
 
   private async loadPeople() {
-    this.people = await this.peopleService.getPeople();
+    this.people = await this.peopleService.getPeople().catch((error) => {
+      console.log(error);
+      return null;
+    });
   }
 }

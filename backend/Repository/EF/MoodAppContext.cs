@@ -17,7 +17,6 @@ namespace Repository.EF
         public MoodAppContext(DbContextOptions<MoodAppContext> options)
             : base(options)
         {
-            Database.Migrate();
         }
 
         public virtual DbSet<Event> Events { get; set; }
@@ -71,7 +70,6 @@ namespace Repository.EF
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Events)
                     .HasForeignKey(d => d.LocationId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_locations_location_id");
             });
 

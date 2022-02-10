@@ -1,8 +1,5 @@
-<ion-content>
-  <ion-calendar [(ngModel)]="date"
-                [options]="calendarOptions"
-                [type]="type"
-                (select)="onChange($event)"
-                [format]="'YYYY-MM-DD'">
-  </ion-calendar>
-</ion-content>
+<ion-calendar [(ngModel)]="dateMulti"
+              [options]="calendarConfig"
+              [type]="type"
+              [format]="'YYYY-MM-DD'">
+</ion-calendar>
