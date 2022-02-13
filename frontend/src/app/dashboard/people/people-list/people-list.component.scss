@@ -1,4 +1,7 @@
 :host {
   display: block;
-  background: white;
+
+  .item-content {
+    background-color: #ffffff;
+  }
 }

@@ -4,6 +4,7 @@ using Worker;
 using System.Collections.Generic;
 using Worker.Models;
 using System.Threading.Tasks;
+using System;
 
 namespace backend.Controllers
 {
@@ -29,6 +30,18 @@ namespace backend.Controllers
         public void Add([FromBody] PersonModel personModel)
         {
             _peopleWorker.AddPerson(personModel);
+        }
+
+        [HttpPost]
+        public void Update([FromBody] PersonModel personModel)
+        {
+            _peopleWorker.UpdatePerson(personModel);
+        }
+
+        [HttpDelete]
+        public void Delete([FromQuery] Guid id)
+        {
+            _peopleWorker.DeletePerson(id);
         }
     }
 }

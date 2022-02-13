@@ -1,4 +1,5 @@
-﻿using Repository.EF;
+﻿using Global;
+using Repository.EF;
 using Repository.Entities;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,8 @@ namespace Repository
             {
                 Id = Guid.NewGuid(),
                 Title = eventEntity.Title,
-                StartingTime = eventEntity.Date
+                StartingTime = eventEntity.Date,
+                Status = (int)eventEntity.Status
             };
 
             _moodAppContext.Events.Add(eventDBEntity);
@@ -47,7 +49,8 @@ namespace Repository
                 Id = x.Id,
                 Title = x.Title,
                 PeopleIds = _moodAppContext.EventPersonRelations.Select(y => y).Where(y => y.EventId == x.Id).Select(y => y.PersonId).ToList(),
-                Date = x.StartingTime
+                Date = x.StartingTime,
+                Status = (EventStatus)x.Status
             }).ToList();
 
         }

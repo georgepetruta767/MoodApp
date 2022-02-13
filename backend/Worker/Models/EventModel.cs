@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Global;
 using Repository.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,6 @@ namespace Worker.Models
         public String Title { get; set; }
         public List<Guid> PeopleIds { get; set; }
         public DateTime Date { get; set; }
+        public EventStatus Status { get; set; } 
     }
 }

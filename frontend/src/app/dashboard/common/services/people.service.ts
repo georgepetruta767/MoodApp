@@ -25,4 +25,20 @@ export class PeopleService {
       })
     }).toPromise();
   }
+
+  public updatePerson(personModel: PersonModel) : Promise<any> {
+    return this.http.post(`${environment.api}/People/Update`, personModel, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${sessionStorage.getItem('bearerToken')}`
+      })
+    }).toPromise();
+  }
+
+  public deletePerson(personId: string) : Promise<any> {
+    return this.http.delete(`${environment.api}/People/Delete?id=${personId}`, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${sessionStorage.getItem('bearerToken')}`
+      })
+    }).toPromise();
+  }
 }

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {PeopleService} from "../common/services/people.service";
 import {PersonModel} from "../common/models/person.model";
 import {EventsService} from "../common/services/events.service";
+import {EventStatus} from "../common/enums/event-status";
 
 @Component({
   selector: 'app-create-event',
@@ -39,7 +40,10 @@ export class CreateEventComponent implements OnInit {
       await this.eventsService.addEvent({
         title: this.form.controls.title.value,
         peopleIds: this.form.controls.people.value.map(x => x.id),
-        date: this.form.controls.eventDate.value
+        date: this.form.controls.eventDate.value,
+        status: EventStatus.Incoming
+      }).then(() => {
+        this.form.reset();
       });
     }
   }

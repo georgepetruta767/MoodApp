@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Global;
+using System;
 using System.Collections.Generic;
 
 namespace Repository.Entities
@@ -9,5 +10,6 @@ namespace Repository.Entities
         public string Title { get; set; }
         public List<Guid> PeopleIds { get; set; }
         public DateTime? Date { get; set; }
+        public EventStatus Status { get; set; }
     }
 }

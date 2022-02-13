@@ -1,18 +1,32 @@
-<ion-content>
-  <ion-list id="list">
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      People
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
     <ion-item *ngFor="let person of people">
-      <ion-label>{{person.firstName}}</ion-label>
+      <ion-label>
+        <h2>{{getFullName(person)}}</h2>
+        <h3>{{person.age}}</h3>
+        <p>{{getGenderLabel(person.gender)}}</p>
+      </ion-label>
+      <ion-icon slot="end" name="create-outline" (click)="presentModal(person)"></ion-icon>
+      <ion-icon slot="end" name="trash-outline" (click)="deletePerson(person.id)"></ion-icon>
     </ion-item>
   </ion-list>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="presentModal()">
-    <ion-fab-button>
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-
-  <ion-infinite-scroll threshold="100px" id="infinite-scroll">
+  <!--<ion-infinite-scroll threshold="100px" id="infinite-scroll">
     <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading more data...">
     </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+  </ion-infinite-scroll>-->
 </ion-content>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="presentModal()">
+  <ion-fab-button>
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

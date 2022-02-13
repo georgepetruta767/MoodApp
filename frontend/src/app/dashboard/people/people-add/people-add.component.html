@@ -1,10 +1,11 @@
 <ion-header translucent>
   <ion-toolbar>
-    <ion-title>Add a new person</ion-title>
+    <ion-title>{{getCorrectHeaderTitle()}}</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content fullscreen class="ion-padding-top">
-  <form [formGroup]="form" (ngSubmit)="addPerson()">
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <ion-list lines="full" class="ion-no-margin">
       <ion-item>
         <ion-label position="floating">First Name</ion-label>
@@ -35,7 +36,7 @@
     </ion-list>
     <ion-row>
       <ion-col>
-        <ion-button type="submit" color="danger" expand="block">Add</ion-button>
+        <ion-button type="submit" color="danger" expand="block">{{getActionLabel()}}</ion-button>
       </ion-col>
     </ion-row>
   </form>

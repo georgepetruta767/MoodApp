@@ -2,6 +2,7 @@
 using AutoMapper;
 using Repository;
 using Repository.Entities;
+using System;
 using System.Collections.Generic;
 using Worker.Models;
 
@@ -27,6 +28,17 @@ namespace Worker
         {
             var personEntity = _mapper.Map<PersonEntity>(personModel);
             _peopleRepository.AddPerson(personEntity);
+        }
+
+        public void UpdatePerson(PersonModel personModel)
+        {
+            var personEntity = _mapper.Map<PersonEntity>(personModel);
+            _peopleRepository.UpdatePerson(personEntity);
+        }
+
+        public void DeletePerson(Guid personId)
+        {
+            _peopleRepository.DeletePerson(personId);
         }
     }
 }

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CalendarComponentOptions, DayConfig} from "ion2-calendar";
+import {CalendarComponentOptions, CalendarDay, DayConfig} from "ion2-calendar";
 import {EventModel} from "../common/models/event.model";
 import {EventsService} from "../common/services/events.service";
 
@@ -9,12 +9,13 @@ import {EventsService} from "../common/services/events.service";
   styleUrls: ['./planner.component.scss'],
 })
 export class PlannerComponent implements OnInit {
+  public async ionViewWillEnter(){
+    await this.loadEvents();
+  }
+
   public calendarConfig: CalendarComponentOptions = {
     daysConfig: Array<DayConfig>()
   };
-
-  dateMulti: string[];
-  type: 'string';
 
   public events!: Array<EventModel>;
 
@@ -32,11 +33,15 @@ export class PlannerComponent implements OnInit {
         date: event.date,
         marked: true
       })
-    })
+    });
   }
 
   public async loadEvents() {
     this.events = await this.eventsService.getEvents();
-    console.log(this.events);
+    this.setupCalendarConfig();
+  }
+
+  public openEventModal(day: CalendarDay) {
+
   }
 }

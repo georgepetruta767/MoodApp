@@ -22,7 +22,8 @@ namespace Repository
                 Id = x.Id,
                 FirstName = x.Firstname,
                 LastName = x.Lastname,
-                Age = x.Age
+                Age = x.Age,
+                Gender = (Global.Gender)x.Gender
             }).ToList();
         }
 
@@ -39,6 +40,33 @@ namespace Repository
 
             _moodAppContext.People.Add(dbEntity);
 
+            _moodAppContext.SaveChanges();
+        }
+
+        public void UpdatePerson(PersonEntity personEntity)
+        {
+            var personToUpdate = GetById(personEntity.Id);
+            personToUpdate.Firstname = personEntity.FirstName;
+            personToUpdate.Lastname = personEntity.LastName;
+            personToUpdate.Age = personEntity.Age;
+            personToUpdate.Gender = (int)personEntity.Gender;
+
+            _moodAppContext.People.Update(personToUpdate);
+            _moodAppContext.SaveChanges();
+        }
+
+        public Person GetById(Guid id)
+        {
+            var person = (from x in _moodAppContext.People where x.Id == id select x).ToList();
+            if (person.Count != 0)
+                return person.First();
+            return null;
+        }
+
+        public void DeletePerson(Guid personId)
+        {
+            var person = GetById(personId);
+            _moodAppContext.People.Remove(person);
             _moodAppContext.SaveChanges();
         }
     }

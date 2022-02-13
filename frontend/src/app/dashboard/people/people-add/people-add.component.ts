@@ -1,7 +1,7 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {PeopleService} from "../../common/services/people.service";
-import {Gender} from "../../common/enums/gender.enum";
+import {PersonModel} from "../../common/models/person.model";
 
 @Component({
   selector: 'app-people-add',
@@ -12,31 +12,40 @@ export class PeopleAddComponent implements OnInit {
   @Output()
   public closeModalEvent = new EventEmitter<string>();
 
+  @Input()
+  public personToEdit: PersonModel;
+
   public form!: FormGroup;
 
   constructor(private peopleService: PeopleService) { }
 
   ngOnInit() {
+    console.log(this.personToEdit);
     this.setupForm();
   }
 
   private setupForm() {
     this.form = new FormGroup({
-      firstName: new FormControl('', [Validators.required]),
-      lastName: new FormControl('', [Validators.required]),
-      age: new FormControl('', [Validators.required, Validators.min(0), Validators.max(150)]),
-      gender: new FormControl( -1, [Validators.required])
+      firstName: new FormControl(this.personToEdit ? this.personToEdit.firstName : '', [Validators.required]),
+      lastName: new FormControl(this.personToEdit ? this.personToEdit.lastName : '', [Validators.required]),
+      age: new FormControl(this.personToEdit ? this.personToEdit.age : '', [Validators.required, Validators.min(0), Validators.max(150)]),
+      gender: new FormControl( this.personToEdit ? this.personToEdit.gender : '', [Validators.required])
     });
   }
 
-  public async addPerson() {
+  public async onSubmit() {
     if(this.form.valid) {
-      await this.peopleService.addPerson({
+      const personModel = {
+        id: this.personToEdit ? this.personToEdit.id : undefined,
         firstName: this.form.controls.firstName.value,
         lastName: this.form.controls.lastName.value,
         age: this.form.controls.age.value,
         gender: Number(this.form.controls.gender.value)
-      });
+      };
+
+      console.log(this.personToEdit);
+
+      this.personToEdit ? await this.peopleService.updatePerson(personModel) : await this.peopleService.addPerson(personModel);
 
       this.emitCloseModalEvent();
     }
@@ -44,5 +53,13 @@ export class PeopleAddComponent implements OnInit {
 
   public emitCloseModalEvent() {
     this.closeModalEvent.emit();
+  }
+
+  public getActionLabel() {
+    return this.personToEdit ? 'Edit' : 'Add';
+  }
+
+  public getCorrectHeaderTitle() {
+    return this.personToEdit ? `Edit ${this.personToEdit.firstName} ${this.personToEdit.lastName}` : 'Add a new person';
   }
 }

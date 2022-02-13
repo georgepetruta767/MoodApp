@@ -1,4 +1,12 @@
-<ion-content fullscreen>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Add event
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
   <form [formGroup]="form" (ngSubmit)="addEvent()">
     <ion-item>
       <ion-label position="floating">Title</ion-label>
