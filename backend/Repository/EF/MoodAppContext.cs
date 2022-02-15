@@ -49,6 +49,8 @@ namespace Repository.EF
                     .ValueGeneratedNever()
                     .HasColumnName("id");
 
+                entity.Property(e => e.AmountSpent).HasColumnName("amount_spent");
+
                 entity.Property(e => e.EndingTime)
                     .HasColumnType("timestamp with time zone")
                     .HasColumnName("ending_time");
@@ -56,6 +58,8 @@ namespace Repository.EF
                 entity.Property(e => e.Grade).HasColumnName("grade");
 
                 entity.Property(e => e.LocationId).HasColumnName("location_id");
+
+                entity.Property(e => e.Season).HasColumnName("season");
 
                 entity.Property(e => e.StartingTime)
                     .HasColumnType("timestamp with time zone")
@@ -66,6 +70,8 @@ namespace Repository.EF
                 entity.Property(e => e.Title)
                     .HasMaxLength(500)
                     .HasColumnName("title");
+
+                entity.Property(e => e.Type).HasColumnName("type");
 
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Events)
@@ -135,6 +141,8 @@ namespace Repository.EF
                 entity.Property(e => e.Lastname)
                     .HasMaxLength(300)
                     .HasColumnName("lastname");
+
+                entity.Property(e => e.SocialStatus).HasColumnName("social_status");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -35,7 +35,8 @@ namespace Repository
                 Firstname = personEntity.FirstName,
                 Lastname = personEntity.LastName,
                 Age = personEntity.Age,
-                Gender = (int)personEntity.Gender
+                Gender = (int)personEntity.Gender,
+                SocialStatus = (int)personEntity.SocialStatus
             };
 
             _moodAppContext.People.Add(dbEntity);

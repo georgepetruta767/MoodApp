@@ -15,8 +15,11 @@ create table events (
 	location_id uuid constraint FK_locations_location_id references locations(id),
 	grade int,
 	status int not null,
+	type int not null,
 	starting_time timestamptz,
-	ending_time timestamptz
+	ending_time timestamptz,
+	season int not null,
+	amount_spent int
 );
 
 create table people (
@@ -24,7 +27,8 @@ create table people (
 	firstName varchar(300),
 	lastName varchar(300),
 	age int not null,
-	gender int not null
+	gender int not null,
+	social_status int not null
 );
 
 create table event_person_relation(

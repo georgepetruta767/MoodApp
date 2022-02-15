@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
 import {IonicModule} from "@ionic/angular";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -39,4 +39,5 @@ const routes: Routes = [
     ReactiveFormsModule
   ]
 })
-export class DashboardModule { }
+export class DashboardModule {
+}

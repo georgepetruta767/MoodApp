@@ -4,7 +4,8 @@ import {RouterModule, Routes} from "@angular/router";
 import {PlannerComponent} from "./planner.component";
 import {CalendarModule} from "ion2-calendar";
 import {FormsModule} from "@angular/forms";
-import {IonDatetime, IonicModule} from "@ionic/angular";
+import {IonicModule} from "@ionic/angular";
+import {EventDetailsComponent} from "./event-details/event-details.component";
 
 const routes: Routes = [
   {
@@ -18,7 +19,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [PlannerComponent],
+  declarations: [PlannerComponent, EventDetailsComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

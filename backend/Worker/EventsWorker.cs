@@ -28,5 +28,10 @@ namespace Worker
             return _mapper.Map<List<EventModel>>(eventsEntity);
         }
 
+        public void UpdateEvent(EventModel eventModel)
+        {
+            var eventEntity = _mapper.Map<EventEntity>(eventModel);
+            _eventsRepository.UpdateEvent(eventEntity);
+        }
     }
 }

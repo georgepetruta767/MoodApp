@@ -17,6 +17,7 @@ namespace Repository.EF
         public string Lastname { get; set; }
         public int Age { get; set; }
         public int Gender { get; set; }
+        public int SocialStatus { get; set; }
 
         public virtual ICollection<EventPersonRelation> EventPersonRelations { get; set; }
     }

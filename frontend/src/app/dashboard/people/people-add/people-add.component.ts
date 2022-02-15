@@ -19,8 +19,7 @@ export class PeopleAddComponent implements OnInit {
 
   constructor(private peopleService: PeopleService) { }
 
-  ngOnInit() {
-    console.log(this.personToEdit);
+  public ngOnInit() {
     this.setupForm();
   }
 
@@ -29,7 +28,8 @@ export class PeopleAddComponent implements OnInit {
       firstName: new FormControl(this.personToEdit ? this.personToEdit.firstName : '', [Validators.required]),
       lastName: new FormControl(this.personToEdit ? this.personToEdit.lastName : '', [Validators.required]),
       age: new FormControl(this.personToEdit ? this.personToEdit.age : '', [Validators.required, Validators.min(0), Validators.max(150)]),
-      gender: new FormControl( this.personToEdit ? this.personToEdit.gender : '', [Validators.required])
+      gender: new FormControl( this.personToEdit ? this.personToEdit.gender : '', [Validators.required]),
+      socialStatus: new FormControl(this.personToEdit ? this.personToEdit.socialStatus : '', [Validators.required])
     });
   }
 
@@ -40,10 +40,9 @@ export class PeopleAddComponent implements OnInit {
         firstName: this.form.controls.firstName.value,
         lastName: this.form.controls.lastName.value,
         age: this.form.controls.age.value,
-        gender: Number(this.form.controls.gender.value)
+        gender: Number(this.form.controls.gender.value),
+        socialStatus: Number(this.form.controls.socialStatus.value)
       };
-
-      console.log(this.personToEdit);
 
       this.personToEdit ? await this.peopleService.updatePerson(personModel) : await this.peopleService.addPerson(personModel);
 

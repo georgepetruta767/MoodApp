@@ -25,4 +25,12 @@ export class EventsService {
       })
     }).toPromise();
   }
+
+  public updateEvent(eventModel: EventModel): Promise<any> {
+    return this.http.post<any>(`${environment.api}/Events/Update`, eventModel, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${sessionStorage.getItem('bearerToken')}`
+      })
+    }).toPromise();
+  }
 }

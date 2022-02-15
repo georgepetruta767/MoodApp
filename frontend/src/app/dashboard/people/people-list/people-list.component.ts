@@ -1,10 +1,9 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import {PersonModel} from "../../common/models/person.model";
 import {PeopleService} from "../../common/services/people.service";
-import {IonRouterOutlet, ModalController} from "@ionic/angular";
+import {ModalController} from "@ionic/angular";
 import {PeopleAddComponent} from "../people-add/people-add.component";
 import {Gender} from "../../common/enums/gender.enum";
-import {Person} from "@angular/cli/utilities/package-json";
 
 @Component({
   selector: 'app-people',

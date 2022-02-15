@@ -28,5 +28,11 @@ namespace backend.Controllers
         {
             return _eventsWorker.GetEvents();
         }
+
+        [HttpPost]
+        public void Update([FromBody] EventModel eventModel)
+        {
+            _eventsWorker.UpdateEvent(eventModel);
+        }
     }
 }

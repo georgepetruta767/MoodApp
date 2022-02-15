@@ -3,7 +3,6 @@ using Global;
 using Repository.Entities;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Worker.Models
 {
@@ -11,9 +10,10 @@ namespace Worker.Models
     [AutoMap(typeof(List<EventEntity>), ReverseMap = true)]
     public class EventModel
     {
-        public String Title { get; set; }
+        public string Title { get; set; }
         public List<Guid> PeopleIds { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime StartingTime { get; set; }
         public EventStatus Status { get; set; } 
+        public int? Grade { get; set; }
     }
 }

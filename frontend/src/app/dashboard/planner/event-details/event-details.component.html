@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      {{this.event.title}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-title>
+    People
+  </ion-title>
+  <ion-list>
+    <ion-item *ngFor="let person of event.peopleIds">
+      <ion-label>{{person}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="full" color="success" (click)="startEvent()">Start event</ion-button>
+</ion-content>

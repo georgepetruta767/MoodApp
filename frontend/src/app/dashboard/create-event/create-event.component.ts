@@ -40,7 +40,7 @@ export class CreateEventComponent implements OnInit {
       await this.eventsService.addEvent({
         title: this.form.controls.title.value,
         peopleIds: this.form.controls.people.value.map(x => x.id),
-        date: this.form.controls.eventDate.value,
+        startingTime: this.form.controls.eventDate.value,
         status: EventStatus.Incoming
       }).then(() => {
         this.form.reset();

@@ -22,7 +22,7 @@ namespace Repository
             {
                 Id = Guid.NewGuid(),
                 Title = eventEntity.Title,
-                StartingTime = eventEntity.Date,
+                StartingTime = eventEntity.StartingTime,
                 Status = (int)eventEntity.Status
             };
 
@@ -42,6 +42,7 @@ namespace Repository
 
             _moodAppContext.SaveChanges();
         }
+
         public List<EventEntity> GetEvents()
         {
             return _moodAppContext.Events.Select(x => new EventEntity
@@ -49,10 +50,26 @@ namespace Repository
                 Id = x.Id,
                 Title = x.Title,
                 PeopleIds = _moodAppContext.EventPersonRelations.Select(y => y).Where(y => y.EventId == x.Id).Select(y => y.PersonId).ToList(),
-                Date = x.StartingTime,
-                Status = (EventStatus)x.Status
+                StartingTime = x.StartingTime,
+                Status = (EventStatus)x.Status,
+                Grade = (int)x.Grade
             }).ToList();
+        }
 
+        public void UpdateEvent(EventEntity eventEntity)
+        {
+            var eventToUpdate = GetById(eventEntity.Id);
+            //eventToUpdate.EndingTime = eventEntity.EndingTime;
+            eventToUpdate.Status = (int)eventEntity.Status;
+            //eventToUpdate.Grade = eventEntity.Grade;
+        }
+
+        public Event GetById(Guid id)
+        {
+            var searchedEvent = (from x in _moodAppContext.Events where x.Id == id select x).ToList();
+            if (searchedEvent.Count != 0)
+                return searchedEvent.First();
+            return null;
         }
     }
 }
