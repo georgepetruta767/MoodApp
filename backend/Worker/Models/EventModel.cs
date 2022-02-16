@@ -10,10 +10,12 @@ namespace Worker.Models
     [AutoMap(typeof(List<EventEntity>), ReverseMap = true)]
     public class EventModel
     {
+        public Guid Id { get; set; }
         public string Title { get; set; }
-        public List<Guid> PeopleIds { get; set; }
+        public List<PersonModel> People { get; set; }
         public DateTime StartingTime { get; set; }
         public EventStatus Status { get; set; } 
+        public EventType Type { get; set; }
         public int? Grade { get; set; }
     }
 }

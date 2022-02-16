@@ -11,8 +11,8 @@
     People
   </ion-title>
   <ion-list>
-    <ion-item *ngFor="let person of event.peopleIds">
-      <ion-label>{{person}}</ion-label>
+    <ion-item *ngFor="let person of event.people">
+      <ion-label>{{getPersonName(person)}}</ion-label>
     </ion-item>
   </ion-list>
 

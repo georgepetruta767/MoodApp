@@ -28,13 +28,13 @@ namespace Repository
 
             _moodAppContext.Events.Add(eventDBEntity);
 
-            foreach (var personId in eventEntity.PeopleIds)
+            foreach (var person in eventEntity.People)
             {
                 var relationDbEntity = new EventPersonRelation()
                 {
                     Id = Guid.NewGuid(),
                     EventId = eventDBEntity.Id,
-                    PersonId = personId
+                    PersonId = person.Id
                 };
 
                 _moodAppContext.Add(relationDbEntity);
@@ -49,11 +49,27 @@ namespace Repository
             {
                 Id = x.Id,
                 Title = x.Title,
-                PeopleIds = _moodAppContext.EventPersonRelations.Select(y => y).Where(y => y.EventId == x.Id).Select(y => y.PersonId).ToList(),
+                People = MapPeople(_moodAppContext.EventPersonRelations.Select(y => y).Where(y => y.EventId == x.Id).Select(y => y.Person).ToList()),
                 StartingTime = x.StartingTime,
                 Status = (EventStatus)x.Status,
                 Grade = (int)x.Grade
             }).ToList();
+        }
+
+        public static List<PersonEntity> MapPeople(List<Person> people)
+        {
+            var peopleEntities = new List<PersonEntity>();
+            people.ForEach(x => peopleEntities.Add(new PersonEntity
+            {
+                Age = x.Age,
+                FirstName = x.Firstname,
+                LastName = x.Lastname,
+                Id = x.Id,
+                Gender = (Gender)x.Gender,
+                SocialStatus = (SocialStatus)x.SocialStatus
+            }));
+
+            return peopleEntities;
         }
 
         public void UpdateEvent(EventEntity eventEntity)
@@ -62,6 +78,7 @@ namespace Repository
             //eventToUpdate.EndingTime = eventEntity.EndingTime;
             eventToUpdate.Status = (int)eventEntity.Status;
             //eventToUpdate.Grade = eventEntity.Grade;
+            _moodAppContext.SaveChanges();
         }
 
         public Event GetById(Guid id)

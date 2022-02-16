@@ -41,6 +41,4 @@ create table event_person_relation(
 drop table people;
 drop table events;
 drop table locations;*/
--- delete from people
--- where id = '8754b0dd-f894-4864-acd5-a3b4854bda80';
-
+select count(*) from people;

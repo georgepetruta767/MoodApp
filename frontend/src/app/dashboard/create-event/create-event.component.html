@@ -16,7 +16,16 @@
     <ion-item>
       <ion-label>People</ion-label>
       <ion-select formControlName="people" multiple="true" cancelText="Nah" okText="Okay!">
-        <ion-select-option *ngFor="let person of people" [value]="person"> {{person.firstName}} </ion-select-option>
+        <ion-select-option *ngFor="let person of people" [value]="person"> {{getPersonName(person)}} </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Type</ion-label>
+      <ion-select formControlName="type" okText="Okay" cancelText="Dismiss">
+        <ion-select-option value="0">Recreational</ion-select-option>
+        <ion-select-option value="1">Educational</ion-select-option>
+        <ion-select-option value="2">Work related</ion-select-option>
       </ion-select>
     </ion-item>
 

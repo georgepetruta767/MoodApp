@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {PeopleService} from "../common/services/people.service";
 import {PersonModel} from "../common/models/person.model";
 import {EventsService} from "../common/services/events.service";
-import {EventStatus} from "../common/enums/event-status";
+import {EventStatus} from "../common/enums/event-status.enum";
 
 @Component({
   selector: 'app-create-event',
@@ -27,7 +27,8 @@ export class CreateEventComponent implements OnInit {
     this.form = new FormGroup({
       title: new FormControl('', [Validators.required]),
       people: new FormControl(),
-      eventDate: new FormControl('', [Validators.required])
+      eventDate: new FormControl('', [Validators.required]),
+      type: new FormControl('', [Validators.required])
     })
   }
 
@@ -39,12 +40,17 @@ export class CreateEventComponent implements OnInit {
     if(this.form.valid) {
       await this.eventsService.addEvent({
         title: this.form.controls.title.value,
-        peopleIds: this.form.controls.people.value.map(x => x.id),
+        people: this.form.controls.people.value.map(x => x.id),
         startingTime: this.form.controls.eventDate.value,
-        status: EventStatus.Incoming
+        status: EventStatus.Incoming,
+        type: Number(this.form.controls.type.value)
       }).then(() => {
         this.form.reset();
       });
     }
+  }
+
+  public getPersonName(person: PersonModel) {
+    return `${person.firstName} ${person.lastName}`;
   }
 }

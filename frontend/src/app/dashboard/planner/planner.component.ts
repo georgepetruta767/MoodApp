@@ -42,6 +42,7 @@ export class PlannerComponent implements OnInit {
 
   public async loadEvents() {
     this.events = await this.eventsService.getEvents();
+    console.log(this.events);
     this.setupCalendarConfig();
   }
 

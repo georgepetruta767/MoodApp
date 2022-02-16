@@ -22,6 +22,7 @@ namespace Worker
             var _eventEntity = _mapper.Map<EventEntity>(eventModel);
             _eventsRepository.AddEvent(_eventEntity);
         }
+
         public List<EventModel> GetEvents()
         {
             var eventsEntity = _eventsRepository.GetEvents();
