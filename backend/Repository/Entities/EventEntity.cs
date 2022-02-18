@@ -6,7 +6,7 @@ namespace Repository.Entities
 {
     public class EventEntity
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public string Title { get; set; }
         public List<PersonEntity> People { get; set; }
         public DateTime? StartingTime { get; set; }

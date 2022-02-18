@@ -15,16 +15,45 @@ export class EventDetailsComponent implements OnInit {
 
   constructor(private eventsService: EventsService) { }
 
-  ngOnInit() {
-    console.log(this.event);
-  }
+  public ngOnInit() { }
 
-  public async startEvent() {
-    this.event.status = EventStatus.InProgress;
+  public async modifyEventStatus() {
+    switch(this.event.status) {
+      case EventStatus.Incoming:
+        this.event.status = EventStatus.InProgress;
+        break;
+      case EventStatus.InProgress:
+        this.event.status = EventStatus.Finished;
+        break;
+    }
     await this.eventsService.updateEvent(this.event);
   }
 
   public getPersonName(person: PersonModel) {
     return `${person.firstName} ${person.lastName}`;
+  }
+
+  public getStatusLabel(status: EventStatus) {
+    switch(status) {
+      case EventStatus.Incoming:
+        return "Incoming";
+      case EventStatus.InProgress:
+        return "In Progress";
+      case EventStatus.Finished:
+        return "Completed";
+    }
+  }
+
+  public getEventAction() {
+    switch(this.event.status) {
+      case EventStatus.InProgress:
+        return "End event";
+      case EventStatus.Incoming:
+        return "Start event";
+    }
+  }
+
+  public isEnabled() {
+    return this.event.status !== EventStatus.Finished;
   }
 }

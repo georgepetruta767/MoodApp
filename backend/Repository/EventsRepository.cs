@@ -74,10 +74,11 @@ namespace Repository
 
         public void UpdateEvent(EventEntity eventEntity)
         {
-            var eventToUpdate = GetById(eventEntity.Id);
+            var eventToUpdate = GetById((Guid)eventEntity.Id);
             //eventToUpdate.EndingTime = eventEntity.EndingTime;
             eventToUpdate.Status = (int)eventEntity.Status;
             //eventToUpdate.Grade = eventEntity.Grade;
+            _moodAppContext.Update(eventToUpdate);
             _moodAppContext.SaveChanges();
         }
 

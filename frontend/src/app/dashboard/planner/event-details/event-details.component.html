@@ -1,20 +1,21 @@
-<ion-header>
   <ion-toolbar>
-    <ion-title>
+    <ion-label class="ion-padding">
       {{this.event.title}}
-    </ion-title>
+    </ion-label>
+
+    <ion-chip slot="end" color="primary">
+      <ion-label>{{getStatusLabel(this.event.status)}}</ion-label>
+    </ion-chip>
   </ion-toolbar>
-</ion-header>
 
 <ion-content>
-  <ion-title>
-    People
-  </ion-title>
-  <ion-list>
-    <ion-item *ngFor="let person of event.people">
-      <ion-label>{{getPersonName(person)}}</ion-label>
-    </ion-item>
-  </ion-list>
+  <ion-label class="ion-padding">
+    Participants:
+  </ion-label>
 
-  <ion-button expand="full" color="success" (click)="startEvent()">Start event</ion-button>
+  <section class="ion-padding-bottom">
+    <ion-chip *ngFor="let person of event.people">{{getPersonName(person)}}</ion-chip>
+  </section>
+
+  <ion-button *ngIf="isEnabled()" class="ion-padding" expand="full" color="success" (click)="modifyEventStatus()">{{getEventAction()}}</ion-button>
 </ion-content>

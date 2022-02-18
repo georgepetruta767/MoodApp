@@ -4,6 +4,7 @@ import {PeopleService} from "../common/services/people.service";
 import {PersonModel} from "../common/models/person.model";
 import {EventsService} from "../common/services/events.service";
 import {EventStatus} from "../common/enums/event-status.enum";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-create-event',
@@ -16,7 +17,8 @@ export class CreateEventComponent implements OnInit {
   public people!: Array<PersonModel>;
 
   constructor(private peopleService: PeopleService,
-              private eventsService: EventsService) { }
+              private eventsService: EventsService,
+              private router: Router) { }
 
   async ngOnInit() {
     this.setupForm();
@@ -40,12 +42,13 @@ export class CreateEventComponent implements OnInit {
     if(this.form.valid) {
       await this.eventsService.addEvent({
         title: this.form.controls.title.value,
-        people: this.form.controls.people.value.map(x => x.id),
+        people: this.form.controls.people.value,
         startingTime: this.form.controls.eventDate.value,
         status: EventStatus.Incoming,
         type: Number(this.form.controls.type.value)
-      }).then(() => {
-        this.form.reset();
+      }).then((x) => {
+        console.log(x);
+        //this.router.navigateByUrl('calendar');
       });
     }
   }

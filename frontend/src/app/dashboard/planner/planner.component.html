@@ -9,7 +9,14 @@
 <ion-content fullscreen class="ion-padding">
   <section *ngIf="events">
     <ion-calendar [options]="calendarConfig"
-                  (select)="openEventModal($event)">
+                  (select)="openEventPopover($event)">
     </ion-calendar>
   </section>
 </ion-content>
+
+<ion-popover>
+  <ng-template>
+    <app-popover-content class="popover">
+    </app-popover-content>
+  </ng-template>
+</ion-popover>

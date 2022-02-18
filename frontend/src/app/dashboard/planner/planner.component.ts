@@ -2,8 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CalendarComponentOptions, CalendarDay, DayConfig} from "ion2-calendar";
 import {EventModel} from "../common/models/event.model";
 import {EventsService} from "../common/services/events.service";
-import {PeopleAddComponent} from "../people/people-add/people-add.component";
-import {ModalController} from "@ionic/angular";
+import {PopoverController} from "@ionic/angular";
 import {EventDetailsComponent} from "./event-details/event-details.component";
 
 @Component({
@@ -23,7 +22,7 @@ export class PlannerComponent implements OnInit {
   public events!: Array<EventModel>;
 
   constructor(private eventsService: EventsService,
-              private modalController: ModalController) { }
+              public popoverController: PopoverController) { }
 
   public async ngOnInit() {
     await this.loadEvents();
@@ -42,23 +41,21 @@ export class PlannerComponent implements OnInit {
 
   public async loadEvents() {
     this.events = await this.eventsService.getEvents();
-    console.log(this.events);
     this.setupCalendarConfig();
   }
 
-  public async openEventModal(day: CalendarDay) {
+  public async openEventPopover(day: CalendarDay) {
     const date = new Date(day.time);
 
     if(this.calendarConfig.daysConfig.find(x => new Date(x.date).toDateString() === date.toDateString() && x.marked)) {
-      const modal = await this.modalController.create({
+      const popover = await this.popoverController.create({
         component: EventDetailsComponent,
-        breakpoints: [0.3, 0.5, 0.8, 1],
-        initialBreakpoint: 0.9,
         componentProps: {
           event: this.events.find(x => new Date(x.startingTime).toDateString() === date.toDateString())
         }
       });
-      return await modal.present();
+
+      return await popover.present();
     }
   }
 }
