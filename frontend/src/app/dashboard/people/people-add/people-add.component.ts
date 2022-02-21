@@ -27,10 +27,12 @@ export class PeopleAddComponent implements OnInit {
     this.form = new FormGroup({
       firstName: new FormControl(this.personToEdit ? this.personToEdit.firstName : '', [Validators.required]),
       lastName: new FormControl(this.personToEdit ? this.personToEdit.lastName : '', [Validators.required]),
-      age: new FormControl(this.personToEdit ? this.personToEdit.age : '', [Validators.required, Validators.min(0), Validators.max(150)]),
+      age: new FormControl(this.personToEdit ? this.personToEdit.age : '', [Validators.required, Validators.min(0), Validators.max(100)]),
       gender: new FormControl( this.personToEdit ? this.personToEdit.gender : '', [Validators.required]),
       socialStatus: new FormControl(this.personToEdit ? this.personToEdit.socialStatus : '', [Validators.required])
     });
+
+    console.log(this.form.controls);
   }
 
   public async onSubmit() {

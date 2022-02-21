@@ -23,7 +23,8 @@ namespace Repository
                 FirstName = x.Firstname,
                 LastName = x.Lastname,
                 Age = x.Age,
-                Gender = (Global.Gender)x.Gender
+                Gender = (Global.Gender)x.Gender,
+                SocialStatus = (Global.SocialStatus)x.SocialStatus
             }).ToList();
         }
 

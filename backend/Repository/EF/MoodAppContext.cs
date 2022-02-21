@@ -117,6 +117,11 @@ namespace Repository.EF
                     .HasMaxLength(500)
                     .HasColumnName("city");
 
+                entity.Property(e => e.Country)
+                    .IsRequired()
+                    .HasMaxLength(500)
+                    .HasColumnName("country");
+
                 entity.Property(e => e.Latitude).HasColumnName("latitude");
 
                 entity.Property(e => e.Longitude).HasColumnName("longitude");
