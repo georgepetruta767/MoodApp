@@ -7,6 +7,7 @@ export class EventModel {
   public title!: string;
   public people!: Array<PersonModel>;
   public startingTime!: Date;
+  public endingTime?: Date;
   public status!: EventStatus;
   public type: EventType;
   public amountSpent?: number;

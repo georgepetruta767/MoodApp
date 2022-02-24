@@ -13,6 +13,8 @@ import {Gender} from "../../common/enums/gender.enum";
 export class PeopleListComponent implements OnInit {
   public people: Array<PersonModel>;
 
+  public searchTerm: string;
+
   public closeModalEmitter = new EventEmitter();
 
   constructor(private peopleService: PeopleService,
@@ -20,6 +22,7 @@ export class PeopleListComponent implements OnInit {
 
   public async ngOnInit() {
     await this.loadPeople();
+
     this.handleCloseModalEvent();
   }
 

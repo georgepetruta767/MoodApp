@@ -1,21 +1,38 @@
   <ion-toolbar>
-    <ion-label class="ion-padding">
+    <ion-title class="ion-padding-start ion-padding-top">
       {{this.event.title}}
-    </ion-label>
+    </ion-title>
+
+    <ion-card-subtitle class="ion-padding">
+      {{formatEventDate(this.event.startingTime)}}
+    </ion-card-subtitle>
 
     <ion-chip slot="end" color="primary">
       <ion-label>{{getStatusLabel(this.event.status)}}</ion-label>
     </ion-chip>
   </ion-toolbar>
 
-<ion-content>
-  <ion-label class="ion-padding">
+<ion-content class="ion-padding">
+  <section>
+    <ion-label>
+      Starting time:
+    </ion-label>
+    <ion-badge>
+      {{formatEventTime(this.event.startingTime)}}
+    </ion-badge>
+  </section>
+
+  <ion-label>
+    Ending time:
+  </ion-label>
+  <ion-badge>
+    {{formatEventTime(this.event.endingTime)}}
+  </ion-badge>
+  <ion-label>
     Participants:
   </ion-label>
 
-  <section class="ion-padding-bottom">
-    <ion-chip *ngFor="let person of event.people">{{getPersonName(person)}}</ion-chip>
-  </section>
+  <ion-chip *ngFor="let person of event.people">{{getPersonName(person)}}</ion-chip>
 
   <ion-button *ngIf="isEnabled()" class="ion-padding" expand="full" color="success" (click)="modifyEventStatus()">{{getEventAction()}}</ion-button>
 </ion-content>

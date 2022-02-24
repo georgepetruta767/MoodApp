@@ -51,6 +51,7 @@ namespace Repository
                 Title = x.Title,
                 People = MapPeople(_moodAppContext.EventPersonRelations.Select(y => y).Where(y => y.EventId == x.Id).Select(y => y.Person).ToList()),
                 StartingTime = x.StartingTime,
+                EndingTime = x.EndingTime,
                 Status = (EventStatus)x.Status,
                 Grade = (int)x.Grade
             }).ToList();

@@ -16,6 +16,8 @@ export class PlannerComponent implements OnInit {
   }
 
   public calendarConfig: CalendarComponentOptions = {
+    showMonthPicker: true,
+    showToggleButtons: true,
     daysConfig: Array<DayConfig>()
   };
 

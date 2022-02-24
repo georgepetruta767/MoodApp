@@ -31,8 +31,6 @@ export class PeopleAddComponent implements OnInit {
       gender: new FormControl( this.personToEdit ? this.personToEdit.gender : '', [Validators.required]),
       socialStatus: new FormControl(this.personToEdit ? this.personToEdit.socialStatus : '', [Validators.required])
     });
-
-    console.log(this.form.controls);
   }
 
   public async onSubmit() {

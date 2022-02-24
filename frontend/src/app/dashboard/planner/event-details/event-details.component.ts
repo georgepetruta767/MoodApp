@@ -1,8 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, LOCALE_ID, OnInit} from '@angular/core';
 import {EventModel} from "../../common/models/event.model";
 import {EventsService} from "../../common/services/events.service";
 import {EventStatus} from "../../common/enums/event-status.enum";
 import {PersonModel} from "../../common/models/person.model";
+import {formatDate} from "@angular/common";
 
 @Component({
   selector: 'app-event-details',
@@ -55,5 +56,21 @@ export class EventDetailsComponent implements OnInit {
 
   public isEnabled() {
     return this.event.status !== EventStatus.Finished;
+  }
+
+  public formatEventDate(date: Date) {
+    let options: Intl.DateTimeFormatOptions = {
+      day: "numeric", month: "long", year: "numeric"
+    };
+
+    return new Date(date).toLocaleDateString("en-GB", options);
+  }
+
+  public formatEventTime(date: Date) {
+    let options: Intl.DateTimeFormatOptions = {
+      hour: "numeric", minute: "numeric"
+    };
+
+    return new Date(date).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
   }
 }
