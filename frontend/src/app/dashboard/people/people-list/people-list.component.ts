@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import {PersonModel} from "../../common/models/person.model";
 import {PeopleService} from "../../common/services/people.service";
-import {ModalController} from "@ionic/angular";
+import {AlertController, ModalController} from "@ionic/angular";
 import {PeopleAddComponent} from "../people-add/people-add.component";
 import {Gender} from "../../common/enums/gender.enum";
 
@@ -18,7 +18,8 @@ export class PeopleListComponent implements OnInit {
   public closeModalEmitter = new EventEmitter();
 
   constructor(private peopleService: PeopleService,
-              private modalController: ModalController) { }
+              private modalController: ModalController,
+              private alertController: AlertController) { }
 
   public async ngOnInit() {
     await this.loadPeople();
@@ -39,13 +40,26 @@ export class PeopleListComponent implements OnInit {
     return await modal.present();
   }
 
-  public async deletePerson(personId: string) {
-    await this.peopleService.deletePerson(personId);
+  public async deletePerson(person: PersonModel) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Alert',
+      message: `Are you sure you want to delete ${person.firstName} ${person.lastName}?`,
+      buttons: [{
+        text: 'Delete',
+        handler: async () => {
+          await this.peopleService.deletePerson(person.id);
+        }
+      },
+        'Cancel']
+    });
+
+    await alert.present();
   }
 
   public handleCloseModalEvent() {
     this.closeModalEmitter.subscribe(async () => {
-      this.modalController.dismiss({
+      await this.modalController.dismiss({
         'dismissed': true
       });
       await this.loadPeople();
