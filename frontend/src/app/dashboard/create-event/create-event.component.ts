@@ -47,8 +47,7 @@ export class CreateEventComponent implements OnInit {
         status: EventStatus.Incoming,
         type: Number(this.form.controls.type.value)
       }).then((x) => {
-        console.log(x);
-        //this.router.navigateByUrl('calendar');
+        this.router.navigateByUrl('calendar');
       });
     }
   }

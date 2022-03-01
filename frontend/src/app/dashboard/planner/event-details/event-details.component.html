@@ -22,17 +22,27 @@
     </ion-badge>
   </section>
 
-  <ion-label>
-    Ending time:
-  </ion-label>
-  <ion-badge>
-    {{formatEventTime(this.event.endingTime)}}
-  </ion-badge>
+  <section *ngIf="event.status == 2">
+    <ion-label>
+      Ending time:
+    </ion-label>
+    <ion-badge>
+      {{formatEventTime(this.event.endingTime)}}
+    </ion-badge>
+  </section>
+
   <ion-label>
     Participants:
   </ion-label>
 
   <ion-chip *ngFor="let person of event.people">{{getPersonName(person)}}</ion-chip>
 
-  <ion-button *ngIf="isEnabled()" class="ion-padding" expand="full" color="success" (click)="modifyEventStatus()">{{getEventAction()}}</ion-button>
+  <form *ngIf="event.status == 1" [formGroup]="form">
+    <ion-item>
+      <ion-label>Grade</ion-label>
+      <ion-input formControlName="grade" placeholder="grade" type="number"></ion-input>
+    </ion-item>
+  </form>
+
+  <ion-button *ngIf="isEnabled()" class="ion-padding" expand="full" color="success" (click)="updateEvent()">{{getEventAction()}}</ion-button>
 </ion-content>

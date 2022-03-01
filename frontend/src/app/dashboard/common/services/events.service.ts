@@ -30,6 +30,18 @@ const req = http.request(options, function (res) {
   });
 });*/
 
+//var axios = require("axios").default;
+
+var options = {
+  method: 'GET',
+  url: 'https://telize-v1.p.rapidapi.com/location',
+  params: {callback: 'getlocation'},
+  headers: {
+    'x-rapidapi-host': 'telize-v1.p.rapidapi.com',
+    'x-rapidapi-key': '00f6a9797fmshad1fd50095aaa5bp120936jsnd7ec63f6b6eb'
+  }
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -43,9 +55,6 @@ export class EventsService {
         'Authorization': `Bearer ${sessionStorage.getItem('bearerToken')}`
       })
     }).toPromise();
-
-    //return req.end();
-
   }
 
   public getEvents(): Promise<Array<EventModel>> {
@@ -62,5 +71,13 @@ export class EventsService {
         'Authorization': `Bearer ${sessionStorage.getItem('bearerToken')}`
       })
     }).toPromise();
+  }
+
+  public getLocation() {
+    /*axios.request(options).then(function (response) {
+      console.log(response.data);
+    }).catch(function (error) {
+      console.error(error);
+    });*/
   }
 }

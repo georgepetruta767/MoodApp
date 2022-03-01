@@ -367,6 +367,10 @@ insert into event_person_relation(id, event_id, person_id) values('e119fb73-94b0
 insert into event_person_relation(id, event_id, person_id) values('e119fb74-94b0-11ec-85e6-74e5f91a2678', 'd329605d-94af-11ec-bb83-74e5f91a2678', '0b02bed8-9322-11ec-8d50-2cfda1aeea94');
 insert into event_person_relation(id, event_id, person_id) values('e119fb75-94b0-11ec-be3b-74e5f91a2678', 'd329605d-94af-11ec-bb83-74e5f91a2678', '0b104b2a-9322-11ec-95f8-2cfda1aeea94');*/
 
+/*delete from event_person_relation
+where event_id = (select id from events
+    where title = 'Coffee Time');
+delete from events
+where title = 'Coffee Time'*/
 
-update events
-set ending_time = starting_time + INTERVAL '3 hours';
+select count(*) from people;

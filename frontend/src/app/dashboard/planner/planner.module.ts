@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
 import {PlannerComponent} from "./planner.component";
 import {CalendarModule} from "ion2-calendar";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {IonicModule} from "@ionic/angular";
 import {EventDetailsComponent} from "./event-details/event-details.component";
 import {Ng2FilterPipeModule} from "ng2-filter-pipe";
@@ -21,13 +21,14 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [PlannerComponent, EventDetailsComponent],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    CalendarModule,
-    FormsModule,
-    IonicModule,
-    Ng2FilterPipeModule
-  ]
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        CalendarModule,
+        FormsModule,
+        IonicModule,
+        Ng2FilterPipeModule,
+        ReactiveFormsModule
+    ]
 })
 export class PlannerModule { }

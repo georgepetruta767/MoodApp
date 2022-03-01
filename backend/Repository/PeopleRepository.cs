@@ -68,6 +68,11 @@ namespace Repository
         public void DeletePerson(Guid personId)
         {
             var person = GetById(personId);
+            var people = _moodAppContext.EventPersonRelations.Where(p => p.PersonId == personId);
+            foreach (var personEntity in people)
+            {
+                _moodAppContext.EventPersonRelations.Remove(personEntity);
+            }
             _moodAppContext.People.Remove(person);
             _moodAppContext.SaveChanges();
         }
