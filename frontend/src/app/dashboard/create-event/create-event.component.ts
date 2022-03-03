@@ -16,6 +16,8 @@ export class CreateEventComponent implements OnInit {
 
   public people!: Array<PersonModel>;
 
+  public today = new Date().toISOString();
+
   constructor(private peopleService: PeopleService,
               private eventsService: EventsService,
               private router: Router) { }

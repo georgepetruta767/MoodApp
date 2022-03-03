@@ -24,8 +24,8 @@ export class EventDetailsComponent implements OnInit {
     if(!navigator.geolocation){
       console.log('location is not supported');
     }
+
     navigator.geolocation.getCurrentPosition(position => {
-      console.log(`lat: ${position.coords.latitude}, lon: ${position.coords.longitude}`);
       //let loc = this.getReverseGeocodingData(position.coords.latitude, position.coords.longitude);
       //console.log(loc);
     });

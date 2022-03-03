@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-searchbar [(ngModel)]="searchTerm"></ion-searchbar>
+  <ion-searchbar [(ngModel)]="searchTerm.firstName"></ion-searchbar>
   <ion-list>
     <ion-item *ngFor="let person of people | filterBy: searchTerm">
       <ion-label>

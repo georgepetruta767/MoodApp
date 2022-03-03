@@ -373,4 +373,4 @@ where event_id = (select id from events
 delete from events
 where title = 'Coffee Time'*/
 
-select count(*) from people;
+select count(*) from events;

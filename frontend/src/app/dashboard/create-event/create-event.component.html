@@ -30,7 +30,7 @@
     </ion-item>
 
     <div class="grid-item">
-      <ion-datetime formControlName="eventDate" presentation="startingTime"></ion-datetime>
+      <ion-datetime formControlName="eventDate" [min]="today" presentation="startingTime"></ion-datetime>
     </div>
 
     <ion-row>

@@ -13,7 +13,7 @@ import {Gender} from "../../common/enums/gender.enum";
 export class PeopleListComponent implements OnInit {
   public people: Array<PersonModel>;
 
-  public searchTerm: string;
+  public searchTerm: any = {firstName: '', lastName: ''};
 
   public closeModalEmitter = new EventEmitter();
 
