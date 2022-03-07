@@ -13,19 +13,23 @@
   </ion-toolbar>
 
 <ion-content class="ion-padding">
-  <ion-label *ngIf="event.status != 0">
+  <section class="container ion-padding-bottom" *ngIf="event.status != 0">
+    <ion-label class="ion-padding-end">
       Starting time:
-      <ion-badge>
-        {{formatEventTime(this.event.startingTime)}}
-      </ion-badge>
-  </ion-label>
+    </ion-label>
+    <ion-badge>
+      {{formatEventTime(this.event.startingTime)}}
+    </ion-badge>
+  </section>
 
-  <ion-label *ngIf="event.status == 2">
-    Ending time:
+  <section class="container ion-padding-bottom" *ngIf="event.status == 2">
+    <ion-label class="ion-padding-end">
+      Ending time:
+    </ion-label>
     <ion-badge>
       {{formatEventTime(this.event.endingTime)}}
     </ion-badge>
-  </ion-label>
+  </section>
 
   <ion-label>
     Participants:
