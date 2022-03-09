@@ -1,19 +1,20 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+
 using Repository.EF;
 using Repository.Entities;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Worker.Models;
 
 namespace backend
 {
@@ -41,7 +42,10 @@ namespace backend
 
             SetupAutoMapper(services);
 
-            //services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            var key = ConfigureOptions();
+            SetupAuthorization(services, key);
 
             var serviceProvider = services.BuildServiceProvider();
             var userManager = serviceProvider.GetService<UserManager<UserEntity>>();
@@ -125,6 +129,8 @@ namespace backend
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

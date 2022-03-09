@@ -4,6 +4,11 @@ import {LoginComponent} from './login/login.component';
 import {RouterModule, Routes} from '@angular/router';
 import {IonicModule} from '@ionic/angular';
 import {ReactiveFormsModule} from '@angular/forms';
+import {environment} from "../../environments/environment";
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import {SecurityService} from "./security.service";
+import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
 
 const routes: Routes = [
   {
@@ -18,7 +23,12 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     IonicModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireAuthModule
+  ],
+  providers: [
+    AngularFirestoreModule
   ]
 })
 export class SecurityModule { }

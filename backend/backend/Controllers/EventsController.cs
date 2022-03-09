@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Worker;
@@ -8,6 +9,7 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("moodapp/api/[controller]/[action]")]
+    [Authorize]
     public class EventsController : ControllerBase
     {
         private EventsWorker _eventsWorker;

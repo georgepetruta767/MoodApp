@@ -21,7 +21,7 @@ export class EventDetailsComponent implements OnInit {
   public ngOnInit() {
     this.setupForm();
 
-    this.eventsService.getLocation();
+   // this.eventsService.getLocation();
 
     if(!navigator.geolocation){
       console.log('location is not supported');

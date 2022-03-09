@@ -4,7 +4,17 @@
 
 export const environment = {
   production: false,
-  api: 'http://localhost:5000/moodapp/api'
+  api: 'http://localhost:5000/moodapp/api',
+  firebaseConfig: {
+    apiKey: "AIzaSyC1Y5nji7Btnhsx2l-4YoBB0JxeCum-nYQ",
+    authDomain: "moodevaluationapp.firebase.com",
+    databaseURL: "https://moodevaluationapp.firebaseio.com",
+    projectId: "moodevaluationapp",
+    storageBucket: "moodevaluationapp.appspot.com",
+    messagingSenderId: "514512654865"/*
+    appId: "xxxxx",
+    measurementId: "xxxxxxxxxxxxxxxx"*/
+  }
 };
 
 /*

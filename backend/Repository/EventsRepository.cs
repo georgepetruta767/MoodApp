@@ -1,4 +1,5 @@
 ﻿using Global;
+using Microsoft.EntityFrameworkCore;
 using Repository.EF;
 using Repository.Entities;
 using System;
@@ -45,11 +46,13 @@ namespace Repository
 
         public List<EventEntity> GetEvents()
         {
-            return _moodAppContext.Events.Select(x => new EventEntity
+            var events = _moodAppContext.Events.Include(x => x.EventPersonRelations).ThenInclude(x => x.Person);
+
+            return events.Select(x => new EventEntity
             {
                 Id = x.Id,
                 Title = x.Title,
-                People = MapPeople(_moodAppContext.EventPersonRelations.Select(y => y).Where(y => y.EventId == x.Id).Select(y => y.Person).ToList()),
+                People = MapPeople(x.EventPersonRelations.Select(x => x.Person).ToList()),
                 StartingTime = x.StartingTime,
                 EndingTime = x.EndingTime,
                 Status = (EventStatus)x.Status,
