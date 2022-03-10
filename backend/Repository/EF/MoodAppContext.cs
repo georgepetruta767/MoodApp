@@ -17,6 +17,7 @@ namespace Repository.EF
         public MoodAppContext(DbContextOptions<MoodAppContext> options)
             : base(options)
         {
+            Database.Migrate();
         }
 
         public virtual DbSet<Context> Contexts { get; set; }
