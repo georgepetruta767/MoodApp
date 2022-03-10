@@ -13,6 +13,7 @@ namespace Repository.EF
             AspNetUserLogins = new HashSet<AspNetUserLogin>();
             AspNetUserRoles = new HashSet<AspNetUserRole>();
             AspNetUserTokens = new HashSet<AspNetUserToken>();
+            Contexts = new HashSet<Context>();
         }
 
         public string Id { get; set; }
@@ -35,5 +36,6 @@ namespace Repository.EF
         public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual ICollection<AspNetUserRole> AspNetUserRoles { get; set; }
         public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; set; }
+        public virtual ICollection<Context> Contexts { get; set; }
     }
 }

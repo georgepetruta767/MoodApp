@@ -10,6 +10,11 @@ create table locations (
 	country varchar(500) not null
 );
 
+create table Context(
+    id uuid primary key not null,
+    aspNetUserId text constraint FK_AspNetUsers_AspNetUser_id references "AspNetUsers"("Id") not null
+);
+
 create table events (
 	id uuid PRIMARY KEY NOT NULL,
 	title varchar(500),
@@ -20,7 +25,8 @@ create table events (
 	starting_time timestamptz,
 	ending_time timestamptz,
 	season int not null,
-	amount_spent int
+	amount_spent int,
+	context_id uuid constraint FK_Context_Context_id references Context(id) not null
 );
 
 create table people (
@@ -29,7 +35,8 @@ create table people (
 	lastName varchar(300),
 	age int not null,
 	gender int not null,
-	social_status int not null
+	social_status int not null,
+	context_id uuid constraint FK_Context_Context_id references Context(id) not null
 );
 
 create table event_person_relation(
@@ -38,12 +45,16 @@ create table event_person_relation(
 	person_id uuid constraint FK_people_person_id references people(id) not null
 );
 
-/*
+
 drop table event_person_relation;
 drop table people;
 drop table events;
 drop table locations;
 
+delete from "AspNetUsers"
+where "Id"='67990c7b-ad4a-4969-a261-167cd4f5bb99';
+
+/*
 select count(*) from people;
 insert into people(id, firstname, lastName, age, gender, social_status) values('0afd0f98-9322-11ec-850c-2cfda1aeea94', 'Heather', 'Mckeever', '32', '0', '4');
 insert into people(id, firstname, lastName, age, gender, social_status) values('0afd9391-9322-11ec-bf28-2cfda1aeea94', 'Bernard', 'Grijalva', '93', '1', '1');

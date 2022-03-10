@@ -25,7 +25,7 @@ export class SecurityService {
     return this.afAuth
       .signInWithPopup(provider)
       .then((result) => {
-        console.log('You have been successfully logged in!');
+        console.log(result);
       })
       .catch((error) => {
         console.log(error);
