@@ -22,7 +22,9 @@ namespace Repository.EF
         public DateTime? EndingTime { get; set; }
         public int Season { get; set; }
         public int? AmountSpent { get; set; }
+        public Guid ContextId { get; set; }
 
+        public virtual Context Context { get; set; }
         public virtual Location Location { get; set; }
         public virtual ICollection<EventPersonRelation> EventPersonRelations { get; set; }
     }

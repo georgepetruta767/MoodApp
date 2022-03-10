@@ -6,10 +6,10 @@ import axios from 'axios';
 
 var options = {
   method: 'GET',
-  url: 'https://google-maps-geocoding.p.rapidapi.com/geocode/json',
+  url: 'https://api.ip2loc.com/QjEGnNRgEV7CzpQi08ICP3RB1gCGoGGs/detect?include=city',
   params: {latlng: '40.714224,-73.96145', language: 'en'},
   headers: {
-    'x-rapidapi-key': 'SIGN-UP-FOR-KEY',
+    'x-rapidapi-key': 'QjEGnNRgEV7CzpQi08ICP3RB1gCGoGGs',
     'x-rapidapi-host': 'google-maps-geocoding.p.rapidapi.com'
   }
 };

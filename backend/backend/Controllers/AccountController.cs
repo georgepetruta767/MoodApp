@@ -42,7 +42,6 @@ namespace backend.Controllers
             if(result.Succeeded)
             {
                 JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-                //var key = Encoding.ASCII.GetBytes(_appSettings)
                 var key = Encoding.ASCII.GetBytes(_appSettings.Authorization.Secret);
                 SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor {
                     Subject = new ClaimsIdentity(new Claim[]

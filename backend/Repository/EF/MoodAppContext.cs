@@ -19,6 +19,7 @@ namespace Repository.EF
         {
         }
 
+        public virtual DbSet<Context> Contexts { get; set; }
         public virtual DbSet<Event> Events { get; set; }
         public virtual DbSet<EventPersonRelation> EventPersonRelations { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
@@ -41,6 +42,25 @@ namespace Repository.EF
           
            
            
+            modelBuilder.Entity<Context>(entity =>
+            {
+                entity.ToTable("context");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("id");
+
+                entity.Property(e => e.Aspnetuserid)
+                    .IsRequired()
+                    .HasColumnName("aspnetuserid");
+
+                entity.HasOne(d => d.Aspnetuser)
+                    .WithMany(p => p.Contexts)
+                    .HasForeignKey(d => d.Aspnetuserid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_aspnetusers_aspnetuser_id");
+            });
+
             modelBuilder.Entity<Event>(entity =>
             {
                 entity.ToTable("events");
@@ -50,6 +70,8 @@ namespace Repository.EF
                     .HasColumnName("id");
 
                 entity.Property(e => e.AmountSpent).HasColumnName("amount_spent");
+
+                entity.Property(e => e.ContextId).HasColumnName("context_id");
 
                 entity.Property(e => e.EndingTime)
                     .HasColumnType("timestamp with time zone")
@@ -72,6 +94,12 @@ namespace Repository.EF
                     .HasColumnName("title");
 
                 entity.Property(e => e.Type).HasColumnName("type");
+
+                entity.HasOne(d => d.Context)
+                    .WithMany(p => p.Events)
+                    .HasForeignKey(d => d.ContextId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_context_context_id");
 
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Events)
@@ -137,6 +165,8 @@ namespace Repository.EF
 
                 entity.Property(e => e.Age).HasColumnName("age");
 
+                entity.Property(e => e.ContextId).HasColumnName("context_id");
+
                 entity.Property(e => e.Firstname)
                     .HasMaxLength(300)
                     .HasColumnName("firstname");
@@ -148,6 +178,12 @@ namespace Repository.EF
                     .HasColumnName("lastname");
 
                 entity.Property(e => e.SocialStatus).HasColumnName("social_status");
+
+                entity.HasOne(d => d.Context)
+                    .WithMany(p => p.People)
+                    .HasForeignKey(d => d.ContextId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_context_context_id");
             });
 
             OnModelCreatingPartial(modelBuilder);
