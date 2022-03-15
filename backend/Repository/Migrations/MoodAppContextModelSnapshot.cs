@@ -2,8 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Repository.EF;
 
 namespace Repository.Migrations
@@ -24,7 +22,7 @@ namespace Repository.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
-
+             
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");

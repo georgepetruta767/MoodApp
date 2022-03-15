@@ -18,17 +18,9 @@
         <ion-button type="submit" color="danger" expand="block">Sign In</ion-button>
       </ion-col>
     </ion-row>
-
-    <ion-row>
-      <ion-col>
-        <ion-button (click)="authWithGoogle()">
-          <ion-icon name="logo-google"></ion-icon>
-          Continue with Google
-        </ion-button>
-      </ion-col>
-    </ion-row>
   </form>
 </ion-content>
 
 <ion-label slot="bottom" class="ion-text-center"> Are you new?</ion-label>
-<ion-button>Sign Up</ion-button>
+<ion-button (click)="navigateToSignUp()">Sign Up</ion-button>
+

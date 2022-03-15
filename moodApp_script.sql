@@ -11,9 +11,9 @@ create table locations (
 );
 
 create table Context(
-    id uuid primary key not null,
-    aspNetUserId text constraint FK_AspNetUsers_AspNetUser_id references "AspNetUsers"("Id") not null
-);
+    id uuid primary key not null);
+/*    aspNetUserId text constraint FK_AspNetUsers_AspNetUser_id references "AspNetUsers"("Id") not null
+*/
 
 create table events (
 	id uuid PRIMARY KEY NOT NULL,
@@ -50,9 +50,13 @@ drop table event_person_relation;
 drop table people;
 drop table events;
 drop table locations;
+drop table Context;
+
+alter table Context
+add aspNetUserId text constraint FK_AspNetUsers_AspNetUser_id references "AspNetUsers"("Id") not null;
 
 delete from "AspNetUsers"
-where "Id"='67990c7b-ad4a-4969-a261-167cd4f5bb99';
+where "Id" = 'b0db6bf6-c5ef-452b-bdfa-e6c1b6d7f115';
 
 /*
 select count(*) from people;

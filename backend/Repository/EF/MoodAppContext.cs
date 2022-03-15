@@ -36,13 +36,6 @@ namespace Repository.EF
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasPostgresExtension("uuid-ossp");
 
-           
-           
-           
-           
-          
-           
-           
             modelBuilder.Entity<Context>(entity =>
             {
                 entity.ToTable("context");
@@ -50,16 +43,6 @@ namespace Repository.EF
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever()
                     .HasColumnName("id");
-
-                entity.Property(e => e.Aspnetuserid)
-                    .IsRequired()
-                    .HasColumnName("aspnetuserid");
-
-                entity.HasOne(d => d.Aspnetuser)
-                    .WithMany(p => p.Contexts)
-                    .HasForeignKey(d => d.Aspnetuserid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_aspnetusers_aspnetuser_id");
             });
 
             modelBuilder.Entity<Event>(entity =>

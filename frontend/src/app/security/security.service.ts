@@ -17,6 +17,10 @@ export class SecurityService {
     return this.http.post(environment.api + '/Account/CheckLogin', user, {responseType: 'text'}).toPromise();
   }
 
+  public signUp(user: UserModel) : Promise<any> {
+    return this.http.post(environment.api + '/Account/SignUp', user, {responseType: 'text'}).toPromise();
+  }
+
   GoogleAuth() {
     return this.AuthLogin(new GoogleAuthProvider());
   }

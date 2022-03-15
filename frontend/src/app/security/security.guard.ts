@@ -22,7 +22,7 @@ export class SecurityGuard implements CanActivate, CanDeactivate<unknown> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if(!this.identityService.isLoggedIn){
-      this.router.navigateByUrl('login');
+      this.router.navigateByUrl('security');
       return false;
     }
     return true;

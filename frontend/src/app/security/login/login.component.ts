@@ -45,4 +45,8 @@ export class LoginComponent implements OnInit {
   public authWithGoogle() {
     this.securityService.GoogleAuth();
   }
+
+  public async navigateToSignUp() {
+    await this.router.navigateByUrl('security/signup');
+  }
 }

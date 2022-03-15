@@ -6,8 +6,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import {SecurityModule} from './security/security.module';
 import {HttpClientModule} from "@angular/common/http";
-import {SecurityGuard} from "./security/security.guard";
 import {DashboardPage} from "./dashboard/dashboard.page";
+import {SecurityGuard} from "./security/security.guard";
 
 const routes: Routes = [
   {
@@ -17,12 +17,12 @@ const routes: Routes = [
     loadChildren: () => import('./dashboard/dashboard.module').then((m) => m.DashboardModule)
   },
   {
-    path: 'login',
-    loadChildren: () => import('./security/security.module').then((m) => m.SecurityModule)
+    path: 'security',
+    loadChildren: () => import('./security/security.module').then(m => m.SecurityModule)
   },
   {
     path: '**',
-    redirectTo: 'login',
+    redirectTo: 'security',
     pathMatch: 'full'
   }
 ];

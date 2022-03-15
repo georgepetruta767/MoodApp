@@ -7,18 +7,32 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {environment} from "../../environments/environment";
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import {SecurityService} from "./security.service";
 import {AngularFirestoreModule} from "@angular/fire/compat/firestore";
+import {SignupComponent} from "./signup/signup.component";
 
 const routes: Routes = [
   {
-    path: 'login',
-    component: LoginComponent
+    path: 'security',
+    children: [
+      {
+        path: 'login',
+        component: LoginComponent
+      },
+      {
+        path: 'signup',
+        component: SignupComponent
+      },
+      {
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full'
+      }
+    ]
   }
 ];
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, SignupComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

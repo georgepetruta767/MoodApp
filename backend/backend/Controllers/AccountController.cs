@@ -31,13 +31,13 @@ namespace backend.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> CheckLogin([FromBody] UserModel userModel)
+        public async Task<IActionResult> CheckLogin([FromBody] UserModel loginModel)
         {
-            UserEntity user = await _userManager.FindByEmailAsync(userModel.Email);
+            UserEntity user = await _userManager.FindByEmailAsync(loginModel.Email);
             if (user == null)
                 return BadRequest("User does not exist");
 
-            Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, userModel.Password, false, false);
+            Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, loginModel.Password, false, false);
 
             if(result.Succeeded)
             {
@@ -56,6 +56,14 @@ namespace backend.Controllers
             };          
 
             return BadRequest("Incorrect username or password");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> SignUp([FromBody] UserModel signupModel)
+        {
+            var result = await _userManager.CreateAsync(new UserEntity { UserName = signupModel.UserName, Email = signupModel.Email }, signupModel.Password);
+            return Ok(result);
         }
     }
 }
