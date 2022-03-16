@@ -6,7 +6,7 @@ namespace backend.Services
 {
     public static class DefaultUserService
     {
-        /*public static async Task SeedRolesAsync(UserManager<UserEntity> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedRolesAsync(UserManager<UserEntity> userManager, RoleManager<IdentityRole> roleManager)
         {
             var x = await roleManager.FindByNameAsync("SuperAdmin");
             if (x == null)
@@ -31,6 +31,6 @@ namespace backend.Services
                 await userManager.CreateAsync(defaultUser, "Pass123.");
                 await userManager.AddToRoleAsync(defaultUser, "SuperAdmin");
             }
-        }*/
+        }
     }
 }

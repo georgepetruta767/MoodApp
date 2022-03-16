@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Worker;
 using Worker.Models;
 
 namespace backend.Controllers
@@ -21,6 +22,7 @@ namespace backend.Controllers
         private SignInManager<UserEntity> _signInManager;
         private UserManager<UserEntity> _userManager;
         private readonly AppSettings _appSettings;
+        private AccountWorker _accountWorker;
 
         public AccountController(SignInManager<UserEntity> signInManager, UserManager<UserEntity> userManager, IOptions<AppSettings> appSettings)
         {
@@ -63,7 +65,12 @@ namespace backend.Controllers
         public async Task<IActionResult> SignUp([FromBody] UserModel signupModel)
         {
             var result = await _userManager.CreateAsync(new UserEntity { UserName = signupModel.UserName, Email = signupModel.Email }, signupModel.Password);
-            return Ok(result);
+            if(result.Succeeded)
+            {
+                _accountWorker.AddUserContext(_userManager.FindByEmailAsync(signupModel.Email).Id.ToString());
+                return Ok(result);
+            }
+            return BadRequest("Incorrect credentials");
         }
     }
 }
