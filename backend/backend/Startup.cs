@@ -51,9 +51,9 @@ namespace backend
             var userManager = serviceProvider.GetService<UserManager<UserEntity>>();
             var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
 
-            SeedSuperAdminAsync(userManager, roleManager).Wait();
+            SeedRolesAsync(userManager, roleManager).Wait();
+           SeedSuperAdminAsync(userManager, roleManager).Wait();
         }
-
         private static void SetupAutoMapper(IServiceCollection services)
         {
             var assemblyNames = new List<AssemblyName>()

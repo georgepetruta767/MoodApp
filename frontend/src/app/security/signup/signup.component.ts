@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {SecurityService} from "../security.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-signup',
@@ -9,7 +11,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 export class SignupComponent implements OnInit {
   public form!: FormGroup;
 
-  constructor() { }
+  constructor(private securityService: SecurityService,
+              private router: Router) { }
 
   ngOnInit() {
     this.setupForm();
@@ -23,5 +26,23 @@ export class SignupComponent implements OnInit {
     });
   }
 
+  public async onSubmit() {
+    if(this.form.valid) {
+      await this.securityService.signUp({
+        userName: this.form.controls.name.value,
+        email: this.form.controls.email.value,
+        password: this.form.controls.password.value
+      }).then(() => {
+        this.router.navigateByUrl('security/login');
+      })
+    }
+  }
 
+  public async navigateToLogin() {
+    await this.router.navigateByUrl('security/login');
+  }
+
+  public authWithGoogle() {
+    this.securityService.GoogleAuth();
+  }
 }

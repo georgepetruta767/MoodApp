@@ -14,7 +14,9 @@ namespace Repository.EF
         }
 
         public Guid Id { get; set; }
+        public string Aspnetuserid { get; set; }
 
+        public virtual AspNetUser Aspnetuser { get; set; }
         public virtual ICollection<Event> Events { get; set; }
         public virtual ICollection<Person> People { get; set; }
     }

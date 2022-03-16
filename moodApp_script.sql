@@ -45,7 +45,6 @@ create table event_person_relation(
 	person_id uuid constraint FK_people_person_id references people(id) not null
 );
 
-
 drop table event_person_relation;
 drop table people;
 drop table events;
@@ -56,7 +55,7 @@ alter table Context
 add aspNetUserId text constraint FK_AspNetUsers_AspNetUser_id references "AspNetUsers"("Id") not null;
 
 delete from "AspNetUsers"
-where "Id" = 'b0db6bf6-c5ef-452b-bdfa-e6c1b6d7f115';
+where "Id" = 'a1baeb8c-2a3c-4141-a605-4b8f1e811bcb';
 
 /*
 select count(*) from people;

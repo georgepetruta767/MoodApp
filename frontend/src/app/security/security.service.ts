@@ -24,7 +24,7 @@ export class SecurityService {
   GoogleAuth() {
     return this.AuthLogin(new GoogleAuthProvider());
   }
-  // Auth logic to run auth providers
+
   AuthLogin(provider) {
     return this.afAuth
       .signInWithPopup(provider)
