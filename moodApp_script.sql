@@ -388,3 +388,4 @@ delete from events
 where title = 'Coffee Time'*/
 
 select count(*) from events;
+

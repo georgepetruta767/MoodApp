@@ -6,13 +6,11 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen class="ion-padding">
-  <section *ngIf="events">
+<section *ngIf="events">
     <ion-calendar [options]="calendarConfig"
                   (select)="openEventPopover($event)">
     </ion-calendar>
-  </section>
-</ion-content>
+</section>
 
 <ion-popover>
   <ng-template>

@@ -23,9 +23,14 @@ namespace backend.DbContextServices
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseNpgsql(""Host=127.0.0.1;Database=moodapp;Username=postgres;Password=postgres"");
             }";
-        protected const String NewOnModelCreating = @" protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected const String NewOnModelCreating = @"        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);";
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Ignore<AspNetUserLogin>();
+            modelBuilder.Ignore<AspNetUserRole>();
+            modelBuilder.Ignore<AspNetUserClaim>();
+            modelBuilder.Ignore<AspNetUserToken>();
+            modelBuilder.Ignore<AspNetUser>();";
         protected const String OldAstNetRoleDbSet = @"public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
         ";
         protected const String OldAstNetRoleClaimDbSet = @"public virtual DbSet<AspNetRoleClaim> AspNetRoleClaims { get; set; }

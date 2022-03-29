@@ -16,7 +16,6 @@ namespace Repository
         {
             _moodAppContext.Add(new Context
             {
-                Aspnetuserid = UserId,
                 Id = Guid.NewGuid()
             });
 
