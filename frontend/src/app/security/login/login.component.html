@@ -1,6 +1,7 @@
 <ion-text class="ion-text-center">
   <h1> Login </h1>
 </ion-text>
+
 <ion-content>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <ion-item>
@@ -18,9 +19,16 @@
         <ion-button type="submit" color="danger" expand="block">Sign In</ion-button>
       </ion-col>
     </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-button color="danger" expand="block" (click)="googleSignIn()">Sign In with google</ion-button>
+      </ion-col>
+    </ion-row>
   </form>
+
+
 </ion-content>
 
 <ion-label slot="bottom" class="ion-text-center"> Are you new?</ion-label>
 <ion-button (click)="navigateToSignUp()">Sign Up</ion-button>
-

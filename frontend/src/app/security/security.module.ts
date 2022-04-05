@@ -42,7 +42,6 @@ const routes: Routes = [
     AngularFireAuthModule
   ],
   providers: [
-    AngularFirestoreModule
   ]
 })
 export class SecurityModule { }
