@@ -28,8 +28,8 @@ export class EventDetailsComponent implements OnInit {
     }
 
     navigator.geolocation.getCurrentPosition(position => {
-      /*let loc = this.getReverseGeocodingData(position.coords.latitude, position.coords.longitude);
-      console.log(loc);*/
+      /*let loc = this.getReverseGeocodingData(position.coords.latitude, position.coords.longitude);*/
+      console.log(position);
     });
   }
 

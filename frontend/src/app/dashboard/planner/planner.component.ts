@@ -4,6 +4,7 @@ import {EventModel} from "../common/models/event.model";
 import {EventsService} from "../common/services/events.service";
 import {PopoverController} from "@ionic/angular";
 import {EventDetailsComponent} from "./event-details/event-details.component";
+import {NativeGeocoderOptions, NativeGeocoderResult, NativeGeocoder} from "@ionic-native/native-geocoder/ngx";
 
 @Component({
   selector: 'app-planner',
@@ -15,6 +16,11 @@ export class PlannerComponent implements OnInit {
     await this.loadEvents();
   }
 
+  options: NativeGeocoderOptions = {
+    useLocale: true,
+    maxResults: 5
+  };
+
   public calendarConfig: CalendarComponentOptions = {
     showMonthPicker: true,
     from: new Date(1),
@@ -24,12 +30,26 @@ export class PlannerComponent implements OnInit {
   public events!: Array<EventModel>;
 
   constructor(private eventsService: EventsService,
-              public popoverController: PopoverController) { }
+              public popoverController: PopoverController,
+              private nativeGeocoder: NativeGeocoder) { }
 
   public async ngOnInit() {
     await this.loadEvents();
 
     this.setupCalendarConfig();
+
+    if(!navigator.geolocation){
+      console.log('location is not supported');
+    }
+
+    navigator.geolocation.getCurrentPosition(position => {
+      /*let loc = this.getReverseGeocodingData(position.coords.latitude, position.coords.longitude);*/
+      console.log(position);
+    });
+
+    this.nativeGeocoder.reverseGeocode(52.5072095, 13.1452818, this.options)
+      .then((result: NativeGeocoderResult[]) => console.log(JSON.stringify(result[0])))
+      .catch((error: any) => console.log(error));
   }
 
   public setupCalendarConfig() {

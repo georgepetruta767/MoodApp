@@ -25,7 +25,10 @@ export class SignupComponent implements OnInit {
     this.form = new FormGroup({
       name: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.pattern("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")]),
-      password: new FormControl('', [Validators.required])
+      password: new FormControl('', [Validators.required,
+        Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$#.!%*[]?^():;{},/&])[A-Za-z\d$@$!%*?&].{8,}')]),
+      confirmPassword: new FormControl('', [Validators.required,
+        Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$#.!%*[]?^():;{},/&])[A-Za-z\d$@$!%*?&].{8,}')])
     });
   }
 
@@ -38,6 +41,25 @@ export class SignupComponent implements OnInit {
       }).then(() => {
         this.router.navigateByUrl('security/login');
       })
+    }
+  }
+
+  public confirmedPasswordValidator(controlName: string, matchingControlName: string) {
+    return (formGroup: FormGroup) => {
+      const control = formGroup.controls[controlName];
+      const matchingControl = formGroup.controls[matchingControlName];
+
+      if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+        // return if another validator has already found an error on the matchingControl
+        return;
+      }
+
+      // set error on matchingControl if validation fails
+      if (control.value !== matchingControl.value) {
+        matchingControl.setErrors({ mustMatch: true });
+      } else {
+        matchingControl.setErrors(null);
+      }
     }
   }
 
@@ -62,6 +84,7 @@ export class SignupComponent implements OnInit {
           provider: result.credential.providerId,
           idToken: tok
         })
+
       })
       .catch((error) => {
         console.log(error);

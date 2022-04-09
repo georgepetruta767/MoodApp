@@ -55,7 +55,9 @@ alter table Context
 add aspNetUserId text constraint FK_AspNetUsers_AspNetUser_id references "AspNetUsers"("Id") not null;
 
 delete from "AspNetUsers"
-where "Id" = 'a1baeb8c-2a3c-4141-a605-4b8f1e811bcb';
+where "Id" = '8c74b640-e8b8-4b84-a428-87c18b870c6f';
+
+delete from context where id = 'c7fe0f24-021d-46f0-984b-47fdc62a0a43';
 
 /*
 select count(*) from people;

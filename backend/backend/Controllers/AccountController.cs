@@ -6,7 +6,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Repository.Entities;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -23,12 +22,15 @@ namespace backend.Controllers
     {
         private SignInManager<UserEntity> _signInManager;
         private UserManager<UserEntity> _userManager;
+        private RoleManager<IdentityRole> _roleManager;
         private readonly AppSettings _appSettings;
-        private AccountWorker _accountWorker;
+        private readonly AccountWorker _accountWorker;
 
-        public AccountController(SignInManager<UserEntity> signInManager, UserManager<UserEntity> userManager, IOptions<AppSettings> appSettings)
+        public AccountController(SignInManager<UserEntity> signInManager, UserManager<UserEntity> userManager, RoleManager<IdentityRole> roleManager, AccountWorker accountWorker, IOptions<AppSettings> appSettings)
         {
+            _accountWorker = accountWorker;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _userManager = userManager;
             _appSettings = appSettings.Value;
         }
@@ -51,7 +53,7 @@ namespace backend.Controllers
                     Subject = new ClaimsIdentity(new Claim[]
                         {
                     new Claim(ClaimTypes.Name, user.Id.ToString()),
-                    new Claim(ClaimTypes.Role, "SuperAdmin")
+                    new Claim(ClaimTypes.Role, "BasicUser")
                         }),
                     Expires = DateTime.UtcNow.AddDays(1),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -66,10 +68,18 @@ namespace backend.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> SignUp([FromBody] UserModel signupModel)
         {
-            var result = await _userManager.CreateAsync(new UserEntity { UserName = signupModel.UserName, Email = signupModel.Email }, signupModel.Password);
-            if(result.Succeeded)
+            var x = await _roleManager.FindByNameAsync("BasicUser");
+            if (x == null)
+                await _roleManager.CreateAsync(new IdentityRole("BasicUser"));
+
+            var user = new UserEntity { UserName = signupModel.UserName, Email = signupModel.Email };
+            var result = await _userManager.CreateAsync(user, signupModel.Password);
+            await _userManager.AddToRoleAsync(user, "BasicUser");
+
+            if (result.Succeeded)
             {
-                _accountWorker.AddUserContext(_userManager.FindByEmailAsync(signupModel.Email).Id.ToString());
+                var id = _userManager.FindByEmailAsync(signupModel.Email).Result.Id;
+                _accountWorker.AddUserContext(id);
                 return Ok(result);
             }
             return BadRequest("Incorrect credentials");
@@ -124,11 +134,11 @@ namespace backend.Controllers
         {
             try
             {
-                var settings = new GoogleJsonWebSignature.ValidationSettings()
+                /*var settings = new GoogleJsonWebSignature.ValidationSettings()
                 {
-                    Audience = new List<string>() { _appSettings.GoogleAuth.ClientId }
-                };
-                return await GoogleJsonWebSignature.ValidateAsync(externalAuth.IdToken, settings);
+                    Audience = new List<string>() { _appSettings.Authentication.Google.ClientId }
+                };*/
+                return await GoogleJsonWebSignature.ValidateAsync(externalAuth.IdToken, new GoogleJsonWebSignature.ValidationSettings());
             }
             catch (Exception ex)
             {

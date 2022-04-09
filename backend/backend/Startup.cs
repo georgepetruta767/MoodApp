@@ -51,8 +51,8 @@ namespace backend
             var userManager = serviceProvider.GetService<UserManager<UserEntity>>();
             var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
 
-            SeedRolesAsync(userManager, roleManager).Wait();
-           SeedSuperAdminAsync(userManager, roleManager).Wait();
+            SeedRolesAsync(roleManager).Wait();
+            SeedSuperAdminAsync(userManager, roleManager).Wait();
         }
         private static void SetupAutoMapper(IServiceCollection services)
         {
@@ -85,6 +85,13 @@ namespace backend
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
+            .AddGoogle("google", opt =>
+            {
+                var googleAuth = Configuration.GetSection("AppSettings");
+                opt.ClientId = googleAuth["Authentication:Google:ClientId"];
+                opt.ClientSecret = googleAuth["Authentication:Google:ClientSecret"];
+                opt.SignInScheme = IdentityConstants.ExternalScheme;
+            })
            .AddJwtBearer(x =>
            {
                x.RequireHttpsMetadata = false;
@@ -106,6 +113,9 @@ namespace backend
 
             services.AddTransient<Repository.EventsRepository>();
             services.AddTransient<Worker.EventsWorker>();
+
+            services.AddTransient<Repository.AccountRepository>();
+            services.AddTransient<Worker.AccountWorker>();
 
             services.AddIdentity<UserEntity, IdentityRole>().AddEntityFrameworkStores<MoodAppContext>();
         }
@@ -138,7 +148,7 @@ namespace backend
             });
         }
 
-        public static async Task SeedRolesAsync(UserManager<UserEntity> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
         {
             var x = await roleManager.FindByNameAsync("SuperAdmin");
             if (x == null)
