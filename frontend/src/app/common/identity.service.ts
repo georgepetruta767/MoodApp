@@ -11,6 +11,10 @@ export class IdentityService {
     sessionStorage.setItem("bearerToken", token);
   }
 
+  public removeAuthToken() {
+    sessionStorage.removeItem("bearerToken");
+  }
+
   public get isLoggedIn() {
     return sessionStorage.getItem("bearerToken");
   }

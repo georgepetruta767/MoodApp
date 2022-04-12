@@ -18,16 +18,16 @@ namespace Worker
             _mapper = mapper;
         }
 
-        public List<PersonModel> GetPeople()
+        public List<PersonModel> GetPeople(string userId)
         {
-            var peopleEntity = _peopleRepository.GetPeople();
+            var peopleEntity = _peopleRepository.GetPeople(userId);
             return _mapper.Map<List<PersonModel>>(peopleEntity);
         }
 
-        public void AddPerson(PersonModel personModel)
+        public void AddPerson(PersonModel personModel, string userId)
         {
             var personEntity = _mapper.Map<PersonEntity>(personModel);
-            _peopleRepository.AddPerson(personEntity);
+            _peopleRepository.AddPerson(personEntity, userId);
         }
 
         public void UpdatePerson(PersonModel personModel)

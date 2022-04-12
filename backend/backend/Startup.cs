@@ -85,13 +85,13 @@ namespace backend
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddGoogle("google", opt =>
+            /*.AddGoogle("google", opt =>
             {
                 var googleAuth = Configuration.GetSection("AppSettings");
                 opt.ClientId = googleAuth["Authentication:Google:ClientId"];
                 opt.ClientSecret = googleAuth["Authentication:Google:ClientSecret"];
                 opt.SignInScheme = IdentityConstants.ExternalScheme;
-            })
+            })*/
            .AddJwtBearer(x =>
            {
                x.RequireHttpsMetadata = false;
@@ -138,9 +138,8 @@ namespace backend
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -21,7 +21,7 @@ export class SecurityService {
     return this.http.post(`${environment.api}/Account/SignUp`, user, {responseType: 'text'}).toPromise();
   }
 
-  public googleSignIn(externalSignUpModel: ExternalSignUpModel): Promise<any> {
+  public googleSignIn(externalSignUpModel: ExternalSignUpModel): Promise<string> {
     return this.http.post(`${environment.api}/Account/ExternalSignUp`, externalSignUpModel, { responseType: 'text' }).toPromise();
   }
 }

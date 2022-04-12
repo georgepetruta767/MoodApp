@@ -15,21 +15,24 @@ namespace Repository
             _moodAppContext = moodAppContext;
         }
 
-        public List<PersonEntity> GetPeople()
+        public List<PersonEntity> GetPeople(string userId)
         {
-            return _moodAppContext.People.Select(x => new PersonEntity
+            Guid contextId = _moodAppContext.Contexts.Where(x => x.Aspnetuserid == userId)!.First().Id;
+
+            return _moodAppContext.People.Where(x => x.ContextId == contextId).Select(x => new PersonEntity
             {
                 Id = x.Id,
                 FirstName = x.Firstname,
                 LastName = x.Lastname,
                 Age = x.Age,
                 Gender = (Global.Gender)x.Gender,
-                SocialStatus = (Global.SocialStatus)x.SocialStatus
+                SocialStatus = (Global.SocialStatus)x.SocialStatus,
             }).ToList();
         }
 
-        public void AddPerson(PersonEntity personEntity)
+        public void AddPerson(PersonEntity personEntity, string userId)
         {
+            Guid contextId = _moodAppContext.Contexts.Where(x => x.Aspnetuserid == userId)!.First().Id;
             var dbEntity = new Person()
             {
                 Id = Guid.NewGuid(),
@@ -37,7 +40,8 @@ namespace Repository
                 Lastname = personEntity.LastName,
                 Age = personEntity.Age,
                 Gender = (int)personEntity.Gender,
-                SocialStatus = (int)personEntity.SocialStatus
+                SocialStatus = (int)personEntity.SocialStatus,
+                ContextId = contextId
             };
 
             _moodAppContext.People.Add(dbEntity);
@@ -67,6 +71,7 @@ namespace Repository
 
         public void DeletePerson(Guid personId)
         {
+
             var person = GetById(personId);
             var people = _moodAppContext.EventPersonRelations.Where(p => p.PersonId == personId);
             foreach (var personEntity in people)

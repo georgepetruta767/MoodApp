@@ -17,14 +17,17 @@ namespace Repository
             _moodAppContext = moodAppContext;
         }
 
-        public void AddEvent(EventEntity eventEntity)
+        public void AddEvent(EventEntity eventEntity, string userId)
         {
+            Guid contextId = _moodAppContext.Contexts.Where(x => x.Aspnetuserid == userId)!.First().Id;
+
             var eventDBEntity = new Event()
             {
                 Id = Guid.NewGuid(),
                 Title = eventEntity.Title,
                 StartingTime = eventEntity.StartingTime,
-                Status = (int)eventEntity.Status
+                Status = (int)eventEntity.Status,
+                ContextId = contextId
             };
 
             _moodAppContext.Events.Add(eventDBEntity);
@@ -44,11 +47,13 @@ namespace Repository
             _moodAppContext.SaveChanges();
         }
 
-        public List<EventEntity> GetEvents()
+        public List<EventEntity> GetEvents(string userId)
         {
+            Guid contextId = _moodAppContext.Contexts.Where(x => x.Aspnetuserid == userId)!.First().Id;
+
             var events = _moodAppContext.Events.Include(x => x.EventPersonRelations).ThenInclude(x => x.Person);
 
-            return events.Select(x => new EventEntity
+            return events.Where(x => x.ContextId == contextId).Select(x => new EventEntity
             {
                 Id = x.Id,
                 Title = x.Title,
@@ -82,6 +87,7 @@ namespace Repository
             eventToUpdate.EndingTime = eventEntity.EndingTime;
             eventToUpdate.Status = (int)eventEntity.Status;
             eventToUpdate.Grade = eventEntity.Grade;
+
             _moodAppContext.Update(eventToUpdate);
             _moodAppContext.SaveChanges();
         }

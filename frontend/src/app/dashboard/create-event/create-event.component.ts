@@ -12,6 +12,10 @@ import {Router} from "@angular/router";
   styleUrls: ['./create-event.component.scss'],
 })
 export class CreateEventComponent implements OnInit {
+  public async ionViewWillEnter() {
+    await this.getAllPeople();
+  }
+
   public form!: FormGroup;
 
   public people!: Array<PersonModel>;
@@ -24,7 +28,6 @@ export class CreateEventComponent implements OnInit {
 
   async ngOnInit() {
     this.setupForm();
-    await this.getAllPeople();
   }
 
   private setupForm() {

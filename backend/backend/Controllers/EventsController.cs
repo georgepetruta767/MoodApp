@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Worker;
 using Worker.Models;
@@ -8,7 +11,7 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("moodapp/api/[controller]/[action]")]
-    //[Authorize]
+    [Authorize]
     public class EventsController : ControllerBase
     {
         private EventsWorker _eventsWorker;
@@ -21,13 +24,15 @@ namespace backend.Controllers
         [HttpPost]
         public void Add([FromBody] EventModel eventModel)
         {
-            _eventsWorker.AddEvent(eventModel);
+            string userId = User.FindFirstValue(ClaimTypes.Name);
+            _eventsWorker.AddEvent(eventModel, userId);
         }
 
         [HttpGet]
         public async Task<List<EventModel>> Get()
         {
-            return _eventsWorker.GetEvents();
+            string userId = User.FindFirstValue(ClaimTypes.Name);
+            return _eventsWorker.GetEvents(userId);
         }
 
         [HttpPost]

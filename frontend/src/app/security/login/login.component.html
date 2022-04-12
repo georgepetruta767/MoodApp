@@ -22,7 +22,7 @@
 
     <ion-row>
       <ion-col>
-        <ion-button>
+        <ion-button expand="block" (click)="googleAuthentication()">
           <ion-icon name="logo-google"></ion-icon>
         </ion-button>
       </ion-col>
@@ -33,4 +33,5 @@
 </ion-content>
 
 <ion-label slot="bottom" class="ion-text-center"> Are you new?</ion-label>
-<ion-button (click)="navigateToSignUp()">Sign Up</ion-button>
+<ion-text class="ion-text-center" color="primary" (click)="navigateToSignUp()">Sign Up</ion-text>
+

@@ -5,6 +5,9 @@
 
 database/
 licenta generator/
+frontend/android
+frontend/ios
+frontend/www
 
 # User-specific files
 *.rsuser

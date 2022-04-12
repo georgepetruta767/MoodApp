@@ -10,7 +10,12 @@ import {Gender} from "../../common/enums/gender.enum";
   templateUrl: './people-list.component.html',
   styleUrls: ['./people-list.component.scss'],
 })
+
 export class PeopleListComponent implements OnInit {
+  public async ionViewWillEnter() {
+    await this.loadPeople();
+  }
+
   public people: Array<PersonModel>;
 
   public searchTerm: any = {firstName: '', lastName: ''};
@@ -22,8 +27,6 @@ export class PeopleListComponent implements OnInit {
               private alertController: AlertController) { }
 
   public async ngOnInit() {
-    await this.loadPeople();
-
     this.handleCloseModalEvent();
   }
 

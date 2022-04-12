@@ -14,6 +14,8 @@ import {NativeGeocoderOptions, NativeGeocoderResult, NativeGeocoder} from "@ioni
 export class PlannerComponent implements OnInit {
   public async ionViewWillEnter(){
     await this.loadEvents();
+
+    this.setupCalendarConfig();
   }
 
   options: NativeGeocoderOptions = {
@@ -34,10 +36,6 @@ export class PlannerComponent implements OnInit {
               private nativeGeocoder: NativeGeocoder) { }
 
   public async ngOnInit() {
-    await this.loadEvents();
-
-    this.setupCalendarConfig();
-
     if(!navigator.geolocation){
       console.log('location is not supported');
     }

@@ -17,15 +17,15 @@ namespace Worker
             _mapper = mapper;
         }
 
-        public void AddEvent(EventModel eventModel)
+        public void AddEvent(EventModel eventModel, string userId)
         {
             var _eventEntity = _mapper.Map<EventEntity>(eventModel);
-            _eventsRepository.AddEvent(_eventEntity);
+            _eventsRepository.AddEvent(_eventEntity, userId);
         }
 
-        public List<EventModel> GetEvents()
+        public List<EventModel> GetEvents(string userId)
         {
-            var eventsEntity = _eventsRepository.GetEvents();
+            var eventsEntity = _eventsRepository.GetEvents(userId);
             return _mapper.Map<List<EventModel>>(eventsEntity);
         }
 

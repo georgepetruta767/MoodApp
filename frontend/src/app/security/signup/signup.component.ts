@@ -11,6 +11,12 @@ import {AngularFireAuth} from "@angular/fire/compat/auth";
   styleUrls: ['./signup.component.scss'],
 })
 export class SignupComponent implements OnInit {
+  public ionViewWillEnter() {
+    this.form.reset();
+  }
+
+  public isSubmitted = false;
+
   public form!: FormGroup;
 
   constructor(private securityService: SecurityService,
@@ -21,18 +27,23 @@ export class SignupComponent implements OnInit {
     this.setupForm();
   }
 
+  get errorControl() {
+    return this.form.controls;
+  }
+
   private setupForm() {
     this.form = new FormGroup({
       name: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.pattern("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")]),
       password: new FormControl('', [Validators.required,
-        Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$#.!%*[]?^():;{},/&])[A-Za-z\d$@$!%*?&].{8,}')]),
+        Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]),
       confirmPassword: new FormControl('', [Validators.required,
-        Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$#.!%*[]?^():;{},/&])[A-Za-z\d$@$!%*?&].{8,}')])
+        Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')])
     });
   }
 
   public async onSubmit() {
+    this.isSubmitted = true;
     if(this.form.valid) {
       await this.securityService.signUp({
         userName: this.form.controls.name.value,
@@ -67,11 +78,7 @@ export class SignupComponent implements OnInit {
     await this.router.navigateByUrl('security/login');
   }
 
-  public authWithGoogle() {
-    this.GoogleAuth();
-  }
-
-  public GoogleAuth() {
+  public googleAuthentication() {
     return this.AuthLogin(new GoogleAuthProvider());
   }
 
