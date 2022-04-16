@@ -1,8 +1,6 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Repository.Entities;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 

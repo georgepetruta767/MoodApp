@@ -25,7 +25,6 @@ namespace backend.Controllers
         private RoleManager<IdentityRole> _roleManager;
         private readonly AppSettings _appSettings;
         private readonly AccountWorker _accountWorker;
-
         public AccountController(SignInManager<UserEntity> signInManager, UserManager<UserEntity> userManager, RoleManager<IdentityRole> roleManager, AccountWorker accountWorker, IOptions<AppSettings> appSettings)
         {
             _accountWorker = accountWorker;

@@ -1,7 +1,9 @@
-<ion-text class="ion-text-center">
-  <h1> Sign Up </h1>
-</ion-text>
 <ion-content>
+  <ion-header translucent>
+    <ion-toolbar>
+      <ion-title class="ion-text-center">Sign Up</ion-title>
+    </ion-toolbar>
+  </ion-header>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <ion-item>
       <ion-label position="floating">Name</ion-label>
@@ -23,25 +25,25 @@
       <ion-input formControlName="confirmPassword" type="password"></ion-input>
     </ion-item>
 
-   <!-- <span class="error ion-padding" *ngIf="isSubmitted && errorControl.confirmPassword.errors">
-      Name should be min 2 chars long.
-    </span>-->
-
     <ion-row>
       <ion-col>
         <ion-button type="submit" color="danger" expand="block">Sign Up</ion-button>
       </ion-col>
     </ion-row>
-
-    <ion-row>
-      <ion-col>
-        <ion-button (click)="googleAuthentication()" expand="block">
-          <ion-icon name="logo-google"></ion-icon>
-        </ion-button>
-      </ion-col>
-    </ion-row>
   </form>
-</ion-content>
 
-<ion-label slot="bottom" class="ion-text-center"> Already have an account?</ion-label>
-<ion-text class="ion-text-center" color="primary" (click)="navigateToLogin()">Log in</ion-text>
+  <section class="google-button">
+      <ion-row>
+        <ion-col>
+          <ion-button (click)="googleAuthentication()" expand="block">
+            <ion-icon name="logo-google"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+  <div class="ion-text-center ion-padding-top">
+    <ion-label> Already have an account? </ion-label>
+    <ion-text color="primary" (click)="navigateToLogin()">Log in</ion-text>
+  </div>
+    </section>
+</ion-content>

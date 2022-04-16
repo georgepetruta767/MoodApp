@@ -17,12 +17,10 @@ namespace backend.Controllers
     public class PeopleController : ControllerBase
     {
         private PeopleWorker _peopleWorker;
-        private UserManager<UserEntity> _userManager;
 
-        public PeopleController(PeopleWorker peopleWorker, UserManager<UserEntity> userManager)
+        public PeopleController(PeopleWorker peopleWorker)
         {
             _peopleWorker = peopleWorker;
-            _userManager = userManager;
         }
         
         [HttpGet]

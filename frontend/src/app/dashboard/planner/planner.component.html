@@ -1,21 +1,14 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Events
-    </ion-title>
-    <ion-icon slot="end" name="log-out-outline" class="ion-padding-end" size="large" routerLink="login"></ion-icon>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <section *ngIf="events">
+      <ion-calendar [options]="calendarConfig"
+                    (select)="openEventPopover($event)">
+      </ion-calendar>
+  </section>
 
-<section *ngIf="events">
-    <ion-calendar [options]="calendarConfig"
-                  (select)="openEventPopover($event)">
-    </ion-calendar>
-</section>
-
-<ion-popover>
-  <ng-template>
-    <app-popover-content class="popover">
-    </app-popover-content>
-  </ng-template>
-</ion-popover>
+  <ion-popover>
+    <ng-template>
+      <app-popover-content class="popover">
+      </app-popover-content>
+    </ng-template>
+  </ion-popover>
+</ion-content>

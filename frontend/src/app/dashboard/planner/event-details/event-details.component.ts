@@ -1,9 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {EventModel} from "../../common/models/event.model";
 import {EventsService} from "../../common/services/events.service";
 import {EventStatus} from "../../common/enums/event-status.enum";
 import {PersonModel} from "../../common/models/person.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {EventType} from "../../common/enums/event-type.enum";
 
 @Component({
   selector: 'app-event-details',
@@ -14,14 +15,15 @@ export class EventDetailsComponent implements OnInit {
   @Input()
   public event!: EventModel;
 
+  @Output()
+  public closePopoverEmitter!: EventEmitter<any>;
+
   public form!: FormGroup;
 
   constructor(private eventsService: EventsService) { }
 
   public ngOnInit() {
     this.setupForm();
-
-   // this.eventsService.getLocation();
 
     if(!navigator.geolocation){
       console.log('location is not supported');
@@ -47,6 +49,7 @@ export class EventDetailsComponent implements OnInit {
       case EventStatus.InProgress:
         this.event.status = EventStatus.Finished;
         this.event.endingTime = new Date();
+        this.event.grade = this.form.controls.grade.value;
         break;
     }
 
@@ -69,6 +72,17 @@ export class EventDetailsComponent implements OnInit {
     }
   }
 
+  public getTypeLabel(type: EventType) {
+    switch(type) {
+      case EventType.Educational:
+        return "Educational";
+      case EventType.Recreational:
+        return "Recreational";
+      case EventType.WorkRelated:
+        return "Work Related";
+    }
+  }
+
   public getEventAction() {
     switch(this.event.status) {
       case EventStatus.InProgress:
@@ -79,7 +93,14 @@ export class EventDetailsComponent implements OnInit {
   }
 
   public isEnabled() {
-    return this.event.status !== EventStatus.Finished;
+    return this.event.status !== EventStatus.Finished && this.event.status !== EventStatus.InProgress;
+  }
+
+  public async onSubmit() {
+    if(this.form.valid) {
+      await this.updateEvent();
+      this.closePopoverEmitter.emit();
+    }
   }
 
   public formatEventDate(date: Date) {

@@ -8,41 +8,57 @@
     </ion-card-subtitle>
 
     <ion-chip slot="end" color="primary">
-      <ion-label>{{getStatusLabel(this.event.status)}}</ion-label>
+      <ion-label>{{ getStatusLabel(this.event.status) }}</ion-label>
     </ion-chip>
   </ion-toolbar>
 
-<ion-content class="ion-padding">
-  <section class="container ion-padding-bottom" *ngIf="event.status != 0">
-    <ion-label class="ion-padding-end">
-      Starting time:
-    </ion-label>
-    <ion-badge>
-      {{formatEventTime(this.event.startingTime)}}
+<ion-content>
+  <ion-item *ngIf="event.status != 0">
+    <ion-label>Starting time: </ion-label>
+    <ion-badge color="secondary" slot="end"> {{ formatEventTime(this.event.startingTime) }}
     </ion-badge>
-  </section>
+  </ion-item>
 
-  <section class="container ion-padding-bottom" *ngIf="event.status == 2">
-    <ion-label class="ion-padding-end">
-      Ending time:
-    </ion-label>
-    <ion-badge>
+  <ion-item *ngIf="event.status == 2">
+    <ion-label>Ending time: </ion-label>
+    <ion-badge color="secondary" slot="end">
       {{formatEventTime(this.event.endingTime)}}
     </ion-badge>
-  </section>
+  </ion-item>
 
-  <ion-label>
-    Participants:
-  </ion-label>
+  <ion-item>
+    <ion-label>Type:</ion-label>
+    <ion-badge color="secondary" slot="end">
+      {{ getTypeLabel(event.type) }}
+    </ion-badge>
+  </ion-item>
 
-  <ion-chip *ngFor="let person of event.people">{{getPersonName(person)}}</ion-chip>
+  <ion-item>
+    <ion-label>Participants:</ion-label>
+    <ion-select *ngIf="event.people.length > 0" interface="popover">
+      <ion-select-option *ngFor="let person of event.people" disabled> {{ getPersonName(person) }} </ion-select-option>
+    </ion-select>
+    <ion-text *ngIf="!event.people.length">
+      None
+    </ion-text>
+  </ion-item>
 
-  <form *ngIf="event.status == 1" [formGroup]="form">
+  <ion-item *ngIf="event.status == 2">
+    <ion-label>Grade:</ion-label>
+    <ion-badge color="secondary" slot="end">
+      {{event.grade}}
+    </ion-badge>
+  </ion-item>
+
+  <form *ngIf="event.status == 1" [formGroup]="form" (ngSubmit)="onSubmit()">
     <ion-item>
       <ion-label>Grade</ion-label>
       <ion-input formControlName="grade" placeholder="grade" type="number"></ion-input>
     </ion-item>
+    <ion-button class="ion-padding" expand="full" color="success" type="submit"> End Event </ion-button>
   </form>
 
-  <ion-button *ngIf="isEnabled()" class="ion-padding" expand="full" color="success" (click)="updateEvent()">{{getEventAction()}}</ion-button>
+  <ion-row>
+    <ion-button *ngIf="isEnabled()" expand="full" color="success" (click)="updateEvent()">{{getEventAction()}}</ion-button>
+  </ion-row>
 </ion-content>

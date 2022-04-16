@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {IdentityService} from "../../common/identity.service";
 import {GoogleAuthProvider} from "firebase/auth";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
+import {ToastController} from "@ionic/angular";
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,8 @@ export class LoginComponent implements OnInit {
   constructor(private securityService: SecurityService,
               private identityService: IdentityService,
               private router: Router,
-              private afAuth: AngularFireAuth) { }
+              private afAuth: AngularFireAuth,
+              private toastController: ToastController) { }
 
   ngOnInit() {
     this.setupForm();
@@ -40,15 +42,24 @@ export class LoginComponent implements OnInit {
       let bearerToken = await this.securityService.getLoginResult({
         email: this.form.controls.email.value,
         password: this.form.controls.password.value
-      }).catch(error => {
-        console.log(error);
+      }).catch(async () => {
+        await this.presentToast();
       })
       if(bearerToken) {
         this.identityService.storeAuthToken(bearerToken);
-        this.router.navigateByUrl('calendar');
+        await this.router.navigateByUrl('calendar');
       }
     }
   }
+
+  public async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Invalid username or password.',
+      duration: 2000
+    });
+    await toast.present();
+  }
+
 
   public async navigateToSignUp() {
     await this.router.navigateByUrl('security/signup');

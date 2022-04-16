@@ -84,6 +84,7 @@ namespace Repository
         public void UpdateEvent(EventEntity eventEntity)
         {
             var eventToUpdate = GetById((Guid)eventEntity.Id);
+            eventToUpdate.StartingTime = eventEntity.StartingTime;
             eventToUpdate.EndingTime = eventEntity.EndingTime;
             eventToUpdate.Status = (int)eventEntity.Status;
             eventToUpdate.Grade = eventEntity.Grade;

@@ -13,6 +13,7 @@ import {Router} from "@angular/router";
 })
 export class CreateEventComponent implements OnInit {
   public async ionViewWillEnter() {
+    this.form.reset();
     await this.getAllPeople();
   }
 

@@ -52,6 +52,7 @@ export class PeopleListComponent implements OnInit {
         text: 'Delete',
         handler: async () => {
           await this.peopleService.deletePerson(person.id);
+          this.loadPeople();
         }
       },
         'Cancel']

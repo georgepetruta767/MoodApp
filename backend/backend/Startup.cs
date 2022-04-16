@@ -34,7 +34,8 @@ namespace backend
 
             services.AddControllers();
 
-            services.AddDbContext<MoodAppContext>(options => options.UseNpgsql(Configuration["postgresql:connectionString"],o=>o.MigrationsAssembly("Repository"))
+            services.AddDbContext<MoodAppContext>(options => 
+                options.UseNpgsql(Configuration["postgresql:connectionString"], o=>o.MigrationsAssembly("Repository"))
                     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                     .EnableSensitiveDataLogging(true), ServiceLifetime.Transient);
 

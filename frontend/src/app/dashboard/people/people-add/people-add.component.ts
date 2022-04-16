@@ -55,10 +55,10 @@ export class PeopleAddComponent implements OnInit {
   }
 
   public getActionLabel() {
-    return this.personToEdit ? 'Edit' : 'Add';
+    return this.personToEdit ? 'Save' : 'Add';
   }
 
   public getCorrectHeaderTitle() {
-    return this.personToEdit ? `Edit ${this.personToEdit.firstName} ${this.personToEdit.lastName}` : 'Add a new person';
+    return this.personToEdit ? `${this.personToEdit.firstName} ${this.personToEdit.lastName}` : 'Add a new person';
   }
 }
