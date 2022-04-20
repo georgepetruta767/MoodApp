@@ -62,10 +62,10 @@ delete from "AspNetUsers"
 where "Id" = '71c1960d-6ced-4281-948a-4369a1e60fdb';
 
 delete from event_person_relation
-where event_id in (select id from events where status = 2 and grade IS NULL)
+where true = true;
 
 delete from events
-where location_id is null
+where true = true
 
 /*
 select count(*) from people;

@@ -33,20 +33,23 @@ export class SignupComponent implements OnInit {
 
   private setupForm() {
     this.form = new FormGroup({
-      name: new FormControl('', [Validators.required]),
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.pattern("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")]),
       password: new FormControl('', [Validators.required,
         Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]),
       confirmPassword: new FormControl('', [Validators.required,
         Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')])
-    });
+    }, {validators: this.matchingPasswords('password', 'confirmPassword')});
   }
+
 
   public async onSubmit() {
     this.isSubmitted = true;
     if(this.form.valid) {
       await this.securityService.signUp({
-        userName: this.form.controls.name.value,
+        firstName: this.form.controls.firstName.value,
+        lastName: this.form.controls.lastName.value,
         email: this.form.controls.email.value,
         password: this.form.controls.password.value
       }).then(() => {
@@ -55,25 +58,19 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  public confirmedPasswordValidator(controlName: string, matchingControlName: string) {
-    return (formGroup: FormGroup) => {
-      const control = formGroup.controls[controlName];
-      const matchingControl = formGroup.controls[matchingControlName];
+  matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
+    // TODO maybe use this https://github.com/yuyang041060120/ng2-validation#notequalto-1
+    return (group: FormGroup): {[key: string]: any} => {
+      let password = group.controls[passwordKey];
+      let confirmPassword = group.controls[confirmPasswordKey];
 
-      if (matchingControl.errors && !matchingControl.errors.mustMatch) {
-        // return if another validator has already found an error on the matchingControl
-        return;
-      }
-
-      // set error on matchingControl if validation fails
-      if (control.value !== matchingControl.value) {
-        matchingControl.setErrors({ mustMatch: true });
-      } else {
-        matchingControl.setErrors(null);
+      if (password.value !== confirmPassword.value) {
+        return {
+          mismatchedPasswords: true
+        };
       }
     }
   }
-
   public async navigateToLogin() {
     await this.router.navigateByUrl('security/login');
   }

@@ -12,7 +12,6 @@
     </ion-chip>
   </ion-toolbar>
 
-<ion-content>
   <ion-item *ngIf="event.status != 0">
     <ion-label>Starting time: </ion-label>
     <ion-badge color="secondary" slot="end"> {{ formatEventTime(this.event.startingTime) }}
@@ -20,9 +19,9 @@
   </ion-item>
 
   <ion-item *ngIf="event.status == 2">
-    <ion-label>Ending time: </ion-label>
+    <ion-label>Duration: </ion-label>
     <ion-badge color="secondary" slot="end">
-      {{formatEventTime(this.event.endingTime)}}
+      {{getEventDuration()}}
     </ion-badge>
   </ion-item>
 
@@ -55,10 +54,9 @@
       <ion-label>Grade</ion-label>
       <ion-input formControlName="grade" placeholder="grade" type="number"></ion-input>
     </ion-item>
-    <ion-button class="ion-padding" expand="full" color="success" type="submit"> End Event </ion-button>
+    <ion-button class="ion-margin" expand="full" color="success " type="submit"> End Event </ion-button>
   </form>
 
-  <ion-row>
-    <ion-button *ngIf="isEnabled()" expand="full" color="success" (click)="updateEvent()">{{getEventAction()}}</ion-button>
-  </ion-row>
-</ion-content>
+  <ion-button disabled="{{isStartEventButtonEnabled()}}" class="ion-margin" *ngIf="isEnabled()" expand="full" color="success" (click)="updateEvent()">
+    {{getEventAction()}}
+  </ion-button>

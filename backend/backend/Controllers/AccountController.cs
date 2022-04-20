@@ -72,7 +72,7 @@ namespace backend.Controllers
             if (x == null)
                 await _roleManager.CreateAsync(new IdentityRole("BasicUser"));
 
-            var user = new UserEntity { UserName = signupModel.UserName, Email = signupModel.Email };
+            var user = new UserEntity { UserName = String.Concat(signupModel.FirstName, signupModel.LastName), Email = signupModel.Email };
             var result = await _userManager.CreateAsync(user, signupModel.Password);
             await _userManager.AddToRoleAsync(user, "BasicUser");
 

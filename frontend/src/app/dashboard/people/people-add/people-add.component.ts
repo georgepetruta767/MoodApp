@@ -8,7 +8,11 @@ import {PersonModel} from "../../common/models/person.model";
   templateUrl: './people-add.component.html',
   styleUrls: ['./people-add.component.scss'],
 })
-export class PeopleAddComponent implements OnInit {
+export class PeopleAddComponent {
+  public ionViewWillEnter() {
+    this.setupForm();
+  }
+
   @Output()
   public closeModalEvent = new EventEmitter<string>();
 
@@ -19,10 +23,6 @@ export class PeopleAddComponent implements OnInit {
 
   constructor(private peopleService: PeopleService) { }
 
-  public ngOnInit() {
-    this.setupForm();
-  }
-
   private setupForm() {
     this.form = new FormGroup({
       firstName: new FormControl(this.personToEdit ? this.personToEdit.firstName : '', [Validators.required]),
@@ -31,6 +31,10 @@ export class PeopleAddComponent implements OnInit {
       gender: new FormControl( this.personToEdit ? this.personToEdit.gender : '', [Validators.required]),
       socialStatus: new FormControl(this.personToEdit ? this.personToEdit.socialStatus : '', [Validators.required])
     });
+  }
+
+  public getPersonStatus() {
+    return this.personToEdit.socialStatus;
   }
 
   public async onSubmit() {
