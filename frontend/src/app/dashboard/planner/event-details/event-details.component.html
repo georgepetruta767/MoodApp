@@ -1,15 +1,29 @@
   <ion-toolbar>
     <ion-title class="ion-padding-start ion-padding-top">
-      {{this.event.title}}
+      {{ this.event.title }}
     </ion-title>
 
-    <ion-card-subtitle class="ion-padding">
-      {{formatEventDate(this.event.startingTime)}}
+    <ion-card-subtitle>
+      <ion-chip class="status-chip" color="primary">
+        {{ getStatusLabel(this.event.status) }}
+      </ion-chip>
+      <ion-icon class="ion-margin-top edit-button" size="large" name="create-outline" (click)="navigateToUpdateEvent()"></ion-icon>
+      <ion-icon class="ion-margin-top" size="large" name="trash-outline" (click)="deleteEvent()"></ion-icon>
     </ion-card-subtitle>
 
-    <ion-chip slot="end" color="primary">
+
+    <!--<ion-card-subtitle>
+      <ion-chip class="ion-margin" color="primary">
+        <ion-label>{{ getStatusLabel(this.event.status) }}</ion-label>
+      </ion-chip>
+&lt;!&ndash;
+      {{formatEventDate(this.event.startingTime)}}
+&ndash;&gt;
+    </ion-card-subtitle>-->
+
+    <!--<ion-chip slot="end" color="primary">
       <ion-label>{{ getStatusLabel(this.event.status) }}</ion-label>
-    </ion-chip>
+    </ion-chip>-->
   </ion-toolbar>
 
   <ion-item *ngIf="event.status != 0">
@@ -57,6 +71,6 @@
     <ion-button class="ion-margin" expand="full" color="success " type="submit"> End Event </ion-button>
   </form>
 
-  <ion-button disabled="{{isStartEventButtonEnabled()}}" class="ion-margin" *ngIf="isEnabled()" expand="full" color="success" (click)="updateEvent()">
+  <ion-button disabled="{{isStartEventButtonDisabled()}}" class="ion-margin" *ngIf="isEnabled()" expand="full" color="success" (click)="updateEvent()">
     {{getEventAction()}}
   </ion-button>

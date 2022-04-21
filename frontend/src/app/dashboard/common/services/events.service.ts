@@ -37,6 +37,14 @@ export class EventsService {
     }).toPromise();
   }
 
+  public getEventById(eventId: string): Promise<EventModel> {
+    return this.http.get<EventModel>(`${environment.api}/Events/GetEventById?id=${eventId}`, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${sessionStorage.getItem('bearerToken')}`
+      })
+    }).toPromise();
+  }
+
   public updateEvent(eventModel: EventModel): Promise<any> {
     return this.http.post<any>(`${environment.api}/Events/Update`, eventModel, {
       headers: new HttpHeaders({
@@ -45,12 +53,11 @@ export class EventsService {
     }).toPromise();
   }
 
-  public getLocation() {
-    console.log('getting location');
-    axios.request(options).then((response) => {
-      console.log(response.data);
-    }).catch(error => {
-      console.log(error);
-    });
+  public deleteEvent(eventId: string): Promise<any> {
+    return this.http.delete(`${environment.api}/Events/Delete?id=${eventId}`, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${sessionStorage.getItem('bearerToken')}`
+      })
+    }).toPromise();
   }
 }

@@ -1,5 +1,5 @@
 <ion-content>
-  <form [formGroup]="form" (ngSubmit)="addEvent()">
+  <form *ngIf="form" [formGroup]="form" (ngSubmit)="addEvent()">
     <ion-item>
       <ion-label position="floating">Title</ion-label>
       <ion-input formControlName="title"></ion-input>
@@ -27,7 +27,7 @@
 
     <ion-row>
       <ion-col>
-        <ion-button type="submit" color="danger" expand="block">Add</ion-button>
+        <ion-button type="submit" color="danger" expand="block">{{getButtonLabel()}}</ion-button>
       </ion-col>
     </ion-row>
   </form>

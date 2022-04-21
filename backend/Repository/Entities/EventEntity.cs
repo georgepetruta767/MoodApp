@@ -8,6 +8,9 @@ namespace Repository.Entities
     {
         public Guid? Id { get; set; }
         public string Title { get; set; }
+        public Guid? LocationId { get; set; }
+        public EventType Type { get; set; }
+        public Season Season { get; set; }
         public List<PersonEntity> People { get; set; }
         public DateTime? StartingTime { get; set; }
         public EventStatus Status { get; set; }

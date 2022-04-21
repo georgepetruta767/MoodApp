@@ -93,12 +93,43 @@ namespace Repository
             _moodAppContext.SaveChanges();
         }
 
+        public EventEntity GetEventById(Guid id)
+        {
+            return _moodAppContext.Events.Where(x => x.Id == id).Select(x => new EventEntity
+            {
+                Id = x.Id,
+                Title = x.Title,
+                LocationId = x.LocationId,
+                People = MapPeople(x.EventPersonRelations.Select(x => x.Person).ToList()),
+                StartingTime = x.StartingTime,
+                EndingTime = x.EndingTime,
+                Status = (EventStatus)x.Status,
+                Grade = (int)x.Grade,
+                Type = (EventType)x.Type,
+                Season = (Season)x.Season
+            }).ToList()[0];
+        }
+
         public Event GetById(Guid id)
         {
             var searchedEvent = (from x in _moodAppContext.Events where x.Id == id select x).ToList();
             if (searchedEvent.Count != 0)
                 return searchedEvent.First();
             return null;
+        }
+
+        public void DeleteEvent(Guid eventId)
+        {
+            var searchedEvent = GetById(eventId);
+            var people = _moodAppContext.EventPersonRelations.Where(e => e.EventId == eventId);
+
+            foreach(var personEntity in people)
+            {
+                _moodAppContext.EventPersonRelations.Remove(personEntity);
+            }
+
+            _moodAppContext.Events.Remove(searchedEvent);
+            _moodAppContext.SaveChanges();
         }
     }
 }

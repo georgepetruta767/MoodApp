@@ -1,10 +1,10 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CalendarComponentOptions, CalendarDay, DayConfig} from "ion2-calendar";
 import {EventModel} from "../common/models/event.model";
 import {EventsService} from "../common/services/events.service";
 import {PopoverController} from "@ionic/angular";
 import {EventDetailsComponent} from "./event-details/event-details.component";
-import {NativeGeocoderOptions, NativeGeocoderResult, NativeGeocoder} from "@ionic-native/native-geocoder/ngx";
+import {NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult} from "@ionic-native/native-geocoder/ngx";
 
 @Component({
   selector: 'app-planner',
@@ -23,11 +23,7 @@ export class PlannerComponent implements OnInit {
     maxResults: 5
   };
 
-  public calendarConfig: CalendarComponentOptions = {
-    showMonthPicker: true,
-    from: new Date(1),
-    daysConfig: Array<DayConfig>()
-  };
+  public calendarConfig!: CalendarComponentOptions;
 
   public events!: Array<EventModel>;
 
@@ -51,6 +47,12 @@ export class PlannerComponent implements OnInit {
   }
 
   public setupCalendarConfig() {
+    this.calendarConfig = {
+      showMonthPicker: true,
+      from: new Date(1),
+      daysConfig: Array<DayConfig>()
+    };
+
     this.events.forEach(event => {
       this.calendarConfig.daysConfig.push({
         date: event.startingTime,
@@ -75,7 +77,26 @@ export class PlannerComponent implements OnInit {
         }
       });
 
-      return await popover.present();
+      await popover.present();
+
+      return popover.onDidDismiss().then(
+        async (data: any) => {
+          if (data) {
+            const handleEventModel = data.data;
+            switch(handleEventModel.mode) {
+              case "delete":
+                await this.eventsService.deleteEvent(handleEventModel.eventId);
+                break;
+              case "update":
+                await this.eventsService.updateEvent(handleEventModel.event);
+                break;
+              default:
+                break;
+            }
+            await this.loadEvents();
+          }
+        }
+      )
     }
   }
 }

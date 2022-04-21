@@ -4,11 +4,11 @@ import {PeopleService} from "../../common/services/people.service";
 import {PersonModel} from "../../common/models/person.model";
 
 @Component({
-  selector: 'app-people-add',
-  templateUrl: './people-add.component.html',
-  styleUrls: ['./people-add.component.scss'],
+  selector: 'app-people-edit',
+  templateUrl: './people-edit.component.html',
+  styleUrls: ['./people-edit.component.scss'],
 })
-export class PeopleAddComponent {
+export class PeopleEditComponent {
   public ionViewWillEnter() {
     this.setupForm();
   }

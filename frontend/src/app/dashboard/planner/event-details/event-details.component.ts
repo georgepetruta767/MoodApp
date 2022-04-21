@@ -5,6 +5,8 @@ import {EventStatus} from "../../common/enums/event-status.enum";
 import {PersonModel} from "../../common/models/person.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {EventType} from "../../common/enums/event-type.enum";
+import {PopoverController} from "@ionic/angular";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-event-details',
@@ -15,12 +17,11 @@ export class EventDetailsComponent implements OnInit {
   @Input()
   public event!: EventModel;
 
-  @Output()
-  public closePopoverEmitter!: EventEmitter<any>;
-
   public form!: FormGroup;
 
-  constructor(private eventsService: EventsService) { }
+  constructor(private eventsService: EventsService,
+              private popover: PopoverController,
+              private router: Router) { }
 
   public ngOnInit() {
     this.setupForm();
@@ -41,6 +42,10 @@ export class EventDetailsComponent implements OnInit {
     });
   }
 
+  public async deleteEvent() {
+    await this.popover.dismiss({eventId: this.event.id, mode: "delete"});
+  }
+
   public async updateEvent() {
     switch(this.event.status) {
       case EventStatus.Incoming:
@@ -54,7 +59,11 @@ export class EventDetailsComponent implements OnInit {
     }
 
     await this.eventsService.updateEvent(this.event);
+  }
 
+  public async navigateToUpdateEvent() {
+    await this.popover.dismiss();
+    await this.router.navigateByUrl(`event/${this.event.id}`);
   }
 
   public getPersonName(person: PersonModel) {
@@ -99,7 +108,6 @@ export class EventDetailsComponent implements OnInit {
   public async onSubmit() {
     if(this.form.valid) {
       await this.updateEvent();
-      this.closePopoverEmitter.emit();
     }
   }
 
@@ -144,7 +152,7 @@ export class EventDetailsComponent implements OnInit {
     return this.convertMsToTime(new Date(this.event.endingTime).valueOf() - +new Date(this.event.startingTime).valueOf());
   }
 
-  public isStartEventButtonEnabled() {
+  public isStartEventButtonDisabled() {
     /*if(this.event.status !== EventStatus.Incoming)
       return false;
 
@@ -154,16 +162,16 @@ export class EventDetailsComponent implements OnInit {
     return false;*/
 
     if(this.event.status !== EventStatus.Incoming)
-      return true;
+      return false;
 
 
     if(new Date(Date.now()).getFullYear() === new Date(this.event.startingTime).getFullYear() &&
       new Date(Date.now()).getMonth() === new Date(this.event.startingTime).getMonth() &&
-      new Date(Date.now()).getDate() < new Date(this.event.startingTime).getDate()
+      new Date(Date.now()).getDate() !== new Date(this.event.startingTime).getDate()
     ) {
-      return false;
+      return true;
     }
 
-    return true;
+    return false;
   }
 }

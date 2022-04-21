@@ -7,7 +7,6 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {IonicModule} from "@ionic/angular";
 import {EventDetailsComponent} from "./event-details/event-details.component";
 import {Ng2FilterPipeModule} from "ng2-filter-pipe";
-import {NativeGeocoder} from "@ionic-native/native-geocoder/ngx";
 
 const routes: Routes = [
   {

@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit } from '@angular/core';
 import {PersonModel} from "../../common/models/person.model";
 import {PeopleService} from "../../common/services/people.service";
 import {AlertController, ModalController} from "@ionic/angular";
-import {PeopleAddComponent} from "../people-add/people-add.component";
+import {PeopleEditComponent} from "../people-edit/people-edit.component";
 import {Gender} from "../../common/enums/gender.enum";
 
 @Component({
@@ -32,7 +32,7 @@ export class PeopleListComponent implements OnInit {
 
   public async presentModal(person?: PersonModel) {
     const modal = await this.modalController.create({
-      component: PeopleAddComponent,
+      component: PeopleEditComponent,
       breakpoints: [0.3, 0.5, 0.8, 1],
       initialBreakpoint: 0.9,
       componentProps: {

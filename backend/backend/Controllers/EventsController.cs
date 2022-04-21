@@ -35,10 +35,22 @@ namespace backend.Controllers
             return _eventsWorker.GetEvents(userId);
         }
 
+        [HttpGet]
+        public async Task<EventModel> GetEventById([FromQuery] Guid id)
+        {
+            return _eventsWorker.GetEventById(id);
+        }
+
         [HttpPost]
         public void Update([FromBody] EventModel eventModel)
         {
             _eventsWorker.UpdateEvent(eventModel);
+        }
+
+        [HttpDelete]
+        public void Delete([FromQuery] Guid id)
+        {
+            _eventsWorker.DeleteEvent(id);
         }
     }
 }

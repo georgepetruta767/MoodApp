@@ -5,9 +5,9 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {PlannerComponent} from "./planner/planner.component";
 import {PlannerModule} from "./planner/planner.module";
 import {PeopleListComponent} from "./people/people-list/people-list.component";
-import {CreateEventComponent} from "./create-event/create-event.component";
+import {EventEditComponent} from "./event-edit/event-edit.component";
 import {CommonModule} from "@angular/common";
-import {PeopleAddComponent} from "./people/people-add/people-add.component";
+import {PeopleEditComponent} from "./people/people-edit/people-edit.component";
 import {Ng2FilterPipeModule} from "ng2-filter-pipe";
 import {SecurityGuard} from "../security/security.guard";
 import {ResultsComponent} from "./results/results.component";
@@ -26,7 +26,11 @@ const routes: Routes = [
   },
   {
     path: 'event',
-    component: CreateEventComponent
+    component: EventEditComponent,
+  },
+  {
+    path: 'event/:id',
+    component: EventEditComponent,
   },
   {
     path: '',
@@ -39,7 +43,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [PeopleListComponent, PeopleAddComponent, CreateEventComponent, ResultsComponent],
+  declarations: [PeopleListComponent, PeopleEditComponent, EventEditComponent, ResultsComponent],
   imports: [
     RouterModule.forChild(routes),
     PlannerModule,
