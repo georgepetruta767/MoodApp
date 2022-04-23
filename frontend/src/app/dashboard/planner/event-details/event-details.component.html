@@ -1,4 +1,5 @@
-  <ion-toolbar>
+<ion-card>
+  <!--<ion-toolbar>
     <ion-title class="ion-padding-start ion-padding-top">
       {{ this.event.title }}
     </ion-title>
@@ -10,21 +11,21 @@
       <ion-icon class="ion-margin-top edit-button" size="large" name="create-outline" (click)="navigateToUpdateEvent()"></ion-icon>
       <ion-icon class="ion-margin-top" size="large" name="trash-outline" (click)="deleteEvent()"></ion-icon>
     </ion-card-subtitle>
+  </ion-toolbar>-->
 
+  <ion-card-header>
+    <ion-title>
+      {{ this.event.title }}
+    </ion-title>
+  </ion-card-header>
 
-    <!--<ion-card-subtitle>
-      <ion-chip class="ion-margin" color="primary">
-        <ion-label>{{ getStatusLabel(this.event.status) }}</ion-label>
-      </ion-chip>
-&lt;!&ndash;
-      {{formatEventDate(this.event.startingTime)}}
-&ndash;&gt;
-    </ion-card-subtitle>-->
-
-    <!--<ion-chip slot="end" color="primary">
-      <ion-label>{{ getStatusLabel(this.event.status) }}</ion-label>
-    </ion-chip>-->
-  </ion-toolbar>
+  <ion-card-subtitle>
+    <ion-chip class="status-chip" color="primary">
+      {{ getStatusLabel(this.event.status) }}
+    </ion-chip>
+    <ion-icon class="ion-margin-top edit-button" size="large" name="create-outline" (click)="navigateToUpdateEvent()"></ion-icon>
+    <ion-icon class="ion-margin-top" size="large" name="trash-outline" (click)="deleteEvent()"></ion-icon>
+  </ion-card-subtitle>
 
   <ion-item *ngIf="event.status != 0">
     <ion-label>Starting time: </ion-label>
@@ -35,7 +36,7 @@
   <ion-item *ngIf="event.status == 2">
     <ion-label>Duration: </ion-label>
     <ion-badge color="secondary" slot="end">
-      {{getEventDuration()}}
+      {{ getEventDuration() }}
     </ion-badge>
   </ion-item>
 
@@ -74,3 +75,4 @@
   <ion-button disabled="{{isStartEventButtonDisabled()}}" class="ion-margin" *ngIf="isEnabled()" expand="full" color="success" (click)="updateEvent()">
     {{getEventAction()}}
   </ion-button>
+</ion-card>

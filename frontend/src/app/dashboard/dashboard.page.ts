@@ -19,7 +19,26 @@ export class DashboardPage implements OnInit {
   ngOnInit() {
     this.pageChangeSubscription = this.router.events.subscribe(() => {
       let page = this.router.url.slice(1, this.router.url.length);
-      this.activePage = page.charAt(0).toUpperCase() + page.slice(1);;
+      switch(page) {
+        case "event":
+          this.activePage = "Add Event";
+          break;
+        case "calendar":
+          this.activePage = "Events";
+          break;
+        case "people":
+          this.activePage = "People";
+          break;
+        case "results":
+          this.activePage = "Results";
+          break;
+        case "list":
+          this.activePage = "List";
+          break;
+        default:
+          this.activePage = "Edit event";
+          break;
+      }
     })
   }
 

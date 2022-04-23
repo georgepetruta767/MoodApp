@@ -5,10 +5,12 @@
       </ion-calendar>
   </section>
 
-  <ion-popover>
+  <!--<ion-popover>
     <ng-template>
       <app-popover-content class="popover">
       </app-popover-content>
     </ng-template>
-  </ion-popover>
+  </ion-popover>-->
 </ion-content>
+
+<app-events-list *ngIf="isVisible" [eventsDate]="selectedDate"></app-events-list>

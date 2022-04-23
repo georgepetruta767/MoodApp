@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {PeopleService} from "../common/services/people.service";
 import {PersonModel} from "../common/models/person.model";
@@ -12,7 +12,8 @@ import {EventModel} from "../common/models/event.model";
   templateUrl: './event-edit.component.html',
   styleUrls: ['./event-edit.component.scss'],
 })
-export class EventEditComponent implements OnInit {
+
+export class EventEditComponent {
   public async ionViewWillEnter() {
     if(this.form)
       this.form.reset();
@@ -32,22 +33,27 @@ export class EventEditComponent implements OnInit {
 
   public people!: Array<PersonModel>;
 
-  public today = new Date().toISOString();
-
   constructor(private peopleService: PeopleService,
               private eventsService: EventsService,
               private router: Router,
               private activatedRoute: ActivatedRoute) { }
 
-  async ngOnInit() {
+  public get today() {
+    return new Date().toISOString();
+  }
+
+  public formatEventTime(date: Date) {
+    if(date)
+      return new Date(date).toLocaleDateString(navigator.language, {day: '2-digit', month: "long", year: "numeric"});
+    return '';
   }
 
   private setupForm() {
     this.form = new FormGroup({
       title: new FormControl(this.eventToEdit ? this.eventToEdit.title : '', [Validators.required]),
-      people: new FormControl(),
-      eventDate: new FormControl('', [Validators.required]),
-      type: new FormControl('', [Validators.required])
+      people: new FormControl(this.eventToEdit ? this.eventToEdit.people.map(x => x.id) : ''),
+      eventDate: new FormControl(this.eventToEdit ? this.eventToEdit.startingTime : '', [Validators.required]),
+      type: new FormControl(this.eventToEdit ? this.eventToEdit.type : '', [Validators.required])
     })
   }
 
@@ -57,15 +63,18 @@ export class EventEditComponent implements OnInit {
 
   public async addEvent() {
     if(this.form.valid) {
-      await this.eventsService.addEvent({
+      const eventModel = {
+        id: this.eventToEdit?.id,
         title: this.form.controls.title.value,
-        people: this.form.controls.people.value,
+        people: this.form.controls.people.value.map(x => this.people.find(y => y.id === x)),
         startingTime: this.form.controls.eventDate.value,
         status: EventStatus.Incoming,
         type: Number(this.form.controls.type.value)
-      }).then(() => {
-        this.router.navigateByUrl('calendar');
-      });
+      };
+
+      this.eventToEdit ? await this.eventsService.updateEvent(eventModel) : await this.eventsService.addEvent(eventModel);
+
+      await this.router.navigateByUrl('calendar');
     }
   }
 

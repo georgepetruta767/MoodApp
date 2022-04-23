@@ -1,0 +1,9 @@
+<ion-content fullscreen>
+  <swiper *ngIf="events">
+    <ng-template swiperSlide *ngFor="let event of events">
+      <app-event-details [event]="event"></app-event-details>
+    </ng-template>
+  </swiper>
+</ion-content>
+
+

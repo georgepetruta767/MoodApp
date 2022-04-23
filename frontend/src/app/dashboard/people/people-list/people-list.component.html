@@ -1,4 +1,4 @@
-<ion-content fullscreen>
+<ion-content overflow-scroll="true">
   <section *ngIf="people && people.length">
     <ion-searchbar [(ngModel)]="searchTerm.firstName"></ion-searchbar>
     <ion-list>
@@ -12,6 +12,11 @@
         <ion-icon slot="end" name="trash-outline" (click)="deletePerson(person)"></ion-icon>
       </ion-item>
     </ion-list>
+
+    <ion-infinite-scroll threshold="100px" id="infinite-scroll">
+      <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading more data...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
   </section>
 
 <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="presentModal()">

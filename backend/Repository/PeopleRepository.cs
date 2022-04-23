@@ -56,6 +56,7 @@ namespace Repository
             personToUpdate.Lastname = personEntity.LastName;
             personToUpdate.Age = personEntity.Age;
             personToUpdate.Gender = (int)personEntity.Gender;
+            personToUpdate.SocialStatus = (int)personEntity.SocialStatus;
 
             _moodAppContext.People.Update(personToUpdate);
             _moodAppContext.SaveChanges();

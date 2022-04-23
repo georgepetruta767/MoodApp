@@ -12,6 +12,7 @@ import {Ng2FilterPipeModule} from "ng2-filter-pipe";
 import {SecurityGuard} from "../security/security.guard";
 import {ResultsComponent} from "./results/results.component";
 import {NgxEchartsModule} from "ngx-echarts";
+import {EventsListComponent} from "./planner/events-list/events-list.component";
 
 const routes: Routes = [
   {
@@ -29,6 +30,10 @@ const routes: Routes = [
     component: EventEditComponent,
   },
   {
+    path: 'list',
+    component: EventsListComponent
+  },
+  {
     path: 'event/:id',
     component: EventEditComponent,
   },
@@ -43,7 +48,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [PeopleListComponent, PeopleEditComponent, EventEditComponent, ResultsComponent],
+  declarations: [PeopleListComponent, PeopleEditComponent, EventEditComponent, ResultsComponent, EventEditComponent],
   imports: [
     RouterModule.forChild(routes),
     PlannerModule,

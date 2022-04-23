@@ -26,14 +26,16 @@ export class EventDetailsComponent implements OnInit {
   public ngOnInit() {
     this.setupForm();
 
-    if(!navigator.geolocation){
+    /*if(!navigator.geolocation){
       console.log('location is not supported');
     }
 
     navigator.geolocation.getCurrentPosition(position => {
-      /*let loc = this.getReverseGeocodingData(position.coords.latitude, position.coords.longitude);*/
+      /!*let loc = this.getReverseGeocodingData(position.coords.latitude, position.coords.longitude);*!/
       console.log(position);
-    });
+    });*/
+
+    console.log(this.event);
   }
 
   public setupForm() {

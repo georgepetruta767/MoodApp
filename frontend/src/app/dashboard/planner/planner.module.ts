@@ -7,6 +7,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {IonicModule} from "@ionic/angular";
 import {EventDetailsComponent} from "./event-details/event-details.component";
 import {Ng2FilterPipeModule} from "ng2-filter-pipe";
+import {SwiperModule} from "swiper/angular";
+import {EventsListComponent} from "./events-list/events-list.component";
 
 const routes: Routes = [
   {
@@ -20,7 +22,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  declarations: [PlannerComponent, EventDetailsComponent],
+  declarations: [PlannerComponent, EventDetailsComponent, EventsListComponent],
     imports: [
         CommonModule,
         RouterModule.forChild(routes),
@@ -28,7 +30,8 @@ const routes: Routes = [
         FormsModule,
         IonicModule,
         Ng2FilterPipeModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        SwiperModule
     ],
   providers: [
   ]

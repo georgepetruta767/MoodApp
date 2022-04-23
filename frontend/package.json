@@ -35,7 +35,7 @@
     "@ionic-native/core": "^5.36.0",
     "@ionic-native/google-plus": "^5.36.0",
     "@ionic-native/native-geocoder": "^5.36.0",
-    "@ionic/angular": "^6.0.0",
+    "@ionic/angular": "^6.1.2",
     "@types/axios": "^0.14.0",
     "axios": "^0.26.0",
     "chart.js": "^2.9.4",
@@ -50,6 +50,7 @@
     "ngx-echarts": "^8.0.1",
     "require": "^2.4.20",
     "rxjs": "~6.6.0",
+    "swiper": "^7.2.0",
     "tslib": "^2.2.0",
     "zone.js": "~0.11.4"
   },

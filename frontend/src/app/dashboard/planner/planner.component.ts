@@ -3,8 +3,8 @@ import {CalendarComponentOptions, CalendarDay, DayConfig} from "ion2-calendar";
 import {EventModel} from "../common/models/event.model";
 import {EventsService} from "../common/services/events.service";
 import {PopoverController} from "@ionic/angular";
-import {EventDetailsComponent} from "./event-details/event-details.component";
 import {NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult} from "@ionic-native/native-geocoder/ngx";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-planner',
@@ -18,6 +18,10 @@ export class PlannerComponent implements OnInit {
     this.setupCalendarConfig();
   }
 
+  public selectedDate: Date;
+
+  public isVisible = false;
+
   options: NativeGeocoderOptions = {
     useLocale: true,
     maxResults: 5
@@ -29,7 +33,8 @@ export class PlannerComponent implements OnInit {
 
   constructor(private eventsService: EventsService,
               public popoverController: PopoverController,
-              private nativeGeocoder: NativeGeocoder) { }
+              private nativeGeocoder: NativeGeocoder,
+              private router: Router) { }
 
   public async ngOnInit() {
     if(!navigator.geolocation){
@@ -70,10 +75,12 @@ export class PlannerComponent implements OnInit {
     const date = new Date(day.time);
 
     if(this.calendarConfig.daysConfig.find(x => new Date(x.date).toDateString() === date.toDateString() && x.marked)) {
-      const popover = await this.popoverController.create({
-        component: EventDetailsComponent,
+      this.selectedDate = date;
+      this.isVisible = true;
+      /*const popover = await this.popoverController.create({
+        component: EventsListComponent,
         componentProps: {
-          event: this.events.find(x => new Date(x.startingTime).toDateString() === date.toDateString())
+          events: this.events.filter(x => new Date(x.startingTime).toDateString() === date.toDateString())
         }
       });
 
@@ -96,7 +103,7 @@ export class PlannerComponent implements OnInit {
             await this.loadEvents();
           }
         }
-      )
+      )*/
     }
   }
 }

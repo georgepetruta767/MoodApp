@@ -61,7 +61,8 @@ namespace Repository
                 StartingTime = x.StartingTime,
                 EndingTime = x.EndingTime,
                 Status = (EventStatus)x.Status,
-                Grade = (int)x.Grade
+                Grade = (int)x.Grade,
+                Type = (EventType)x.Type
             }).ToList();
         }
 
@@ -88,6 +89,28 @@ namespace Repository
             eventToUpdate.EndingTime = eventEntity.EndingTime;
             eventToUpdate.Status = (int)eventEntity.Status;
             eventToUpdate.Grade = eventEntity.Grade;
+            eventToUpdate.Type = (int)eventEntity.Type;
+
+            eventToUpdate.EventPersonRelations.Clear();
+            var relations = _moodAppContext.EventPersonRelations.Where(x => x.EventId == eventToUpdate.Id);
+
+            foreach(var relationDbEntity in relations)
+            {
+                _moodAppContext.EventPersonRelations.Remove(relationDbEntity);
+            }
+
+            foreach (var person in eventEntity.People)
+            {
+                var relationDbEntity = new EventPersonRelation()
+                {
+                    Id = Guid.NewGuid(),
+                    EventId = eventToUpdate.Id,
+                    PersonId = person.Id
+                };
+
+                _moodAppContext.EventPersonRelations.Add(relationDbEntity);
+                eventToUpdate.EventPersonRelations.Add(relationDbEntity);
+            }
 
             _moodAppContext.Update(eventToUpdate);
             _moodAppContext.SaveChanges();
