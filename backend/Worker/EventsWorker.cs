@@ -30,6 +30,13 @@ namespace Worker
             return _mapper.Map<List<EventModel>>(eventsEntity);
         }
 
+        public List<EventModel> GetEventsByDate(string userId, DateTime eventsDate)
+        {
+            var eventsEntity = _eventsRepository.GetEventsByDate(userId, eventsDate);
+            return _mapper.Map<List<EventModel>>(eventsEntity);
+        }
+
+
         public EventModel GetEventById(Guid id)
         {
             return _mapper.Map<EventModel>(_eventsRepository.GetEventById(id));

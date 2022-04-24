@@ -12,7 +12,7 @@ namespace Repository.Entities
         public EventType Type { get; set; }
         public Season Season { get; set; }
         public List<PersonEntity> People { get; set; }
-        public DateTime? StartingTime { get; set; }
+        public DateTime StartingTime { get; set; }
         public EventStatus Status { get; set; }
         public DateTime? EndingTime { get; set; }
         public int? Grade { get; set; }

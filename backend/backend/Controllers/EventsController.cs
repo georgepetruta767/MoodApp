@@ -41,6 +41,13 @@ namespace backend.Controllers
             return _eventsWorker.GetEventById(id);
         }
 
+        [HttpGet]
+        public async Task<List<EventModel>> GetEventsByDate([FromQuery] DateTime date)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.Name);
+            return _eventsWorker.GetEventsByDate(userId, date);
+        }
+
         [HttpPost]
         public void Update([FromBody] EventModel eventModel)
         {

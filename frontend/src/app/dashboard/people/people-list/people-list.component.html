@@ -12,14 +12,9 @@
         <ion-icon slot="end" name="trash-outline" (click)="deletePerson(person)"></ion-icon>
       </ion-item>
     </ion-list>
-
-    <ion-infinite-scroll threshold="100px" id="infinite-scroll">
-      <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading more data...">
-      </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
   </section>
 
-  <ion-title *ngIf="!people.length">
+  <ion-title class="ion-padding" *ngIf="people && !people.length">
     You have no people
   </ion-title>
 

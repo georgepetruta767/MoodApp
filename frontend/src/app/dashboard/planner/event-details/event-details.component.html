@@ -9,8 +9,8 @@
     <ion-chip class="status-chip" color="primary">
       {{ getStatusLabel(this.event.status) }}
     </ion-chip>
-    <ion-icon class="ion-margin-top edit-button" size="large" name="create-outline" (click)="navigateToUpdateEvent()"></ion-icon>
-    <ion-icon class="ion-margin-top" size="large" name="trash-outline" (click)="deleteEvent()"></ion-icon>
+    <ion-icon class="ion-margin-top edit-button" size="small" name="create-outline" (click)="navigateToUpdateEvent()"></ion-icon>
+    <ion-icon class="ion-margin-top" size="small" name="trash-outline" (click)="deleteEvent()"></ion-icon>
   </ion-card-subtitle>
 
   <ion-item *ngIf="event.status != 0">
@@ -33,15 +33,33 @@
     </ion-badge>
   </ion-item>
 
-  <ion-item>
+  <ion-accordion-group>
+    <ion-accordion>
+      <ion-item slot="header">
+        <ion-label>Participants</ion-label>
+      </ion-item>
+      <ion-list slot="content">
+        <ion-item *ngFor="let person of event.people">
+          {{ getPersonName(person) }}
+        </ion-item>
+      </ion-list>
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <!--<ion-item>
     <ion-label>Participants:</ion-label>
-    <ion-select *ngIf="event.people.length > 0" interface="popover">
+    &lt;!&ndash;<ion-select *ngIf="event.people.length > 0" interface="popover">
       <ion-select-option *ngFor="let person of event.people" disabled> {{ getPersonName(person) }} </ion-select-option>
     </ion-select>
     <ion-text *ngIf="!event.people.length">
       None
-    </ion-text>
-  </ion-item>
+    </ion-text>&ndash;&gt;
+    <ion-list lines="none">
+      <ion-item *ngFor="let person of event.people">
+        {{ getPersonName(person) }}
+      </ion-item>
+    </ion-list>
+  </ion-item>-->
 
   <ion-item *ngIf="event.status == 2">
     <ion-label>Grade:</ion-label>
@@ -54,6 +72,9 @@
     <ion-item>
       <ion-label>Grade</ion-label>
       <ion-input formControlName="grade" placeholder="grade" type="number"></ion-input>
+      <span *ngIf="hasEndEventButtonBeenCliked && form.controls.grade.hasError('required')" slot="error">
+        Field is required
+      </span>
     </ion-item>
     <ion-button class="ion-margin" expand="full" color="success " type="submit"> End Event </ion-button>
   </form>

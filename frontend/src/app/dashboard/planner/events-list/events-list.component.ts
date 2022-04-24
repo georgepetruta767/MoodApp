@@ -2,6 +2,7 @@ import {Component, Input, OnChanges} from '@angular/core';
 import {EventModel} from "../../common/models/event.model";
 import {EventsService} from "../../common/services/events.service";
 import SwiperCore, {EffectCoverflow, Pagination} from "swiper";
+import {IonDatetime} from "@ionic/angular";
 
 SwiperCore.use([EffectCoverflow, Pagination]);
 
@@ -10,13 +11,14 @@ SwiperCore.use([EffectCoverflow, Pagination]);
   templateUrl: './events-list.component.html',
   styleUrls: ['./events-list.component.scss'],
 })
+
 export class EventsListComponent implements OnChanges {
   public async ngOnChanges() {
     await this.loadEvents();
   }
 
   @Input()
-  public eventsDate: Date;
+  public eventsDate: number;
 
   public events: Array<EventModel>;
 
@@ -28,9 +30,13 @@ export class EventsListComponent implements OnChanges {
   }
 
   public async loadEvents() {
-    this.events = await this.eventService.getEvents();
-    this.events = this.events.filter(x => new Date(this.eventsDate).getFullYear() === new Date(x.startingTime).getFullYear() &&
+    console.log(this.eventsDate);
+    console.log(new Date(this.eventsDate));
+    this.events = await this.eventService.getEventsByDate(this.eventsDate);
+    console.log(this.events);
+
+    /*this.events = this.events.filter(x => new Date(this.eventsDate).getFullYear() === new Date(x.startingTime).getFullYear() &&
       new Date(this.eventsDate).getMonth() === new Date(x.startingTime).getMonth() &&
-      new Date(this.eventsDate).getDate() === new Date(x.startingTime).getDate());
+      new Date(this.eventsDate).getDate() === new Date(x.startingTime).getDate());*/
   }
 }

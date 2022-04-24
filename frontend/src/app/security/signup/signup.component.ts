@@ -4,6 +4,7 @@ import {SecurityService} from "../security.service";
 import {Router} from "@angular/router";
 import {GoogleAuthProvider} from "firebase/auth";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
+import {PopoverController} from "@ionic/angular";
 
 @Component({
   selector: 'app-signup',
@@ -20,6 +21,7 @@ export class SignupComponent implements OnInit {
   public form!: FormGroup;
 
   constructor(private securityService: SecurityService,
+              private popoverController: PopoverController,
               private router: Router,
               private afAuth: AngularFireAuth) { }
 
@@ -59,7 +61,6 @@ export class SignupComponent implements OnInit {
   }
 
   matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
-    // TODO maybe use this https://github.com/yuyang041060120/ng2-validation#notequalto-1
     return (group: FormGroup): {[key: string]: any} => {
       let password = group.controls[passwordKey];
       let confirmPassword = group.controls[confirmPasswordKey];

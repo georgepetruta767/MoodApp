@@ -66,6 +66,30 @@ namespace Repository
             }).ToList();
         }
 
+        public List<EventEntity> GetEventsByDate(string userId, DateTime eventsDate)
+        {
+            Guid contextId = _moodAppContext.Contexts.Where(x => x.Aspnetuserid == userId)!.First().Id;
+
+            var events = _moodAppContext.Events.Include(x => x.EventPersonRelations).ThenInclude(x => x.Person);
+
+            var ev = events.Where(x => x.ContextId == contextId).Select(x => new EventEntity
+            {
+                Id = x.Id,
+                Title = x.Title,
+                People = MapPeople(x.EventPersonRelations.Select(x => x.Person).ToList()),
+                StartingTime = x.StartingTime,
+                EndingTime = x.EndingTime,
+                Status = (EventStatus)x.Status,
+                Grade = (int)x.Grade,
+                Type = (EventType)x.Type
+            }).ToList();
+
+            var x = ev[0].StartingTime.Date;
+            var y = eventsDate.Date;
+
+            return ev;
+        }
+
         public static List<PersonEntity> MapPeople(List<Person> people)
         {
             var peopleEntities = new List<PersonEntity>();

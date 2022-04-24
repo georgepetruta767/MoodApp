@@ -6,6 +6,7 @@ import {PersonModel} from "../../common/models/person.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {EventType} from "../../common/enums/event-type.enum";
 import {Router} from "@angular/router";
+import {PopoverController} from "@ionic/angular";
 
 @Component({
   selector: 'app-event-details',
@@ -18,6 +19,8 @@ export class EventDetailsComponent implements OnInit {
 
   @Output()
   public deleteEventEmitter: EventEmitter<string> = new EventEmitter<string>();
+
+  public hasEndEventButtonBeenCliked = false;
 
   public form!: FormGroup;
 
@@ -106,6 +109,7 @@ export class EventDetailsComponent implements OnInit {
   }
 
   public async onSubmit() {
+    this.hasEndEventButtonBeenCliked = true;
     if(this.form.valid) {
       await this.updateEvent();
     }

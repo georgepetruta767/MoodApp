@@ -1,15 +1,20 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {EventModel} from "../common/models/event.model";
 import {EventsService} from "../common/services/events.service";
 import {NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult} from "@ionic-native/native-geocoder/ngx";
 import {FormControl, FormGroup} from "@angular/forms";
+import {IonContent} from "@ionic/angular";
 
 @Component({
   selector: 'app-planner',
   templateUrl: './planner.component.html',
   styleUrls: ['./planner.component.scss']
 })
+
 export class PlannerComponent implements OnInit {
+  @ViewChild(IonContent)
+  public content: IonContent;
+
   public async ionViewWillEnter(){
     await this.loadEvents();
 
@@ -67,7 +72,10 @@ export class PlannerComponent implements OnInit {
     this.events = await this.eventsService.getEvents();
   }
 
-  public async openEventPopover() {
+  public async showEventsList() {
+      if (this.content.scrollToBottom) {
+        await this.content.scrollToBottom(300);
+      }
     this.isEventsListVisible = true;
   }
 }

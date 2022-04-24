@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {EventModel} from "../models/event.model";
 import {environment} from "../../../../environments/environment";
 import axios from 'axios';
+import {IonDatetime} from "@ionic/angular";
 
 var options = {
   method: 'GET',
@@ -31,6 +32,14 @@ export class EventsService {
 
   public getEvents(): Promise<Array<EventModel>> {
     return this.http.get<Array<EventModel>>(`${environment.api}/Events/Get`, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${sessionStorage.getItem('bearerToken')}`
+      })
+    }).toPromise();
+  }
+
+  public getEventsByDate(eventsDate: number): Promise<Array<EventModel>> {
+    return this.http.get<Array<EventModel>>(`${environment.api}/Events/GetEventsByDate?date=${eventsDate}`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${sessionStorage.getItem('bearerToken')}`
       })

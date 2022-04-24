@@ -4,38 +4,40 @@
       <ion-title class="ion-text-center">Login</ion-title>
     </ion-toolbar>
   </ion-header>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <ion-item>
-      <ion-label position="floating">Email</ion-label>
-      <ion-input formControlName="email" type="text"></ion-input>
-    </ion-item>
+  <section class="ion-justify-content-between content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input formControlName="email" type="text"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Password</ion-label>
-      <ion-input formControlName="password" type="password"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input formControlName="password" type="password"></ion-input>
+      </ion-item>
 
-    <ion-row>
-      <ion-col>
-        <ion-button type="submit" color="danger" expand="block">Log in</ion-button>
-      </ion-col>
-    </ion-row>
-  </form>
+      <ion-row>
+        <ion-col>
+          <ion-button type="submit" color="danger" expand="block">Log in</ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
 
-  <section class="google-button">
-    <ion-row>
-      <ion-col>
-        <ion-button expand="block" (click)="googleAuthentication()">
-          <ion-icon name="logo-google" class="ion-padding-end"></ion-icon>
-          <ion-label> Log in with google</ion-label>
-        </ion-button>
-      </ion-col>
-    </ion-row>
+    <section>
+      <ion-row>
+        <ion-col>
+          <ion-button expand="block" (click)="googleAuthentication()">
+            <ion-icon name="logo-google" class="ion-padding-end"></ion-icon>
+            <ion-label> Log in with google</ion-label>
+          </ion-button>
+        </ion-col>
+      </ion-row>
 
-    <div class="ion-text-center ion-padding-top">
-      <ion-label> Are you new? </ion-label>
-      <ion-text color="primary" (click)="navigateToSignUp()">Sign Up</ion-text>
-    </div>
+      <div class="ion-text-center ion-padding-top">
+        <ion-label> Are you new? </ion-label>
+        <ion-text color="primary" (click)="navigateToSignUp()">Sign Up</ion-text>
+      </div>
+    </section>
   </section>
 </ion-content>
 

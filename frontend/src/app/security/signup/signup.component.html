@@ -1,43 +1,52 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title class="ion-text-center">Sign Up</ion-title>
+  </ion-toolbar>
+</ion-header>
 <ion-content>
-  <ion-header translucent>
-    <ion-toolbar>
-      <ion-title class="ion-text-center">Sign Up</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <ion-item>
-      <ion-label position="floating">First Name</ion-label>
-      <ion-input formControlName="firstName" type="text"></ion-input>
-    </ion-item>
+  <section class="ion-justify-content-between content">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <ion-item>
+        <ion-label position="floating">First Name</ion-label>
+        <ion-input formControlName="firstName" type="text"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Last Name</ion-label>
-      <ion-input formControlName="lastName" type="text"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label position="floating">Last Name</ion-label>
+        <ion-input formControlName="lastName" type="text"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Email</ion-label>
-      <ion-input formControlName="email" type="text"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input formControlName="email" type="text"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Password</ion-label>
-      <ion-input formControlName="password" type="password"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input formControlName="password" type="password"></ion-input>
+        <span *ngIf="form.controls.password.hasError('pattern')" slot="error">
+      Passwords should be at least 8 characters long and contain 1 number,
+    1 lowercase letter, 1 uppercase letter and one of the following special characters: $, @, $, !, %, *, ? or &.
+    </span>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Confirm Password</ion-label>
-      <ion-input formControlName="confirmPassword" type="password"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label position="floating">Confirm Password</ion-label>
+        <ion-input formControlName="confirmPassword" type="password"></ion-input>
+        <span *ngIf="form.controls.confirmPassword.hasError('pattern')" slot="error">
+      Passwords should be at least 8 characters long and contain one number,
+    one character and one of the following special characters: $, @, $, !, %, *, ? or &.
+    </span>
+      </ion-item>
 
-    <ion-row>
-      <ion-col>
-        <ion-button type="submit" color="danger" expand="block">Sign Up</ion-button>
-      </ion-col>
-    </ion-row>
-  </form>
+      <ion-row>
+        <ion-col>
+          <ion-button type="submit" color="danger" expand="block">Sign Up</ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
 
-  <section class="google-button">
+    <section>
       <ion-row>
         <ion-col>
           <ion-button (click)="googleAuthentication()" expand="block">
@@ -46,9 +55,10 @@
         </ion-col>
       </ion-row>
 
-  <div class="ion-text-center ion-padding-top">
-    <ion-label> Already have an account? </ion-label>
-    <ion-text color="primary" (click)="navigateToLogin()">Log in</ion-text>
-  </div>
+      <div class="ion-text-center ion-padding-top">
+        <ion-label> Already have an account? </ion-label>
+        <ion-text color="primary" (click)="navigateToLogin()">Log in</ion-text>
+      </div>
     </section>
+  </section>
 </ion-content>

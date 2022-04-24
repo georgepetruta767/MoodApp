@@ -18,7 +18,7 @@ namespace Repository.EF
         public int? Grade { get; set; }
         public int Status { get; set; }
         public int Type { get; set; }
-        public DateTime? StartingTime { get; set; }
+        public DateTime StartingTime { get; set; }
         public DateTime? EndingTime { get; set; }
         public int Season { get; set; }
         public int? AmountSpent { get; set; }

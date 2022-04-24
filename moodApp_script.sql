@@ -22,7 +22,7 @@ create table events (
 	grade int,
 	status int not null,
 	type int not null,
-	starting_time timestamptz,
+	starting_time timestamptz not null,
 	ending_time timestamptz,
 	season int not null,
 	amount_spent int,
@@ -54,18 +54,6 @@ drop table Context;
 alter table Context
 add aspNetUserId text constraint FK_AspNetUsers_AspNetUser_id references "AspNetUsers"("Id") not null;
 
-delete from Context
-    where aspNetUserId = '71c1960d-6ced-4281-948a-4369a1e60fdb';
-
-
-delete from "AspNetUsers"
-where "Id" = '71c1960d-6ced-4281-948a-4369a1e60fdb';
-
-delete from event_person_relation
-where true = true;
-
-delete from events
-where true = true
 
 /*
 select count(*) from people;
