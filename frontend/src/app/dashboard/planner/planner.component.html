@@ -1,16 +1,8 @@
 <ion-content>
-  <section *ngIf="events">
-      <ion-calendar [options]="calendarConfig"
-                    (select)="openEventPopover($event)">
-      </ion-calendar>
-  </section>
+  <form *ngIf="dateForm" [formGroup]="dateForm">
+    <ion-datetime (ionChange)="openEventPopover()" formControlName="selectedDate" presentation="date" monthValues="{{getMonths()}}" yearValues="{{getYears()}}" dayValues="{{getDays()}}">
+    </ion-datetime>
 
-  <!--<ion-popover>
-    <ng-template>
-      <app-popover-content class="popover">
-      </app-popover-content>
-    </ng-template>
-  </ion-popover>-->
+    <app-events-list *ngIf="isEventsListVisible" [eventsDate]="dateForm.controls.selectedDate.value"></app-events-list>
+  </form>
 </ion-content>
-
-<app-events-list *ngIf="isVisible" [eventsDate]="selectedDate"></app-events-list>

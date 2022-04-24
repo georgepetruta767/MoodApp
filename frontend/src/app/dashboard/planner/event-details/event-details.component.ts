@@ -5,7 +5,6 @@ import {EventStatus} from "../../common/enums/event-status.enum";
 import {PersonModel} from "../../common/models/person.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {EventType} from "../../common/enums/event-type.enum";
-import {PopoverController} from "@ionic/angular";
 import {Router} from "@angular/router";
 
 @Component({
@@ -17,10 +16,12 @@ export class EventDetailsComponent implements OnInit {
   @Input()
   public event!: EventModel;
 
+  @Output()
+  public deleteEventEmitter: EventEmitter<string> = new EventEmitter<string>();
+
   public form!: FormGroup;
 
   constructor(private eventsService: EventsService,
-              private popover: PopoverController,
               private router: Router) { }
 
   public ngOnInit() {
@@ -34,8 +35,6 @@ export class EventDetailsComponent implements OnInit {
       /!*let loc = this.getReverseGeocodingData(position.coords.latitude, position.coords.longitude);*!/
       console.log(position);
     });*/
-
-    console.log(this.event);
   }
 
   public setupForm() {
@@ -45,7 +44,7 @@ export class EventDetailsComponent implements OnInit {
   }
 
   public async deleteEvent() {
-    await this.popover.dismiss({eventId: this.event.id, mode: "delete"});
+    this.deleteEventEmitter.emit(this.event.id);
   }
 
   public async updateEvent() {
@@ -64,7 +63,6 @@ export class EventDetailsComponent implements OnInit {
   }
 
   public async navigateToUpdateEvent() {
-    await this.popover.dismiss();
     await this.router.navigateByUrl(`event/${this.event.id}`);
   }
 
@@ -137,15 +135,7 @@ export class EventDetailsComponent implements OnInit {
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
 
-    seconds = seconds % 60;
     minutes = minutes % 60;
-
-    // 👇️ If you want to roll hours over, e.g. 00 to 24
-    // 👇️ uncomment the line below
-    // uncommenting next line gets you `00:00:00` instead of `24:00:00`
-    // or `12:15:31` instead of `36:15:31`, etc.
-    // 👇️ (roll hours over)
-    // hours = hours % 24;
 
     return `${this.padTo2Digits(days)}d:${this.padTo2Digits(hours)}h:${this.padTo2Digits(minutes)}m`;
   }
@@ -155,14 +145,6 @@ export class EventDetailsComponent implements OnInit {
   }
 
   public isStartEventButtonDisabled() {
-    /*if(this.event.status !== EventStatus.Incoming)
-      return false;
-
-    if(this.convertMsToTime(new Date(this.event.startingTime).valueOf() - +new Date(Date.now())))
-      return true;
-
-    return false;*/
-
     if(this.event.status !== EventStatus.Incoming)
       return false;
 

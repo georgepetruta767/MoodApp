@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {PeopleService} from "../common/services/people.service";
 import {PersonModel} from "../common/models/person.model";

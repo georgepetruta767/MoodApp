@@ -1,9 +1,20 @@
-<ion-content fullscreen>
-  <swiper *ngIf="events">
-    <ng-template swiperSlide *ngFor="let event of events">
-      <app-event-details [event]="event"></app-event-details>
-    </ng-template>
-  </swiper>
-</ion-content>
+<ion-title class="ion-text-center ion-padding"> {{ eventsDate | date }} </ion-title>
+<swiper [effect]="'coverflow'"
+        [grabCursor]="true"
+        [centeredSlides]="true"
+        [slidesPerView]="'auto'"
+        [coverflowEffect]="{
+          rotate: 50,
+          stretch: 0,
+          depth: 100,
+          modifier: 1,
+          slideShadows: true
+          }"
+        [pagination]="true"
+        *ngIf="events">
+  <ng-template swiperSlide *ngFor="let event of events">
+    <app-event-details (deleteEventEmitter)="deleteEvent($event)" [event]="event"></app-event-details>
+  </ng-template>
+</swiper>
 
 

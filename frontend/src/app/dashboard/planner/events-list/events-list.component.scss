@@ -1,6 +1,21 @@
 :host {
   display: block;
 
+  .backdrop {
+    opacity: 0.5;
+  }
+
+  .swiper {
+    width: 100%;
+  }
+
+  .swiper-slide {
+    background-position: center;
+    background-size: cover;
+    width: 300px;
+    height: 300px;
+  }
+
   /*.swiper-slide {
     background-position: center;
     background-size: cover;

@@ -19,6 +19,10 @@
     </ion-infinite-scroll>
   </section>
 
+  <ion-title *ngIf="!people.length">
+    You have no people
+  </ion-title>
+
 <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="presentModal()">
   <ion-fab-button>
     <ion-icon name="add"></ion-icon>

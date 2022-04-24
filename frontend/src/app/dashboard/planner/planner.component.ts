@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {CalendarComponentOptions, CalendarDay, DayConfig} from "ion2-calendar";
 import {EventModel} from "../common/models/event.model";
 import {EventsService} from "../common/services/events.service";
-import {PopoverController} from "@ionic/angular";
 import {NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult} from "@ionic-native/native-geocoder/ngx";
-import {Router} from "@angular/router";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-planner',
@@ -15,26 +13,22 @@ export class PlannerComponent implements OnInit {
   public async ionViewWillEnter(){
     await this.loadEvents();
 
-    this.setupCalendarConfig();
+    this.setupForm();
   }
 
-  public selectedDate: Date;
+  public dateForm: FormGroup;
 
-  public isVisible = false;
+  public isEventsListVisible = false;
 
   options: NativeGeocoderOptions = {
     useLocale: true,
     maxResults: 5
   };
 
-  public calendarConfig!: CalendarComponentOptions;
-
   public events!: Array<EventModel>;
 
   constructor(private eventsService: EventsService,
-              public popoverController: PopoverController,
-              private nativeGeocoder: NativeGeocoder,
-              private router: Router) { }
+              private nativeGeocoder: NativeGeocoder) { }
 
   public async ngOnInit() {
     if(!navigator.geolocation){
@@ -51,59 +45,29 @@ export class PlannerComponent implements OnInit {
       .catch((error: any) => console.log(error));
   }
 
-  public setupCalendarConfig() {
-    this.calendarConfig = {
-      showMonthPicker: true,
-      from: new Date(1),
-      daysConfig: Array<DayConfig>()
-    };
-
-    this.events.forEach(event => {
-      this.calendarConfig.daysConfig.push({
-        date: event.startingTime,
-        marked: true
-      })
+  public setupForm() {
+    this.dateForm = new FormGroup({
+      'selectedDate': new FormControl('')
     });
+  }
+
+  public getMonths() {
+    return [...new Set(this.events.map(x => new Date(x.startingTime).getMonth() + 1))];
+  }
+
+  public getYears() {
+    return [...new Set(this.events.map(x => new Date(x.startingTime).getFullYear()))];
+  }
+
+  public getDays() {
+    return [...new Set(this.events.map(x => new Date(x.startingTime).getDate()))];
   }
 
   public async loadEvents() {
     this.events = await this.eventsService.getEvents();
-    this.setupCalendarConfig();
   }
 
-  public async openEventPopover(day: CalendarDay) {
-    const date = new Date(day.time);
-
-    if(this.calendarConfig.daysConfig.find(x => new Date(x.date).toDateString() === date.toDateString() && x.marked)) {
-      this.selectedDate = date;
-      this.isVisible = true;
-      /*const popover = await this.popoverController.create({
-        component: EventsListComponent,
-        componentProps: {
-          events: this.events.filter(x => new Date(x.startingTime).toDateString() === date.toDateString())
-        }
-      });
-
-      await popover.present();
-
-      return popover.onDidDismiss().then(
-        async (data: any) => {
-          if (data) {
-            const handleEventModel = data.data;
-            switch(handleEventModel.mode) {
-              case "delete":
-                await this.eventsService.deleteEvent(handleEventModel.eventId);
-                break;
-              case "update":
-                await this.eventsService.updateEvent(handleEventModel.event);
-                break;
-              default:
-                break;
-            }
-            await this.loadEvents();
-          }
-        }
-      )*/
-    }
+  public async openEventPopover() {
+    this.isEventsListVisible = true;
   }
 }
