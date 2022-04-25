@@ -1,4 +1,5 @@
 <ion-title class="ion-text-center ion-padding"> {{ eventsDate | date }} </ion-title>
+<ion-label *ngIf="events.length > 1" class="ion-text-center"> swipe to see more</ion-label>
 <swiper [effect]="'coverflow'"
         [grabCursor]="true"
         [centeredSlides]="true"
@@ -16,5 +17,4 @@
     <app-event-details (deleteEventEmitter)="deleteEvent($event)" [event]="event"></app-event-details>
   </ng-template>
 </swiper>
-
 

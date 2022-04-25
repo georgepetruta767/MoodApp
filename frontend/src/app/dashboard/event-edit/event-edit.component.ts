@@ -6,6 +6,7 @@ import {EventsService} from "../common/services/events.service";
 import {EventStatus} from "../common/enums/event-status.enum";
 import {ActivatedRoute, Router} from "@angular/router";
 import {EventModel} from "../common/models/event.model";
+import {Season} from "../common/enums/season.enum";
 
 @Component({
   selector: 'app-event-edit',
@@ -63,12 +64,38 @@ export class EventEditComponent {
 
   public async addEvent() {
     if(this.form.valid) {
+      const month = new Date(this.form.controls.eventDate.value).getMonth() + 1;
+      let season;
+      switch(month) {
+        case 12:
+        case 1:
+        case 2:
+          season = Season.Winter;
+          break;
+        case 3:
+        case 4:
+        case 5:
+          season = Season.Spring;
+          break;
+        case 6:
+        case 7:
+        case 8:
+          season = Season.Summer;
+          break;
+        case 9:
+        case 10:
+        case 11:
+          season = Season.Autumn;
+          break;
+      }
+
       const eventModel = {
         id: this.eventToEdit?.id,
         title: this.form.controls.title.value,
-        people: this.form.controls.people.value.map(x => this.people.find(y => y.id === x)),
+        people: this.form.controls.people.value ? this.form.controls.people.value.map(x => this.people.find(y => y.id === x)) : [],
         startingTime: this.form.controls.eventDate.value,
         status: EventStatus.Incoming,
+        season: season,
         type: Number(this.form.controls.type.value)
       };
 

@@ -18,5 +18,7 @@ namespace Worker.Models
         public EventStatus Status { get; set; } 
         public EventType Type { get; set; }
         public int? Grade { get; set; }
+        public int? AmountSpent { get; set; }
+        public Season Season { get; set; }
     }
 }

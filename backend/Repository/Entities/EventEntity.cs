@@ -16,5 +16,6 @@ namespace Repository.Entities
         public EventStatus Status { get; set; }
         public DateTime? EndingTime { get; set; }
         public int? Grade { get; set; }
+        public int? AmountSpent { get; set; }
     }
 }

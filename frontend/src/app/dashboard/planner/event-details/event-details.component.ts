@@ -6,7 +6,6 @@ import {PersonModel} from "../../common/models/person.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {EventType} from "../../common/enums/event-type.enum";
 import {Router} from "@angular/router";
-import {PopoverController} from "@ionic/angular";
 
 @Component({
   selector: 'app-event-details',
@@ -42,7 +41,8 @@ export class EventDetailsComponent implements OnInit {
 
   public setupForm() {
     this.form = new FormGroup({
-      grade: new FormControl('', [Validators.required, Validators.min(1), Validators.max(10)])
+      grade: new FormControl('', [Validators.required, Validators.min(1), Validators.max(10)]),
+      amountSpent: new FormControl('', [Validators.required, Validators.min(0)])
     });
   }
 
@@ -54,11 +54,13 @@ export class EventDetailsComponent implements OnInit {
     switch(this.event.status) {
       case EventStatus.Incoming:
         this.event.status = EventStatus.InProgress;
+        this.event.startingTime = new Date(Date.now());
         break;
       case EventStatus.InProgress:
         this.event.status = EventStatus.Finished;
         this.event.endingTime = new Date(Date.now());
         this.event.grade = this.form.controls.grade.value;
+        this.event.amountSpent = this.form.controls.amountSpent.value;
         break;
     }
 

@@ -54,6 +54,10 @@ drop table Context;
 alter table Context
 add aspNetUserId text constraint FK_AspNetUsers_AspNetUser_id references "AspNetUsers"("Id") not null;
 
+delete from event_person_relation
+    where 1 = 1
+delete from events
+where 1 =1
 
 /*
 select count(*) from people;

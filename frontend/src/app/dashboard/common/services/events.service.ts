@@ -38,8 +38,8 @@ export class EventsService {
     }).toPromise();
   }
 
-  public getEventsByDate(eventsDate: number): Promise<Array<EventModel>> {
-    return this.http.get<Array<EventModel>>(`${environment.api}/Events/GetEventsByDate?date=${eventsDate}`, {
+  public getEventsByDate(eventsDate: Date): Promise<Array<EventModel>> {
+    return this.http.get<Array<EventModel>>(`${environment.api}/Events/GetEventsByDate?date=${eventsDate.toString().slice(0, 10)}`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${sessionStorage.getItem('bearerToken')}`
       })

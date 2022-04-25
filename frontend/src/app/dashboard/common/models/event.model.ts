@@ -11,5 +11,6 @@ export class EventModel {
   public status!: EventStatus;
   public type: EventType;
   public amountSpent?: number;
+  public locationId?: string;
   public grade?: number;
 }

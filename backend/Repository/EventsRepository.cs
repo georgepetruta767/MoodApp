@@ -27,6 +27,7 @@ namespace Repository
                 Title = eventEntity.Title,
                 StartingTime = eventEntity.StartingTime,
                 Status = (int)eventEntity.Status,
+                Season = (int)eventEntity.Season,
                 ContextId = contextId
             };
 
@@ -62,7 +63,8 @@ namespace Repository
                 EndingTime = x.EndingTime,
                 Status = (EventStatus)x.Status,
                 Grade = (int)x.Grade,
-                Type = (EventType)x.Type
+                Type = (EventType)x.Type,
+                AmountSpent = x.AmountSpent
             }).ToList();
         }
 
@@ -72,7 +74,7 @@ namespace Repository
 
             var events = _moodAppContext.Events.Include(x => x.EventPersonRelations).ThenInclude(x => x.Person);
 
-            var ev = events.Where(x => x.ContextId == contextId).Select(x => new EventEntity
+            return events.Where(x => x.ContextId == contextId && x.StartingTime.Date == eventsDate.Date).Select(x => new EventEntity
             {
                 Id = x.Id,
                 Title = x.Title,
@@ -81,13 +83,9 @@ namespace Repository
                 EndingTime = x.EndingTime,
                 Status = (EventStatus)x.Status,
                 Grade = (int)x.Grade,
-                Type = (EventType)x.Type
+                Type = (EventType)x.Type,
+                AmountSpent= x.AmountSpent
             }).ToList();
-
-            var x = ev[0].StartingTime.Date;
-            var y = eventsDate.Date;
-
-            return ev;
         }
 
         public static List<PersonEntity> MapPeople(List<Person> people)
@@ -114,6 +112,7 @@ namespace Repository
             eventToUpdate.Status = (int)eventEntity.Status;
             eventToUpdate.Grade = eventEntity.Grade;
             eventToUpdate.Type = (int)eventEntity.Type;
+            eventToUpdate.AmountSpent = eventEntity.AmountSpent;
 
             eventToUpdate.EventPersonRelations.Clear();
             var relations = _moodAppContext.EventPersonRelations.Where(x => x.EventId == eventToUpdate.Id);
@@ -153,7 +152,8 @@ namespace Repository
                 Status = (EventStatus)x.Status,
                 Grade = (int)x.Grade,
                 Type = (EventType)x.Type,
-                Season = (Season)x.Season
+                Season = (Season)x.Season,
+                AmountSpent = x.AmountSpent
             }).ToList()[0];
         }
 

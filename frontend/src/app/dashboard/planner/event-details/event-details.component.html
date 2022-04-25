@@ -46,21 +46,6 @@
     </ion-accordion>
   </ion-accordion-group>
 
-  <!--<ion-item>
-    <ion-label>Participants:</ion-label>
-    &lt;!&ndash;<ion-select *ngIf="event.people.length > 0" interface="popover">
-      <ion-select-option *ngFor="let person of event.people" disabled> {{ getPersonName(person) }} </ion-select-option>
-    </ion-select>
-    <ion-text *ngIf="!event.people.length">
-      None
-    </ion-text>&ndash;&gt;
-    <ion-list lines="none">
-      <ion-item *ngFor="let person of event.people">
-        {{ getPersonName(person) }}
-      </ion-item>
-    </ion-list>
-  </ion-item>-->
-
   <ion-item *ngIf="event.status == 2">
     <ion-label>Grade:</ion-label>
     <ion-badge color="secondary" slot="end">
@@ -68,10 +53,25 @@
     </ion-badge>
   </ion-item>
 
+  <ion-item *ngIf="event.status == 2">
+    <ion-label>Amount spent:</ion-label>
+    <ion-badge color="secondary" slot="end">
+      {{ event.amountSpent | currency }}
+    </ion-badge>
+  </ion-item>
+
   <form *ngIf="event.status == 1" [formGroup]="form" (ngSubmit)="onSubmit()">
     <ion-item>
-      <ion-label>Grade</ion-label>
-      <ion-input formControlName="grade" placeholder="grade" type="number"></ion-input>
+      <ion-label position="floating">Grade</ion-label>
+      <ion-input formControlName="grade" type="number"></ion-input>
+      <span *ngIf="hasEndEventButtonBeenCliked && form.controls.grade.hasError('required')" slot="error">
+        Field is required
+      </span>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">How much have you spent? ($)</ion-label>
+      <ion-input formControlName="amountSpent" type="number"></ion-input>
       <span *ngIf="hasEndEventButtonBeenCliked && form.controls.grade.hasError('required')" slot="error">
         Field is required
       </span>
