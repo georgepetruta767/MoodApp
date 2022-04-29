@@ -1,5 +1,10 @@
 <ion-title class="ion-text-center ion-padding"> {{ eventsDate | date }} </ion-title>
-<ion-label *ngIf="events.length > 1" class="ion-text-center"> swipe to see more</ion-label>
+<section #button>
+  <ion-text *ngIf="events && events.length > 1">
+    swipe to see more
+  </ion-text>
+</section>
+
 <swiper [effect]="'coverflow'"
         [grabCursor]="true"
         [centeredSlides]="true"

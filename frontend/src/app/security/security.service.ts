@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import {UserModel} from './common/models/user.model';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import { GoogleAuthProvider } from 'firebase/auth';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {ExternalSignUpModel} from "./common/models/external-sign-up.model";
 
 @Injectable({

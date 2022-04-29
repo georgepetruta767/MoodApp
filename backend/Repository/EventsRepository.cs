@@ -28,7 +28,8 @@ namespace Repository
                 StartingTime = eventEntity.StartingTime,
                 Status = (int)eventEntity.Status,
                 Season = (int)eventEntity.Season,
-                ContextId = contextId
+                ContextId = contextId,
+                Type = (int)eventEntity.Type
             };
 
             _moodAppContext.Events.Add(eventDBEntity);

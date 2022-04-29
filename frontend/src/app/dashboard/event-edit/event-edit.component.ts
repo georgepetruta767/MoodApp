@@ -16,8 +16,7 @@ import {Season} from "../common/enums/season.enum";
 
 export class EventEditComponent {
   public async ionViewWillEnter() {
-    if(this.form)
-      this.form.reset();
+    this.setupForm();
 
     await this.getAllPeople();
 

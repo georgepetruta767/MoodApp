@@ -30,8 +30,7 @@ namespace backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
-
+            //services.AddCors();
             services.AddControllers();
 
             services.AddDbContext<MoodAppContext>(options => 
@@ -129,11 +128,11 @@ namespace backend
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(x => x
+            /*app.UseCors(x => x
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .SetIsOriginAllowed(origin => true)
-                .AllowCredentials());
+                .AllowCredentials());*/
 
             app.UseHttpsRedirection();
 

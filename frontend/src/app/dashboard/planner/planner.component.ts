@@ -1,9 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {EventModel} from "../common/models/event.model";
 import {EventsService} from "../common/services/events.service";
 import {NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult} from "@ionic-native/native-geocoder/ngx";
 import {FormControl, FormGroup} from "@angular/forms";
-import {IonContent} from "@ionic/angular";
+import {IonContent, IonDatetime} from "@ionic/angular";
+import { getDate, getMonth, getYear } from 'date-fns';
+import {CalendarComponentOptions, DayConfig} from "ion2-calendar";
 
 @Component({
   selector: 'app-planner',
@@ -12,13 +14,17 @@ import {IonContent} from "@ionic/angular";
 })
 
 export class PlannerComponent implements OnInit {
-  @ViewChild(IonContent)
+  @ViewChild(IonContent, { static: true })
   public content: IonContent;
+
+  public calendarConfig!: CalendarComponentOptions;
 
   public async ionViewWillEnter(){
     await this.loadEvents();
 
     this.setupForm();
+
+    this.setupCalendar();
   }
 
   public dateForm: FormGroup;
@@ -56,26 +62,54 @@ export class PlannerComponent implements OnInit {
     });
   }
 
-  public getMonths() {
-    return [...new Set(this.events.map(x => new Date(x.startingTime).getMonth() + 1))];
-  }
-
-  public getYears() {
-    return [...new Set(this.events.map(x => new Date(x.startingTime).getFullYear()))];
-  }
-
-  public getDays() {
-    return [...new Set(this.events.map(x => new Date(x.startingTime).getDate()))];
-  }
-
   public async loadEvents() {
     this.events = await this.eventsService.getEvents();
   }
 
+  public setupCalendar() {
+    const daysConfig = new Array<DayConfig>();
+    this.events.forEach(event => {
+      daysConfig.push({
+        date: event.startingTime,
+/*
+        marked: true,
+*/
+        cssClass: 'circled'
+      })
+    })
+    this.calendarConfig = {
+      showToggleButtons: true,
+      showMonthPicker: true,
+      from: new Date(1),
+      daysConfig: daysConfig
+    }
+  }
+
   public async showEventsList() {
-      if (this.content.scrollToBottom) {
+    /*this.dateTimeComponent.isDateEnabled = (dateIsoString: string) => {
+      const date = new Date(dateIsoString);
+      console.log(date.getDate())
+      console.log(date.getMonth())
+      console.log(date.getFullYear())
+
+      this.events.forEach(event => {
+        const eventDate = new Date(event.startingTime);
+        console.log(eventDate);
+
+        if(eventDate.getFullYear() === date.getFullYear() &&
+          eventDate.getMonth() + 1 === date.getMonth() &&
+          eventDate.getDate() === date.getDate()) {
+          return true;
+        }
+      });
+
+      return false;
+    }*/
+
+    if (this.content.scrollToBottom) {
         await this.content.scrollToBottom(300);
       }
     this.isEventsListVisible = true;
   }
+
 }

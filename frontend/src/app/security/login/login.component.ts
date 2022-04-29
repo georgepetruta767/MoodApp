@@ -42,7 +42,8 @@ export class LoginComponent implements OnInit {
       let bearerToken = await this.securityService.getLoginResult({
         email: this.form.controls.email.value,
         password: this.form.controls.password.value
-      }).catch(async () => {
+      }).catch(async (e) => {
+        console.log(e);
         await this.presentToast();
       })
       if(bearerToken) {

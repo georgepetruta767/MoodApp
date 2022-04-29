@@ -1,7 +1,9 @@
 <ion-content fullscreen>
   <form *ngIf="dateForm" [formGroup]="dateForm">
-    <ion-datetime (ionChange)="showEventsList()" formControlName="selectedDate" presentation="date" monthValues="{{getMonths()}}" yearValues="{{getYears()}}" dayValues="{{getDays()}}">
-    </ion-datetime>
+    <ion-calendar formControlName="selectedDate"
+                  [options]="calendarConfig"
+                  (select)="showEventsList()">
+    </ion-calendar>
   </form>
   <app-events-list *ngIf="isEventsListVisible" [eventsDate]="dateForm.controls.selectedDate.value"></app-events-list>
 </ion-content>

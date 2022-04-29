@@ -1,5 +1,6 @@
 ﻿using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -18,6 +19,7 @@ namespace backend.Controllers
     [ApiController]
     [Route("moodapp/api/[controller]/[action]")]
     [Authorize]
+    [EnableCors()]
     public class AccountController : ControllerBase
     {
         private SignInManager<UserEntity> _signInManager;

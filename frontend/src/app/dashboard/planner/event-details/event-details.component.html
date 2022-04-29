@@ -62,19 +62,19 @@
 
   <form *ngIf="event.status == 1" [formGroup]="form" (ngSubmit)="onSubmit()">
     <ion-item>
-      <ion-label position="floating">Grade</ion-label>
+      <ion-label position="floating">Grade*</ion-label>
       <ion-input formControlName="grade" type="number"></ion-input>
       <span *ngIf="hasEndEventButtonBeenCliked && form.controls.grade.hasError('required')" slot="error">
         Field is required
+      </span>
+      <span *ngIf="form.controls.grade.hasError('max') || form.controls.grade.hasError('min')" slot="error">
+        Grade must be between 1 and 10
       </span>
     </ion-item>
 
     <ion-item>
       <ion-label position="floating">How much have you spent? ($)</ion-label>
       <ion-input formControlName="amountSpent" type="number"></ion-input>
-      <span *ngIf="hasEndEventButtonBeenCliked && form.controls.grade.hasError('required')" slot="error">
-        Field is required
-      </span>
     </ion-item>
     <ion-button class="ion-margin" expand="full" color="success " type="submit"> End Event </ion-button>
   </form>

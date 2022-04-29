@@ -28,3 +28,10 @@
 @import '~swiper/swiper.min.css';
 
 @import '~@ionic/angular/css/ionic-swiper';
+
+ion-calendar {
+  .circled{
+    border: 1px solid;
+    border-color: #3880ff;
+  }
+}
