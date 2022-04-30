@@ -19,7 +19,6 @@ namespace backend.Controllers
     [ApiController]
     [Route("moodapp/api/[controller]/[action]")]
     [Authorize]
-    [EnableCors()]
     public class AccountController : ControllerBase
     {
         private SignInManager<UserEntity> _signInManager;

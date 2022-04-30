@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
 import {PlannerComponent} from "./planner.component";
-import {CalendarModule} from "ion2-calendar";
+import {CalendarModule} from "ion5-calendar";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {IonicModule} from "@ionic/angular";
 import {EventDetailsComponent} from "./event-details/event-details.component";

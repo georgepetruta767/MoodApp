@@ -22,12 +22,16 @@ export class PlannerComponent implements OnInit {
   public async ionViewWillEnter(){
     await this.loadEvents();
 
+    this.setupCalendar();
+
     this.setupForm();
 
-    this.setupCalendar();
+    this.dateForm.controls.selectedDate.valueChanges.subscribe((x) => {
+      this.showEventsList();
+    })
   }
 
-  public dateForm: FormGroup;
+  public dateForm!: FormGroup;
 
   public isEventsListVisible = false;
 
@@ -58,7 +62,7 @@ export class PlannerComponent implements OnInit {
 
   public setupForm() {
     this.dateForm = new FormGroup({
-      'selectedDate': new FormControl('')
+      'selectedDate': new FormControl()
     });
   }
 
@@ -71,12 +75,10 @@ export class PlannerComponent implements OnInit {
     this.events.forEach(event => {
       daysConfig.push({
         date: event.startingTime,
-/*
-        marked: true,
-*/
         cssClass: 'circled'
       })
     })
+
     this.calendarConfig = {
       showToggleButtons: true,
       showMonthPicker: true,
@@ -86,30 +88,12 @@ export class PlannerComponent implements OnInit {
   }
 
   public async showEventsList() {
-    /*this.dateTimeComponent.isDateEnabled = (dateIsoString: string) => {
-      const date = new Date(dateIsoString);
-      console.log(date.getDate())
-      console.log(date.getMonth())
-      console.log(date.getFullYear())
+    if(this.calendarConfig.daysConfig.find(x => x.date.toString().slice(0, 10) === this.dateForm.controls.selectedDate.value)) {
+      this.isEventsListVisible = true;
 
-      this.events.forEach(event => {
-        const eventDate = new Date(event.startingTime);
-        console.log(eventDate);
-
-        if(eventDate.getFullYear() === date.getFullYear() &&
-          eventDate.getMonth() + 1 === date.getMonth() &&
-          eventDate.getDate() === date.getDate()) {
-          return true;
-        }
-      });
-
-      return false;
-    }*/
-
-    if (this.content.scrollToBottom) {
+      if (this.content.scrollToBottom) {
         await this.content.scrollToBottom(300);
       }
-    this.isEventsListVisible = true;
+    }
   }
-
 }

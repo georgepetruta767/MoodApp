@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api: 'http://192.168.137.1:5000/moodapp/api',
+  api: 'http://localhost:5000/moodapp/api',
   firebaseConfig: {
     apiKey: "AIzaSyC1Y5nji7Btnhsx2l-4YoBB0JxeCum-nYQ",
     authDomain: "moodevaluationapp.firebaseapp.com",

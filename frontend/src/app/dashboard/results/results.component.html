@@ -1,7 +1,13 @@
-<ion-header translucent>
-  <ion-toolbar>
-    <ion-title>Results</ion-title>
-    <ion-icon slot="end" name="log-out-outline" class="ion-padding-end" size="large" routerLink="login"></ion-icon>
-  </ion-toolbar>
-</ion-header>
-<div echarts [options]="chartOption" class="demo-chart"></div>
+<ion-content>
+  <ion-button color="primary" class="ion-padding"> Run analysis </ion-button>
+  <ion-card class="ion-margin">
+    <ion-card-header>
+      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+      <ion-card-title>Card Title</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div echarts [options]="chartOption" class="demo-chart"></div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,9 @@
+:host {
+  display: block;
+
+  padding-top: calc(100vh - 190%);
+
+  .demo-chart {
+    height: 275px;
+  }
+}
