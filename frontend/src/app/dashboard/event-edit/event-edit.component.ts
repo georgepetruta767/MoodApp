@@ -93,9 +93,12 @@ export class EventEditComponent {
         title: this.form.controls.title.value,
         people: this.form.controls.people.value ? this.form.controls.people.value.map(x => this.people.find(y => y.id === x)) : [],
         startingTime: this.form.controls.eventDate.value,
-        status: EventStatus.Incoming,
-        season: season,
-        type: Number(this.form.controls.type.value)
+        status: this.eventToEdit ? this.eventToEdit.status : EventStatus.Incoming,
+        season: this.eventToEdit ? this.eventToEdit.season : season,
+        type: this.eventToEdit ? this.eventToEdit.type : Number(this.form.controls.type.value),
+        grade: this.eventToEdit ? this.eventToEdit.grade : null,
+        amountSpent: this.eventToEdit.amountSpent ? this.eventToEdit.amountSpent : null,
+        endingTime: this.eventToEdit.endingTime ? this.eventToEdit.endingTime : null,
       };
 
       this.eventToEdit ? await this.eventsService.updateEvent(eventModel) : await this.eventsService.addEvent(eventModel);

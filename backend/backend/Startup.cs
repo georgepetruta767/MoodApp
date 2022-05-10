@@ -31,6 +31,7 @@ namespace backend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
+
             services.AddControllers();
 
             services.AddDbContext<MoodAppContext>(options => 
