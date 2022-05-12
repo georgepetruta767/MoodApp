@@ -299,17 +299,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "LoginComponent": () => (/* binding */ LoginComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 64762);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! tslib */ 64762);
 /* harmony import */ var _raw_loader_login_component_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !raw-loader!./login.component.html */ 775);
 /* harmony import */ var _login_component_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./login.component.scss */ 43814);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/core */ 37716);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/forms */ 3679);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/core */ 37716);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/forms */ 3679);
 /* harmony import */ var _security_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../security.service */ 47581);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ 39895);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/router */ 39895);
 /* harmony import */ var _common_identity_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../common/identity.service */ 40946);
 /* harmony import */ var firebase_auth__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! firebase/auth */ 71952);
-/* harmony import */ var _angular_fire_compat_auth__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/fire/compat/auth */ 1325);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @ionic/angular */ 19122);
+/* harmony import */ var _angular_fire_compat_auth__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/fire/compat/auth */ 1325);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @ionic/angular */ 19122);
+/* harmony import */ var _ionic_native_native_geocoder_ngx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ionic-native/native-geocoder/ngx */ 83046);
+
 
 
 
@@ -322,35 +324,48 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let LoginComponent = class LoginComponent {
-    constructor(securityService, identityService, router, afAuth, toastController) {
+    constructor(securityService, identityService, router, afAuth, toastController, nativeGeocoder) {
         this.securityService = securityService;
         this.identityService = identityService;
         this.router = router;
         this.afAuth = afAuth;
         this.toastController = toastController;
+        this.nativeGeocoder = nativeGeocoder;
+        this.options = {
+            useLocale: true,
+            maxResults: 5
+        };
     }
     ionViewWillEnter() {
-        return (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__awaiter)(this, void 0, void 0, function* () {
             yield this.identityService.removeAuthToken();
             this.form.reset();
         });
     }
     ngOnInit() {
+        let latitude, longitude;
+        navigator.geolocation.getCurrentPosition(position => {
+            latitude = position.coords.latitude;
+            longitude = position.coords.longitude;
+        });
+        this.nativeGeocoder.reverseGeocode(latitude, longitude, this.options)
+            .then((result) => console.log(JSON.stringify(result[0])))
+            .catch((error) => console.log(error));
         this.setupForm();
     }
     setupForm() {
-        this.form = new _angular_forms__WEBPACK_IMPORTED_MODULE_6__.FormGroup({
-            email: new _angular_forms__WEBPACK_IMPORTED_MODULE_6__.FormControl('', [_angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.pattern("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")]),
-            password: new _angular_forms__WEBPACK_IMPORTED_MODULE_6__.FormControl('', [_angular_forms__WEBPACK_IMPORTED_MODULE_6__.Validators.required])
+        this.form = new _angular_forms__WEBPACK_IMPORTED_MODULE_7__.FormGroup({
+            email: new _angular_forms__WEBPACK_IMPORTED_MODULE_7__.FormControl('', [_angular_forms__WEBPACK_IMPORTED_MODULE_7__.Validators.required, _angular_forms__WEBPACK_IMPORTED_MODULE_7__.Validators.pattern("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")]),
+            password: new _angular_forms__WEBPACK_IMPORTED_MODULE_7__.FormControl('', [_angular_forms__WEBPACK_IMPORTED_MODULE_7__.Validators.required])
         });
     }
     onSubmit() {
-        return (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__awaiter)(this, void 0, void 0, function* () {
             if (this.form.valid) {
                 let bearerToken = yield this.securityService.getLoginResult({
                     email: this.form.controls.email.value,
                     password: this.form.controls.password.value
-                }).catch((e) => (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
+                }).catch((e) => (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__awaiter)(this, void 0, void 0, function* () {
                     console.log(e);
                     yield this.presentToast();
                 }));
@@ -362,7 +377,7 @@ let LoginComponent = class LoginComponent {
         });
     }
     presentToast() {
-        return (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__awaiter)(this, void 0, void 0, function* () {
             const toast = yield this.toastController.create({
                 message: 'Invalid username or password.',
                 duration: 2000
@@ -371,7 +386,7 @@ let LoginComponent = class LoginComponent {
         });
     }
     navigateToSignUp() {
-        return (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__awaiter)(this, void 0, void 0, function* () {
             yield this.router.navigateByUrl('security/signup');
         });
     }
@@ -381,7 +396,7 @@ let LoginComponent = class LoginComponent {
     AuthLogin(provider) {
         return this.afAuth
             .signInWithPopup(provider)
-            .then((result) => (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__awaiter)(this, void 0, void 0, function* () {
+            .then((result) => (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__awaiter)(this, void 0, void 0, function* () {
             const tok = yield result.user.getIdToken(true);
             let bearerToken = yield this.securityService.googleSignIn({
                 provider: result.credential.providerId,
@@ -400,12 +415,13 @@ let LoginComponent = class LoginComponent {
 LoginComponent.ctorParameters = () => [
     { type: _security_service__WEBPACK_IMPORTED_MODULE_2__.SecurityService },
     { type: _common_identity_service__WEBPACK_IMPORTED_MODULE_3__.IdentityService },
-    { type: _angular_router__WEBPACK_IMPORTED_MODULE_7__.Router },
-    { type: _angular_fire_compat_auth__WEBPACK_IMPORTED_MODULE_8__.AngularFireAuth },
-    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_9__.ToastController }
+    { type: _angular_router__WEBPACK_IMPORTED_MODULE_8__.Router },
+    { type: _angular_fire_compat_auth__WEBPACK_IMPORTED_MODULE_9__.AngularFireAuth },
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_10__.ToastController },
+    { type: _ionic_native_native_geocoder_ngx__WEBPACK_IMPORTED_MODULE_5__.NativeGeocoder }
 ];
-LoginComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([
-    (0,_angular_core__WEBPACK_IMPORTED_MODULE_10__.Component)({
+LoginComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_6__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_11__.Component)({
         selector: 'app-login',
         template: _raw_loader_login_component_html__WEBPACK_IMPORTED_MODULE_0__.default,
         styles: [_login_component_scss__WEBPACK_IMPORTED_MODULE_1__.default]
@@ -727,7 +743,8 @@ __webpack_require__.r(__webpack_exports__);
 // The list of file replacements can be found in `angular.json`.
 const environment = {
     production: false,
-    api: 'http://192.168.137.1:5000/moodapp/api',
+    api: 'http://localhost:5000/moodapp/api',
+    resultsApi: 'http://localhost:8000',
     firebaseConfig: {
         apiKey: "AIzaSyC1Y5nji7Btnhsx2l-4YoBB0JxeCum-nYQ",
         authDomain: "moodevaluationapp.firebaseapp.com",

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import * as echarts from 'echarts';
+import {ResultService} from "./result.service";
 
 type EChartsOption = echarts.EChartsOption;
 
@@ -26,8 +27,11 @@ export class ResultsComponent implements OnInit {
     }]
   }
 
-  constructor() { }
+  constructor(private resultsService: ResultService) { }
 
-  ngOnInit() {}
+  public async ngOnInit() {
+    const obj = await this.resultsService.getMeanGradePerSeasonValues();
+    console.log(obj);
+  }
 
 }

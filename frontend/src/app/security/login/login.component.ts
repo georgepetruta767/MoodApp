@@ -6,6 +6,7 @@ import {IdentityService} from "../../common/identity.service";
 import {GoogleAuthProvider} from "firebase/auth";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {ToastController} from "@ionic/angular";
+import {NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult} from "@ionic-native/native-geocoder/ngx";
 
 @Component({
   selector: 'app-login',
@@ -20,13 +21,28 @@ export class LoginComponent implements OnInit {
 
   public form!: FormGroup;
 
+  options: NativeGeocoderOptions = {
+    useLocale: true,
+    maxResults: 5
+  };
+
   constructor(private securityService: SecurityService,
               private identityService: IdentityService,
               private router: Router,
               private afAuth: AngularFireAuth,
-              private toastController: ToastController) { }
+              private toastController: ToastController,
+              private nativeGeocoder: NativeGeocoder) { }
 
   ngOnInit() {
+    let latitude, longitude;
+    navigator.geolocation.getCurrentPosition(position => {
+      latitude = position.coords.latitude;
+      longitude = position.coords.longitude
+    });
+
+    this.nativeGeocoder.reverseGeocode(latitude, longitude, this.options)
+      .then((result: NativeGeocoderResult[]) => console.log(JSON.stringify(result[0])))
+      .catch((error: any) => console.log(error));
     this.setupForm();
   }
 

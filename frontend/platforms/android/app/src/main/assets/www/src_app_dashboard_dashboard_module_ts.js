@@ -38540,15 +38540,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var options = {
-    method: 'GET',
-    url: 'https://api.ip2loc.com/QjEGnNRgEV7CzpQi08ICP3RB1gCGoGGs/detect?include=city',
-    params: { latlng: '40.714224,-73.96145', language: 'en' },
-    headers: {
-        'x-rapidapi-key': 'QjEGnNRgEV7CzpQi08ICP3RB1gCGoGGs',
-        'x-rapidapi-host': 'google-maps-geocoding.p.rapidapi.com'
-    }
-};
 let EventsService = class EventsService {
     constructor(http) {
         this.http = http;
@@ -38877,9 +38868,12 @@ let EventEditComponent = class EventEditComponent {
                     title: this.form.controls.title.value,
                     people: this.form.controls.people.value ? this.form.controls.people.value.map(x => this.people.find(y => y.id === x)) : [],
                     startingTime: this.form.controls.eventDate.value,
-                    status: _common_enums_event_status_enum__WEBPACK_IMPORTED_MODULE_4__.EventStatus.Incoming,
-                    season: season,
-                    type: Number(this.form.controls.type.value)
+                    status: this.eventToEdit ? this.eventToEdit.status : _common_enums_event_status_enum__WEBPACK_IMPORTED_MODULE_4__.EventStatus.Incoming,
+                    season: this.eventToEdit ? this.eventToEdit.season : season,
+                    type: this.eventToEdit ? this.eventToEdit.type : Number(this.form.controls.type.value),
+                    grade: this.eventToEdit ? this.eventToEdit.grade : null,
+                    amountSpent: this.eventToEdit.amountSpent ? this.eventToEdit.amountSpent : null,
+                    endingTime: this.eventToEdit.endingTime ? this.eventToEdit.endingTime : null,
                 };
                 this.eventToEdit ? yield this.eventsService.updateEvent(eventModel) : yield this.eventsService.addEvent(eventModel);
                 yield this.router.navigateByUrl('calendar');
@@ -39381,15 +39375,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "PlannerComponent": () => (/* binding */ PlannerComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 64762);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 64762);
 /* harmony import */ var _raw_loader_planner_component_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !raw-loader!./planner.component.html */ 53973);
 /* harmony import */ var _planner_component_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./planner.component.scss */ 84192);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 37716);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 37716);
 /* harmony import */ var _common_services_events_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../common/services/events.service */ 90692);
-/* harmony import */ var _ionic_native_native_geocoder_ngx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic-native/native-geocoder/ngx */ 83046);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ 3679);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ionic/angular */ 19122);
-
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ 3679);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ionic/angular */ 19122);
 
 
 
@@ -39398,17 +39390,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let PlannerComponent = class PlannerComponent {
-    constructor(eventsService, nativeGeocoder) {
+    constructor(eventsService) {
         this.eventsService = eventsService;
-        this.nativeGeocoder = nativeGeocoder;
         this.isEventsListVisible = false;
-        this.options = {
-            useLocale: true,
-            maxResults: 5
-        };
     }
     ionViewWillEnter() {
-        return (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__awaiter)(this, void 0, void 0, function* () {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__awaiter)(this, void 0, void 0, function* () {
             yield this.loadEvents();
             this.setupCalendar();
             this.setupForm();
@@ -39418,26 +39405,19 @@ let PlannerComponent = class PlannerComponent {
         });
     }
     ngOnInit() {
-        return (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__awaiter)(this, void 0, void 0, function* () {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__awaiter)(this, void 0, void 0, function* () {
             if (!navigator.geolocation) {
                 console.log('location is not supported');
             }
-            navigator.geolocation.getCurrentPosition(position => {
-                /*let loc = this.getReverseGeocodingData(position.coords.latitude, position.coords.longitude);*/
-                console.log(position);
-            });
-            this.nativeGeocoder.reverseGeocode(52.5072095, 13.1452818, this.options)
-                .then((result) => console.log(JSON.stringify(result[0])))
-                .catch((error) => console.log(error));
         });
     }
     setupForm() {
-        this.dateForm = new _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormGroup({
-            'selectedDate': new _angular_forms__WEBPACK_IMPORTED_MODULE_5__.FormControl()
+        this.dateForm = new _angular_forms__WEBPACK_IMPORTED_MODULE_4__.FormGroup({
+            'selectedDate': new _angular_forms__WEBPACK_IMPORTED_MODULE_4__.FormControl()
         });
     }
     loadEvents() {
-        return (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__awaiter)(this, void 0, void 0, function* () {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__awaiter)(this, void 0, void 0, function* () {
             this.events = yield this.eventsService.getEvents();
         });
     }
@@ -39457,7 +39437,7 @@ let PlannerComponent = class PlannerComponent {
         };
     }
     showEventsList() {
-        return (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__awaiter)(this, void 0, void 0, function* () {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__awaiter)(this, void 0, void 0, function* () {
             if (this.calendarConfig.daysConfig.find(x => x.date.toString().slice(0, 10) === this.dateForm.controls.selectedDate.value)) {
                 this.isEventsListVisible = true;
                 if (this.content.scrollToBottom) {
@@ -39468,14 +39448,13 @@ let PlannerComponent = class PlannerComponent {
     }
 };
 PlannerComponent.ctorParameters = () => [
-    { type: _common_services_events_service__WEBPACK_IMPORTED_MODULE_2__.EventsService },
-    { type: _ionic_native_native_geocoder_ngx__WEBPACK_IMPORTED_MODULE_3__.NativeGeocoder }
+    { type: _common_services_events_service__WEBPACK_IMPORTED_MODULE_2__.EventsService }
 ];
 PlannerComponent.propDecorators = {
-    content: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_6__.ViewChild, args: [_ionic_angular__WEBPACK_IMPORTED_MODULE_7__.IonContent, { static: true },] }]
+    content: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_5__.ViewChild, args: [_ionic_angular__WEBPACK_IMPORTED_MODULE_6__.IonContent, { static: true },] }]
 };
-PlannerComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([
-    (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.Component)({
+PlannerComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.Component)({
         selector: 'app-planner',
         template: _raw_loader_planner_component_html__WEBPACK_IMPORTED_MODULE_0__.default,
         styles: [_planner_component_scss__WEBPACK_IMPORTED_MODULE_1__.default]
@@ -39556,6 +39535,46 @@ PlannerModule = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([
 
 /***/ }),
 
+/***/ 79887:
+/*!*****************************************************!*\
+  !*** ./src/app/dashboard/results/result.service.ts ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ResultService": () => (/* binding */ ResultService)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ 64762);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37716);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ 91841);
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../environments/environment */ 92340);
+
+
+
+
+let ResultService = class ResultService {
+    constructor(http) {
+        this.http = http;
+    }
+    getMeanGradePerSeasonValues() {
+        return this.http.get(`${_environments_environment__WEBPACK_IMPORTED_MODULE_0__.environment.resultsApi}/get-bar-grade/mean`).toPromise();
+    }
+};
+ResultService.ctorParameters = () => [
+    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__.HttpClient }
+];
+ResultService = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Injectable)({
+        providedIn: 'root'
+    })
+], ResultService);
+
+
+
+/***/ }),
+
 /***/ 93871:
 /*!********************************************************!*\
   !*** ./src/app/dashboard/results/results.component.ts ***!
@@ -39567,16 +39586,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "ResultsComponent": () => (/* binding */ ResultsComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ 64762);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 64762);
 /* harmony import */ var _raw_loader_results_component_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !raw-loader!./results.component.html */ 37964);
 /* harmony import */ var _results_component_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./results.component.scss */ 57655);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 37716);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 37716);
+/* harmony import */ var _result_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./result.service */ 79887);
+
 
 
 
 
 let ResultsComponent = class ResultsComponent {
-    constructor() {
+    constructor(resultsService) {
+        this.resultsService = resultsService;
         this.chartOption = {
             xAxis: {
                 type: 'category',
@@ -39593,11 +39615,18 @@ let ResultsComponent = class ResultsComponent {
                 }]
         };
     }
-    ngOnInit() { }
+    ngOnInit() {
+        return (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__awaiter)(this, void 0, void 0, function* () {
+            const obj = yield this.resultsService.getMeanGradePerSeasonValues();
+            console.log(obj);
+        });
+    }
 };
-ResultsComponent.ctorParameters = () => [];
-ResultsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([
-    (0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Component)({
+ResultsComponent.ctorParameters = () => [
+    { type: _result_service__WEBPACK_IMPORTED_MODULE_2__.ResultService }
+];
+ResultsComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Component)({
         selector: 'app-results',
         template: _raw_loader_results_component_html__WEBPACK_IMPORTED_MODULE_0__.default,
         styles: [_results_component_scss__WEBPACK_IMPORTED_MODULE_1__.default]

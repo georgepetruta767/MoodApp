@@ -2,18 +2,6 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {EventModel} from "../models/event.model";
 import {environment} from "../../../../environments/environment";
-import axios from 'axios';
-import {IonDatetime} from "@ionic/angular";
-
-var options = {
-  method: 'GET',
-  url: 'https://api.ip2loc.com/QjEGnNRgEV7CzpQi08ICP3RB1gCGoGGs/detect?include=city',
-  params: {latlng: '40.714224,-73.96145', language: 'en'},
-  headers: {
-    'x-rapidapi-key': 'QjEGnNRgEV7CzpQi08ICP3RB1gCGoGGs',
-    'x-rapidapi-host': 'google-maps-geocoding.p.rapidapi.com'
-  }
-};
 
 @Injectable({
   providedIn: 'root'
