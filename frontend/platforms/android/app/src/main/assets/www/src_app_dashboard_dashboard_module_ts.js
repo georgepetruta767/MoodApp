@@ -40698,7 +40698,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("<ion-content>\n  <ion-button color=\"primary\" class=\"ion-padding\"> Run analysis </ion-button>\n  <ion-card class=\"ion-margin\">\n    <ion-card-header>\n      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>\n      <ion-card-title>Card Title</ion-card-title>\n    </ion-card-header>\n\n    <ion-card-content>\n      <div echarts [options]=\"chartOption\" class=\"demo-chart\"></div>\n    </ion-card-content>\n  </ion-card>\n</ion-content>\n");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("<ion-content>\r\n  <ion-button color=\"primary\" class=\"ion-padding\"> Run analysis </ion-button>\r\n  <ion-card class=\"ion-margin\">\r\n    <ion-card-header>\r\n      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>\r\n      <ion-card-title>Card Title</ion-card-title>\r\n    </ion-card-header>\r\n\r\n    <ion-card-content>\r\n      <div echarts [options]=\"chartOption\" class=\"demo-chart\"></div>\r\n    </ion-card-content>\r\n  </ion-card>\r\n</ion-content>\r\n");
 
 /***/ })
 

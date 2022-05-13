@@ -1,13 +1,13 @@
 <ion-content>
-  <ion-button color="primary" class="ion-padding"> Run analysis </ion-button>
+  <ion-button color="primary" class="ion-padding ion-margin-bottom"> Run analysis </ion-button>
   <ion-card class="ion-margin">
     <ion-card-header>
-      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-      <ion-card-title>Card Title</ion-card-title>
+      <ion-card-title>Mean grade over season </ion-card-title>
+      <ion-card-subtitle> This is how your mood was influenced by season</ion-card-subtitle>
     </ion-card-header>
 
     <ion-card-content>
-      <div echarts [options]="chartOption" class="demo-chart"></div>
+      <div *ngIf="meanGradeOverSeasonChart" echarts [options]="meanGradeOverSeasonChart" class="demo-chart"></div>
     </ion-card-content>
   </ion-card>
 </ion-content>

@@ -6,6 +6,7 @@
 db/
 licenta generator/
 frontend/android
+frontend/platforms
 frontend/ios
 frontend/www
 frotend/e2e
