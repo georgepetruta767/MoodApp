@@ -21,7 +21,8 @@ export class LoginComponent implements OnInit {
 
   public form!: FormGroup;
 
-  options: NativeGeocoderOptions = {
+  options = {
+    enableHighAccuracy: true,
     useLocale: true,
     maxResults: 5
   };
@@ -34,15 +35,6 @@ export class LoginComponent implements OnInit {
               private nativeGeocoder: NativeGeocoder) { }
 
   ngOnInit() {
-    let latitude, longitude;
-    navigator.geolocation.getCurrentPosition(position => {
-      latitude = position.coords.latitude;
-      longitude = position.coords.longitude
-    });
-
-    this.nativeGeocoder.reverseGeocode(latitude, longitude, this.options)
-      .then((result: NativeGeocoderResult[]) => console.log(JSON.stringify(result[0])))
-      .catch((error: any) => console.log(error));
     this.setupForm();
   }
 
@@ -54,6 +46,22 @@ export class LoginComponent implements OnInit {
   }
 
   public async onSubmit() {
+    if(!navigator.geolocation){
+      console.log('location is not supported');
+    }
+
+    navigator.geolocation.getCurrentPosition(position => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      console.log(latitude, longitude);
+      console.log(position);
+
+      this.nativeGeocoder.reverseGeocode(latitude, longitude, this.options)
+        .then((result: NativeGeocoderResult[]) => console.log(result))
+        .catch((error: any) => console.log(error));
+    });
+
     if (this.form.valid) {
       let bearerToken = await this.securityService.getLoginResult({
         email: this.form.controls.email.value,
