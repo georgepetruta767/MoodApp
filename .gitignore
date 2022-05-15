@@ -10,7 +10,7 @@ frontend/plugins/
 frontend/resources/
 frontend/ios/
 frontend/www/
-frotend/e2e/
+frontend/e2e/
 
 # User-specific files
 *.rsuser
