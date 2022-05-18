@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {EventModel} from "../common/models/event.model";
 import {EventsService} from "../common/services/events.service";
 import {FormControl, FormGroup} from "@angular/forms";
@@ -11,13 +11,15 @@ import {CalendarComponentOptions, DayConfig} from "ion5-calendar";
   styleUrls: ['./planner.component.scss']
 })
 
-export class PlannerComponent implements OnInit {
-  @ViewChild(IonContent, { static: true })
+export class PlannerComponent {
+  @ViewChild('content', { static: true })
   public content: IonContent;
 
   public calendarConfig!: CalendarComponentOptions;
 
   public async ionViewWillEnter(){
+    this.isEventsListVisible = false;
+
     await this.loadEvents();
 
     this.setupCalendar();
@@ -37,12 +39,6 @@ export class PlannerComponent implements OnInit {
 
   constructor(private eventsService: EventsService) { }
 
-  public async ngOnInit() {
-    if(!navigator.geolocation){
-      console.log('location is not supported');
-    }
-  }
-
   public setupForm() {
     this.dateForm = new FormGroup({
       'selectedDate': new FormControl()
@@ -51,6 +47,10 @@ export class PlannerComponent implements OnInit {
 
   public async loadEvents() {
     this.events = await this.eventsService.getEvents();
+  }
+
+  public monthChange() {
+    this.isEventsListVisible = false;
   }
 
   public setupCalendar() {
@@ -71,12 +71,10 @@ export class PlannerComponent implements OnInit {
   }
 
   public async showEventsList() {
+    await this.content.scrollToBottom(300);
+
     if(this.calendarConfig.daysConfig.find(x => x.date.toString().slice(0, 10) === this.dateForm.controls.selectedDate.value)) {
       this.isEventsListVisible = true;
-
-      if (this.content.scrollToBottom) {
-        await this.content.scrollToBottom(300);
-      }
     }
   }
 }

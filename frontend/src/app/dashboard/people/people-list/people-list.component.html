@@ -4,11 +4,10 @@
     <ion-list>
       <ion-item-sliding *ngFor="let person of people | filterBy: searchTerm">
         <ion-item-options side="end">
-          <ion-item-option (click)="presentModal(person)">Edit</ion-item-option>
           <ion-item-option (click)="deletePerson(person)" color="danger">Delete</ion-item-option>
         </ion-item-options>
 
-        <ion-item>
+        <ion-item (click)="presentModal(person)">
           <ion-label>
             <h2>{{getFullName(person)}}</h2>
             <h3>{{person.age}}</h3>

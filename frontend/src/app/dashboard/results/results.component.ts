@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 
 import * as echarts from 'echarts';
 import {ResultService} from "./result.service";
+import {SecurityService} from "../common/services/security.service";
 
 type EChartsOption = echarts.EChartsOption;
 
@@ -13,11 +14,14 @@ type EChartsOption = echarts.EChartsOption;
 export class ResultsComponent implements OnInit {
   public meanGradeOverSeasonChart: EChartsOption;
 
-  constructor(private resultsService: ResultService) { }
+  public userId: string;
+
+  constructor(private resultsService: ResultService,
+              private accountService: SecurityService) { }
 
   public async ngOnInit() {
-    this.meanGradeOverSeasonChart = await this.resultsService.getMeanGradePerSeasonValues();
+    this.userId = await this.accountService.getUserId();
+    this.meanGradeOverSeasonChart = await this.resultsService.getMeanGradePerSeasonValues(this.userId);
     console.log(this.meanGradeOverSeasonChart)
   }
-
 }

@@ -9,7 +9,7 @@ export class ResultService {
 
   constructor(private http: HttpClient) { }
 
-  public getMeanGradePerSeasonValues(): Promise<any> {
-    return this.http.get(`${environment.resultsApi}/get-bar-grade/mean`).toPromise();
+  public getMeanGradePerSeasonValues(userId: string): Promise<any> {
+    return this.http.get(`${environment.resultsApi}/get-bar-grade/mean/userId=${userId}`).toPromise();
   }
 }

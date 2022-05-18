@@ -97,8 +97,8 @@ export class EventEditComponent {
         season: this.eventToEdit ? this.eventToEdit.season : season,
         type: this.eventToEdit ? this.eventToEdit.type : Number(this.form.controls.type.value),
         grade: this.eventToEdit ? this.eventToEdit.grade : null,
-        amountSpent: this.eventToEdit.amountSpent ? this.eventToEdit.amountSpent : null,
-        endingTime: this.eventToEdit.endingTime ? this.eventToEdit.endingTime : null,
+        amountSpent: this.eventToEdit ? this.eventToEdit.amountSpent : null,
+        endingTime: this.eventToEdit ? this.eventToEdit.endingTime : null,
       };
 
       this.eventToEdit ? await this.eventsService.updateEvent(eventModel) : await this.eventsService.addEvent(eventModel);

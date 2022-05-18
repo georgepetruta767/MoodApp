@@ -1,3 +1,4 @@
+import psycopg2 as psycopg2
 from fastapi import FastAPI
 import pandas as pd
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,6 +9,20 @@ app.add_middleware(
         CORSMiddleware,
         allow_origins=['*']
     )
+
+conn = psycopg2.connect("dbname=moodapp user=postgres password=postgres")
+
+async def get_data_by_query(db_query):
+    cur = conn.cursor()
+
+    cur.execute(db_query)
+
+    records = cur.fetchall()
+
+    cur.close()
+
+    return records
+
 
 @app.get("/get-bar-grade/{type_}")
 async def get_bar_(type_: str):
@@ -38,3 +53,6 @@ async def get_bar_(type_: str):
     }
 
     return data
+
+
+conn.close()

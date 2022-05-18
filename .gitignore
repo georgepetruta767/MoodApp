@@ -12,6 +12,9 @@ frontend/ios/
 frontend/www/
 frontend/e2e/
 
+*.ipynb_checkpoints
+*.ipynb
+
 # User-specific files
 *.rsuser
 *.suo

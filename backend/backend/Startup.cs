@@ -26,11 +26,21 @@ namespace backend
         }
 
         public IConfiguration Configuration { get; }
+        private readonly string _cors = "MyAllowSpecificOrigins";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: _cors,
+                                  policy =>
+                                  {
+                                      policy.AllowAnyHeader()
+                                        .AllowAnyMethod()
+                                        .AllowAnyOrigin();
+                                  });
+            });
 
             services.AddControllers();
 
@@ -117,8 +127,8 @@ namespace backend
 
             services.AddTransient<Repository.AccountRepository>();
             services.AddTransient<Worker.AccountWorker>();
-
             services.AddIdentity<UserEntity, IdentityRole>().AddEntityFrameworkStores<MoodAppContext>();
+            services.AddTransient<Repository.IMoodAppDbContext,MoodAppContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -129,11 +139,8 @@ namespace backend
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(x => x
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .SetIsOriginAllowed(origin => true)
-                .AllowCredentials());
+            app.UseCors(_cors);
+
 
             app.UseHttpsRedirection();
 

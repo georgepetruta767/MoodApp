@@ -28,21 +28,12 @@ export class EventDetailsComponent implements OnInit {
 
   public ngOnInit() {
     this.setupForm();
-
-    /*if(!navigator.geolocation){
-      console.log('location is not supported');
-    }
-
-    navigator.geolocation.getCurrentPosition(position => {
-      /!*let loc = this.getReverseGeocodingData(position.coords.latitude, position.coords.longitude);*!/
-      console.log(position);
-    });*/
   }
 
   public setupForm() {
     this.form = new FormGroup({
       grade: new FormControl('', [Validators.required, Validators.min(1), Validators.max(10)]),
-      amountSpent: new FormControl('', [Validators.required, Validators.min(0)])
+      amountSpent: new FormControl(null, [Validators.min(0)])
     });
   }
 
@@ -51,6 +42,8 @@ export class EventDetailsComponent implements OnInit {
   }
 
   public async updateEvent() {
+    console.log(this.event);
+
     switch(this.event.status) {
       case EventStatus.Incoming:
         this.event.status = EventStatus.InProgress;

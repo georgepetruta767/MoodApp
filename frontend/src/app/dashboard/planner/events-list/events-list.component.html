@@ -1,4 +1,4 @@
-<ion-title class="ion-text-center ion-padding"> {{ eventsDate | date }} </ion-title>
+<ion-title *ngIf="events && events.length > 0" class="ion-text-center ion-padding"> {{ eventsDate | date }} </ion-title>
 <section #button>
   <ion-text *ngIf="events && events.length > 1">
     swipe to see more

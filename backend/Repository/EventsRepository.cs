@@ -114,6 +114,7 @@ namespace Repository
             eventToUpdate.Grade = eventEntity.Grade;
             eventToUpdate.Type = (int)eventEntity.Type;
             eventToUpdate.AmountSpent = eventEntity.AmountSpent;
+            eventToUpdate.Title = eventEntity.Title;
 
             eventToUpdate.EventPersonRelations.Clear();
             var relations = _moodAppContext.EventPersonRelations.Where(x => x.EventId == eventToUpdate.Id);

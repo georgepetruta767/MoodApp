@@ -13,6 +13,10 @@ SwiperCore.use([EffectCoverflow, Pagination]);
 })
 
 export class EventsListComponent implements OnChanges, AfterViewInit {
+  public async ionViewWillEnter() {
+    await this.loadEvents();
+  }
+
   public async ngOnChanges() {
     await this.loadEvents();
   }

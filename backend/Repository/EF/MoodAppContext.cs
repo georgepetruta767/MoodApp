@@ -2,13 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Repository.Entities;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
 namespace Repository.EF
 {
-    public partial class MoodAppContext : IdentityDbContext<UserEntity>
+    public partial class MoodAppContext : IdentityDbContext<UserEntity>, IMoodAppDbContext
     {
         public MoodAppContext()
         {
@@ -24,7 +23,6 @@ namespace Repository.EF
         public virtual DbSet<EventPersonRelation> EventPersonRelations { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<Person> People { get; set; }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 

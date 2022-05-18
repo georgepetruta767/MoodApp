@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {UserModel} from './common/models/user.model';
-import {HttpClient} from '@angular/common/http';
-import {environment} from '../../environments/environment';
-import {ExternalSignUpModel} from "./common/models/external-sign-up.model";
+import {UserModel} from '../models/user.model';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {environment} from '../../../../environments/environment';
+import {ExternalSignUpModel} from "../../../security/common/models/external-sign-up.model";
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +21,14 @@ export class SecurityService {
 
   public googleSignIn(externalSignUpModel: ExternalSignUpModel): Promise<string> {
     return this.http.post(`${environment.api}/Account/ExternalSignUp`, externalSignUpModel, { responseType: 'text' }).toPromise();
+  }
+
+  public getUserId(): Promise<string> {
+    return this.http.get<string>(`${environment.api}/Account/GetUserId`, {
+      headers: new HttpHeaders({
+        "Authorization": `Bearer ${sessionStorage.getItem('bearerToken')}`
+      })
+    }).toPromise();
   }
 }
 

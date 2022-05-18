@@ -1,6 +1,5 @@
 ﻿using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -84,6 +83,12 @@ namespace backend.Controllers
                 return Ok(result);
             }
             return BadRequest("Incorrect credentials");
+        }
+
+        [HttpGet]
+        public async Task<string> GetUserId()
+        {
+            return User.FindFirstValue(ClaimTypes.Name);
         }
 
         [HttpPost]

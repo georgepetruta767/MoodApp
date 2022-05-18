@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {SecurityService} from "../security.service";
+import {SecurityService} from "../../dashboard/common/services/security.service";
 import {Router} from "@angular/router";
 import {IdentityService} from "../../common/identity.service";
 import {GoogleAuthProvider} from "firebase/auth";
