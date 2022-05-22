@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Moq;
 using Repository;
 using Repository.EF;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace RepositoryTests
@@ -25,10 +25,24 @@ namespace RepositoryTests
                     Id=Guid.NewGuid(),
                     Aspnetuserid=_mockUserId
                 }
-            }.AsEnumerable();
+            };
 
-           /* _mockDbContext.Setup(x => x.Contexts).Returns( x);
-            _repository = new EventsRepository(_mockDbContext.Object);*/
+            /*var mockContext = new Mock<DbSet<Context>>();
+
+            mockContext.Object.Add(new Context
+            {
+                Id = Guid.NewGuid(),
+                Aspnetuserid = _mockUserId
+            });
+
+            _mockDbContext.Setup(p => p.Set<Context>().Add(It.IsAny<Context>())).Returns(new Table
+            {
+                Id = Guid.NewGuid(),
+                Aspnetuserid = _mockUserId
+            });*/
+
+            _mockDbContext.Setup(x => x.Contexts).Returns(x);
+            _repository = new EventsRepository(_mockDbContext.Object);
         }
 
         [Fact]
@@ -41,7 +55,7 @@ namespace RepositoryTests
                 Status = 0,
                 Type = 0,
                 Season = (Global.Season)1
-            }, _mockUserId.ToString()) ;
+            }, _mockUserId) ;
 
             Assert.Equal(1, _repository.GetEvents(_mockUserId).Count);
         }

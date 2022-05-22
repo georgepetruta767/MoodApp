@@ -10,8 +10,7 @@ create table locations (
 	country varchar(500) not null
 );
 
-create table Context(
-    id uuid primary key not null);
+create table Context(id uuid primary key not null);
 /*    aspNetUserId text constraint FK_AspNetUsers_AspNetUser_id references "AspNetUsers"("Id") not null
 */
 
@@ -45,14 +44,15 @@ create table event_person_relation(
 	person_id uuid constraint FK_people_person_id references people(id) not null
 );
 
+alter table Context
+add aspNetUserId text constraint FK_AspNetUsers_AspNetUser_id references "AspNetUsers"("Id") not null;
+
+
 drop table event_person_relation;
 drop table people;
 drop table events;
 drop table locations;
 drop table Context;
-
-alter table Context
-add aspNetUserId text constraint FK_AspNetUsers_AspNetUser_id references "AspNetUsers"("Id") not null;
 
 delete from event_person_relation
     where 1 = 1

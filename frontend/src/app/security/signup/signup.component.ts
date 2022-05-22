@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {SecurityService} from "../../dashboard/common/services/security.service";
 import {Router} from "@angular/router";
-import {GoogleAuthProvider} from "firebase/auth";
-import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {PopoverController} from "@ionic/angular";
 
 @Component({
@@ -22,8 +20,7 @@ export class SignupComponent implements OnInit {
 
   constructor(private securityService: SecurityService,
               private popoverController: PopoverController,
-              private router: Router,
-              private afAuth: AngularFireAuth) { }
+              private router: Router) { }
 
   ngOnInit() {
     this.setupForm();
@@ -77,22 +74,22 @@ export class SignupComponent implements OnInit {
   }
 
   public googleAuthentication() {
-    return this.AuthLogin(new GoogleAuthProvider());
+    //return this.AuthLogin(new GoogleAuthProvider());
   }
 
   public AuthLogin(provider) {
-    return this.afAuth
+    /*return this.afAuth
       .signInWithPopup(provider)
       .then(async result => {
         const tok = await result.user.getIdToken(true);
         await this.securityService.googleSignIn({
           provider: result.credential.providerId,
           idToken: tok
-        })
+        });
 
       })
       .catch((error) => {
         console.log(error);
-      });
+      });*/
   }
 }

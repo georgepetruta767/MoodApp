@@ -3,10 +3,13 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {SecurityService} from "../../dashboard/common/services/security.service";
 import {Router} from "@angular/router";
 import {IdentityService} from "../../common/identity.service";
-import {GoogleAuthProvider} from "firebase/auth";
-import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {ToastController} from "@ionic/angular";
-import {NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult} from "@ionic-native/native-geocoder/ngx";
+import { Geolocation } from '@capacitor/geolocation';
+import {
+  NativeGeocoder,
+  NativeGeocoderOptions,
+  NativeGeocoderResult
+} from "@awesome-cordova-plugins/native-geocoder/ngx";
 
 @Component({
   selector: 'app-login',
@@ -21,16 +24,15 @@ export class LoginComponent implements OnInit {
 
   public form!: FormGroup;
 
-  options = {
-    enableHighAccuracy: true,
+  public options: NativeGeocoderOptions = {
     useLocale: true,
     maxResults: 5
   };
 
+
   constructor(private securityService: SecurityService,
               private identityService: IdentityService,
               private router: Router,
-              private afAuth: AngularFireAuth,
               private toastController: ToastController,
               private nativeGeocoder: NativeGeocoder) { }
 
@@ -46,21 +48,14 @@ export class LoginComponent implements OnInit {
   }
 
   public async onSubmit() {
-    if(!navigator.geolocation){
-      console.log('location is not supported');
-    }
+    await Geolocation.checkPermissions();
+    await Geolocation.requestPermissions();
 
-    navigator.geolocation.getCurrentPosition(position => {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
+    const position = await Geolocation.getCurrentPosition();
 
-      console.log(latitude, longitude);
-      console.log(position);
-
-      this.nativeGeocoder.reverseGeocode(latitude, longitude, this.options)
-        .then((result: NativeGeocoderResult[]) => console.log(result))
-        .catch((error: any) => console.log(error));
-    });
+    this.nativeGeocoder.reverseGeocode(position.coords.latitude, position.coords.longitude)
+      .then((result: NativeGeocoderResult[]) => console.log(JSON.stringify(result[0])))
+      .catch((error: any) => console.log(error));
 
     if (this.form.valid) {
       let bearerToken = await this.securityService.getLoginResult({
@@ -91,11 +86,11 @@ export class LoginComponent implements OnInit {
   }
 
   public googleAuthentication() {
-    return this.AuthLogin(new GoogleAuthProvider());
+   // return this.AuthLogin(new GoogleAuthProvider());
   }
 
   public AuthLogin(provider) {
-    return this.afAuth
+    /*return this.afAuth
       .signInWithPopup(provider)
       .then(async result => {
         const tok = await result.user.getIdToken(true);
@@ -111,6 +106,6 @@ export class LoginComponent implements OnInit {
       })
       .catch((error) => {
         console.log(error);
-      });
+      });*/
   }
 }

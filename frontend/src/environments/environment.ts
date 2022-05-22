@@ -2,9 +2,10 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+
 export const environment = {
   production: false,
-  api: 'http://192.168.137.1:5000/moodapp/api',
+  api: 'http://192.168.0.160:5000/moodapp/api',
   resultsApi: 'http://192.168.137.1:8000',
   firebaseConfig: {
     apiKey: "AIzaSyC1Y5nji7Btnhsx2l-4YoBB0JxeCum-nYQ",

@@ -4,7 +4,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://192.168.137.1:5000"
+      "applicationUrl": "http://192.168.0.160:5000"
     }
   },
   "profiles": {
@@ -20,7 +20,7 @@
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "moodapp/api",
-      "applicationUrl": "http://192.168.137.1:5000",
+      "applicationUrl": "http://192.168.0.160:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

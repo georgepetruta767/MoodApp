@@ -8,7 +8,6 @@ import {SecurityModule} from './security/security.module';
 import {HttpClientModule} from "@angular/common/http";
 import {DashboardPage} from "./dashboard/dashboard.page";
 import {SecurityGuard} from "./security/security.guard";
-import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 
 const routes: Routes = [
   {
@@ -34,7 +33,6 @@ const routes: Routes = [
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, RouterModule.forRoot(routes), SecurityModule, HttpClientModule],
   providers: [
     Geolocation,
-    NativeGeocoder,
     {
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy
