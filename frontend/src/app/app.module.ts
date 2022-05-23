@@ -5,9 +5,9 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import {SecurityModule} from './security/security.module';
-import {HttpClientModule} from "@angular/common/http";
-import {DashboardPage} from "./dashboard/dashboard.page";
-import {SecurityGuard} from "./security/security.guard";
+import {HttpClientModule} from '@angular/common/http';
+import {DashboardPage} from './dashboard/dashboard.page';
+import {SecurityGuard} from './security/security.guard';
 
 const routes: Routes = [
   {

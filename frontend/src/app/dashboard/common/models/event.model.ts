@@ -1,7 +1,8 @@
-import {EventStatus} from "../enums/event-status.enum";
-import {EventType} from "../enums/event-type.enum";
-import {PersonModel} from "./person.model";
-import {Season} from "../enums/season.enum";
+import {EventStatus} from '../enums/event-status.enum';
+import {EventType} from '../enums/event-type.enum';
+import {PersonModel} from './person.model';
+import {Season} from '../enums/season.enum';
+import {LocationModel} from './location.model';
 
 export class EventModel {
   public id?: string;
@@ -12,7 +13,7 @@ export class EventModel {
   public status!: EventStatus;
   public type: EventType;
   public amountSpent?: number;
-  public locationId?: string;
+  public location?: LocationModel;
   public grade?: number;
-  public season?: Season
+  public season?: Season;
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {UserModel} from '../models/user.model';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
-import {ExternalSignUpModel} from "../../../security/common/models/external-sign-up.model";
+import {ExternalSignUpModel} from "../models/external-sign-up.model";
 
 @Injectable({
   providedIn: 'root'

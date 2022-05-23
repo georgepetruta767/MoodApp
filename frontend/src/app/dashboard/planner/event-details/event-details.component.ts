@@ -1,11 +1,16 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {EventModel} from "../../common/models/event.model";
-import {EventsService} from "../../common/services/events.service";
-import {EventStatus} from "../../common/enums/event-status.enum";
-import {PersonModel} from "../../common/models/person.model";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {EventType} from "../../common/enums/event-type.enum";
-import {Router} from "@angular/router";
+import {EventModel} from '../../common/models/event.model';
+import {EventsService} from '../../common/services/events.service';
+import {EventStatus} from '../../common/enums/event-status.enum';
+import {PersonModel} from '../../common/models/person.model';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {EventType} from '../../common/enums/event-type.enum';
+import {Router} from '@angular/router';
+import {Geolocation} from '@capacitor/geolocation';
+import {
+  NativeGeocoder,
+  NativeGeocoderOptions
+} from '@awesome-cordova-plugins/native-geocoder/ngx';
 
 @Component({
   selector: 'app-event-details',
@@ -23,18 +28,17 @@ export class EventDetailsComponent implements OnInit {
 
   public form!: FormGroup;
 
+  public options: NativeGeocoderOptions = {
+    useLocale: true,
+    maxResults: 5
+  };
+
   constructor(private eventsService: EventsService,
-              private router: Router) { }
+              private router: Router,
+              private nativeGeocoder: NativeGeocoder) { }
 
   public ngOnInit() {
     this.setupForm();
-  }
-
-  public setupForm() {
-    this.form = new FormGroup({
-      grade: new FormControl('', [Validators.required, Validators.min(1), Validators.max(10)]),
-      amountSpent: new FormControl(null, [Validators.min(0)])
-    });
   }
 
   public async deleteEvent() {
@@ -42,12 +46,29 @@ export class EventDetailsComponent implements OnInit {
   }
 
   public async updateEvent() {
-    console.log(this.event);
-
     switch(this.event.status) {
       case EventStatus.Incoming:
         this.event.status = EventStatus.InProgress;
         this.event.startingTime = new Date(Date.now());
+
+        await Geolocation.checkPermissions();
+        await Geolocation.requestPermissions();
+
+        const position = await Geolocation.getCurrentPosition();
+
+        const location = await this.nativeGeocoder.reverseGeocode(position.coords.latitude, position.coords.longitude);
+  /*        .then((result: NativeGeocoderResult[]) => {
+            console.log(result[0]);
+          })
+          .catch((error: any) => console.log(error));*/
+
+        this.event.location = {
+          latitude: Number(location[0].latitude),
+          longitude: Number(location[0].longitude),
+          city: location[0].locality,
+          country: location[0].countryName
+        };
+
         break;
       case EventStatus.InProgress:
         this.event.status = EventStatus.Finished;
@@ -71,31 +92,31 @@ export class EventDetailsComponent implements OnInit {
   public getStatusLabel(status: EventStatus) {
     switch(status) {
       case EventStatus.Incoming:
-        return "Incoming";
+        return 'Incoming';
       case EventStatus.InProgress:
-        return "In Progress";
+        return 'In Progress';
       case EventStatus.Finished:
-        return "Completed";
+        return 'Completed';
     }
   }
 
   public getTypeLabel(type: EventType) {
     switch(type) {
       case EventType.Educational:
-        return "Educational";
+        return 'Educational';
       case EventType.Recreational:
-        return "Recreational";
+        return 'Recreational';
       case EventType.WorkRelated:
-        return "Work Related";
+        return 'Work Related';
     }
   }
 
   public getEventAction() {
     switch(this.event.status) {
       case EventStatus.InProgress:
-        return "End event";
+        return 'End event';
       case EventStatus.Incoming:
-        return "Start event";
+        return 'Start event';
     }
   }
 
@@ -111,11 +132,11 @@ export class EventDetailsComponent implements OnInit {
   }
 
   public formatEventDate(date: Date) {
-    let options: Intl.DateTimeFormatOptions = {
-      day: "numeric", month: "long", year: "numeric"
+    const options: Intl.DateTimeFormatOptions = {
+      day: 'numeric', month: 'long', year: 'numeric'
     };
 
-    return new Date(date).toLocaleDateString("en-GB", options);
+    return new Date(date).toLocaleDateString('en-GB', options);
   }
 
   public formatEventTime(date: Date) {
@@ -124,12 +145,12 @@ export class EventDetailsComponent implements OnInit {
 
   public padTo2Digits(num: number) {
     if(num < 10)
-      return num.toString();
+      {return num.toString();}
     return num.toString().padStart(2, '0');
   }
 
   public convertMsToTime(milliseconds: number) {
-    let seconds = Math.floor(milliseconds / 1000);
+    const seconds = Math.floor(milliseconds / 1000);
     let minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
@@ -145,7 +166,7 @@ export class EventDetailsComponent implements OnInit {
 
   public isStartEventButtonDisabled() {
     if(this.event.status !== EventStatus.Incoming)
-      return false;
+      {return false;}
 
 
     if(new Date(Date.now()).getFullYear() === new Date(this.event.startingTime).getFullYear() &&
@@ -154,7 +175,13 @@ export class EventDetailsComponent implements OnInit {
     ) {
       return true;
     }
-
     return false;
+  }
+
+  private setupForm() {
+    this.form = new FormGroup({
+      grade: new FormControl('', [Validators.required, Validators.min(1), Validators.max(10)]),
+      amountSpent: new FormControl(null, [Validators.min(0)])
+    });
   }
 }

@@ -20,5 +20,6 @@ namespace Worker.Models
         public int? Grade { get; set; }
         public int? AmountSpent { get; set; }
         public Season Season { get; set; }
+        public LocationModel? Location { get; set; }
     }
 }

@@ -5,7 +5,6 @@ import {RouterModule, Routes} from '@angular/router';
 import {IonicModule} from '@ionic/angular';
 import {ReactiveFormsModule} from '@angular/forms';
 import {SignupComponent} from './signup/signup.component';
-import {NativeGeocoder} from "@awesome-cordova-plugins/native-geocoder/ngx";
 
 const routes: Routes = [
   {
@@ -37,7 +36,6 @@ const routes: Routes = [
     ReactiveFormsModule
   ],
   providers: [
-    NativeGeocoder
   ]
 })
 export class SecurityModule { }

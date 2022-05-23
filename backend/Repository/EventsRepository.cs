@@ -5,6 +5,7 @@ using Repository.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Device;
 
 namespace Repository
 {
@@ -105,6 +106,7 @@ namespace Repository
             return peopleEntities;
         }
 
+
         public void UpdateEvent(EventEntity eventEntity)
         {
             var eventToUpdate = GetById((Guid)eventEntity.Id);
@@ -115,6 +117,16 @@ namespace Repository
             eventToUpdate.Type = (int)eventEntity.Type;
             eventToUpdate.AmountSpent = eventEntity.AmountSpent;
             eventToUpdate.Title = eventEntity.Title;
+
+            var locations = _moodAppContext.Locations;
+
+            foreach(var location in locations)
+            {
+                
+            }
+
+            //var distance = Math.Sqrt((Math.Pow(x1 - x2, 2) + Math.Pow(y1 - y2, 2)));
+
 
             eventToUpdate.EventPersonRelations.Clear();
             var relations = _moodAppContext.EventPersonRelations.Where(x => x.EventId == eventToUpdate.Id);

@@ -1,14 +1,15 @@
 import {NgModule} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {RouterModule, Routes} from "@angular/router";
-import {PlannerComponent} from "./planner.component";
-import {CalendarModule} from "ion5-calendar";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {IonicModule} from "@ionic/angular";
-import {EventDetailsComponent} from "./event-details/event-details.component";
-import {Ng2FilterPipeModule} from "ng2-filter-pipe";
-import {SwiperModule} from "swiper/angular";
-import {EventsListComponent} from "./events-list/events-list.component";
+import {RouterModule, Routes} from '@angular/router';
+import {PlannerComponent} from './planner.component';
+import {CalendarModule} from 'ion5-calendar';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {IonicModule} from '@ionic/angular';
+import {EventDetailsComponent} from './event-details/event-details.component';
+import {Ng2FilterPipeModule} from 'ng2-filter-pipe';
+import {SwiperModule} from 'swiper/angular';
+import {EventsListComponent} from './events-list/events-list.component';
+import {NativeGeocoder} from '@awesome-cordova-plugins/native-geocoder/ngx';
 
 const routes: Routes = [
   {
@@ -19,7 +20,7 @@ const routes: Routes = [
     path: '',
     redirectTo: 'calendar'
   }
-]
+];
 
 @NgModule({
   declarations: [PlannerComponent, EventDetailsComponent, EventsListComponent],
@@ -34,6 +35,7 @@ const routes: Routes = [
         SwiperModule
     ],
   providers: [
+    NativeGeocoder
   ]
 })
 export class PlannerModule { }
