@@ -1,9 +1,7 @@
 <ion-title *ngIf="events && events.length > 0" class="ion-text-center ion-padding"> {{ eventsDate | date }} </ion-title>
-<section #button>
-  <ion-text *ngIf="events && events.length > 1">
-    swipe to see more
-  </ion-text>
-</section>
+<ion-text color="medium" class="see-more-text" *ngIf="events && events.length > 1">
+  swipe to see more
+</ion-text>
 
 <swiper [effect]="'coverflow'"
         [grabCursor]="true"
@@ -14,12 +12,12 @@
           stretch: 0,
           depth: 100,
           modifier: 1,
-          slideShadows: true
+          slideShadows: false
           }"
         [pagination]="true"
         *ngIf="events">
   <ng-template swiperSlide *ngFor="let event of events">
-    <app-event-details (deleteEventEmitter)="deleteEvent($event)" [event]="event"></app-event-details>
+    <app-event-details (updateEventEmitter)="updateEvent($event)" (deleteEventEmitter)="deleteEvent($event)" [event]="event"></app-event-details>
   </ng-template>
 </swiper>
 

@@ -5,21 +5,23 @@
     </ion-title>
   </ion-card-header>
 
-  <ion-card-subtitle>
-    <ion-chip class="status-chip" color="primary">
-      {{ getStatusLabel(this.event.status) }}
-    </ion-chip>
-    <ion-icon class="ion-margin-top edit-button" size="small" name="create-outline" (click)="navigateToUpdateEvent()"></ion-icon>
-    <ion-icon class="ion-margin-top" size="small" name="trash-outline" (click)="deleteEvent()"></ion-icon>
+  <ion-card-subtitle class="subtitle">
+      <ion-chip class="status-chip" color="primary">
+        {{ getStatusLabel(this.event.status) }}
+      </ion-chip>
+      <div class="buttons">
+        <ion-icon name="create-outline" (click)="navigateToUpdateEvent()"></ion-icon>
+        <ion-icon name="trash-outline" (click)="deleteEvent()"></ion-icon>
+      </div>
   </ion-card-subtitle>
 
-  <ion-item *ngIf="event.status != 0">
+  <ion-item *ngIf="event.status !== 0">
     <ion-label>Starting time: </ion-label>
     <ion-badge color="secondary" slot="end"> {{ formatEventTime(this.event.startingTime) }}
     </ion-badge>
   </ion-item>
 
-  <ion-item *ngIf="event.status == 2">
+  <ion-item *ngIf="event.status === 2">
     <ion-label>Duration: </ion-label>
     <ion-badge color="secondary" slot="end">
       {{ getEventDuration() }}
@@ -33,7 +35,7 @@
     </ion-badge>
   </ion-item>
 
-  <ion-accordion-group>
+  <ion-accordion-group *ngIf="event.people.length">
     <ion-accordion>
       <ion-item slot="header">
         <ion-label>Participants</ion-label>
@@ -46,25 +48,36 @@
     </ion-accordion>
   </ion-accordion-group>
 
-  <ion-item *ngIf="event.status == 2">
+  <ion-item *ngIf="!event.people.length">
+    <ion-label>Participants</ion-label>
+    <ion-badge color="secondary" slot="end">
+      None
+    </ion-badge>
+  </ion-item>
+
+  <ion-item *ngIf="event.status === 2">
     <ion-label>Grade:</ion-label>
     <ion-badge color="secondary" slot="end">
       {{event.grade}}
     </ion-badge>
   </ion-item>
 
-  <ion-item *ngIf="event.status == 2">
+  <ion-item *ngIf="event.status === 2">
     <ion-label>Amount spent:</ion-label>
-    <ion-badge color="secondary" slot="end">
+    <ion-badge *ngIf="event.amountSpent" color="secondary" slot="end">
       {{ event.amountSpent | currency }}
+    </ion-badge>
+
+    <ion-badge *ngIf="!event.amountSpent" color="secondary" slot="end">
+      Not provided
     </ion-badge>
   </ion-item>
 
-  <form *ngIf="event.status == 1" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form *ngIf="event.status === 1" [formGroup]="form" (ngSubmit)="onSubmit()">
     <ion-item>
       <ion-label position="floating">Grade*</ion-label>
       <ion-input formControlName="grade" type="number"></ion-input>
-      <span *ngIf="hasEndEventButtonBeenCliked && form.controls.grade.hasError('required')" slot="error">
+      <span *ngIf="hasEndEventButtonBeenClicked && form.controls.grade.hasError('required')" slot="error">
         Field is required
       </span>
       <span *ngIf="form.controls.grade.hasError('max') || form.controls.grade.hasError('min')" slot="error">
@@ -76,10 +89,10 @@
       <ion-label position="floating">How much have you spent? ($)</ion-label>
       <ion-input formControlName="amountSpent" type="number"></ion-input>
     </ion-item>
-    <ion-button class="ion-margin" expand="full" color="success " type="submit"> End Event </ion-button>
+    <ion-button class="ion-margin" expand="full" color="danger" type="submit"> End Event </ion-button>
   </form>
 
-  <ion-button disabled="{{isStartEventButtonDisabled()}}" class="ion-margin" *ngIf="isEnabled()" expand="full" color="success" (click)="updateEvent()">
+  <ion-button disabled="{{isStartEventButtonDisabled()}}" class="ion-margin" *ngIf="isEnabled()" expand="full" color="danger" (click)="updateEvent()">
     {{getEventAction()}}
   </ion-button>
 </ion-card>

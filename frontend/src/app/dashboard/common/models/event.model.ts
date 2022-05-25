@@ -17,3 +17,8 @@ export class EventModel {
   public grade?: number;
   public season?: Season;
 }
+
+export class EventActionModel {
+  public eventModel: EventModel;
+  public actionType!: 'Start' | 'End';
+}

@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 
 import * as echarts from 'echarts';
-import {ResultService} from "./result.service";
-import {SecurityService} from "../common/services/security.service";
+import {ResultService} from './result.service';
+import {SecurityService} from '../common/services/security.service';
 
 type EChartsOption = echarts.EChartsOption;
 

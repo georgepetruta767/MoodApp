@@ -43,7 +43,6 @@ export class EventsService {
   }
 
   public updateEvent(eventModel: EventModel): Promise<any> {
-    console.log(eventModel);
     return this.http.post<any>(`${environment.api}/Events/Update`, eventModel, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${sessionStorage.getItem('bearerToken')}`

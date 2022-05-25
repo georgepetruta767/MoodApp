@@ -5,7 +5,6 @@ using Repository.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Device;
 
 namespace Repository
 {
@@ -106,6 +105,16 @@ namespace Repository
             return peopleEntities;
         }
 
+        public double GetDistance(double longitude, double latitude, double otherLongitude, double otherLatitude)
+        {
+            var d1 = latitude * (Math.PI / 180.0);
+            var num1 = longitude * (Math.PI / 180.0);
+            var d2 = otherLatitude * (Math.PI / 180.0);
+            var num2 = otherLongitude * (Math.PI / 180.0) - num1;
+            var d3 = Math.Pow(Math.Sin((d2 - d1) / 2.0), 2.0) + Math.Cos(d1) * Math.Cos(d2) * Math.Pow(Math.Sin(num2 / 2.0), 2.0);
+
+            return 6376500.0 * (2.0 * Math.Atan2(Math.Sqrt(d3), Math.Sqrt(1.0 - d3)));
+        }
 
         public void UpdateEvent(EventEntity eventEntity)
         {
@@ -118,14 +127,38 @@ namespace Repository
             eventToUpdate.AmountSpent = eventEntity.AmountSpent;
             eventToUpdate.Title = eventEntity.Title;
 
-            var locations = _moodAppContext.Locations;
-
-            foreach(var location in locations)
+            if(eventEntity.Location != null)
             {
-                
-            }
+                var locations = _moodAppContext.Locations;
+                bool doesLocationExist = false;
 
-            //var distance = Math.Sqrt((Math.Pow(x1 - x2, 2) + Math.Pow(y1 - y2, 2)));
+                foreach (var location in locations)
+                {
+                    var distance = GetDistance(eventEntity.Location.Longitude, eventEntity.Location.Latitude, location.Longitude, location.Latitude);
+
+                    if (distance < 30)
+                    {
+                        eventToUpdate.Location = location;
+                        doesLocationExist = true;
+                    }
+                }
+
+                if (!doesLocationExist)
+                {
+                    var locationDbEntity = new Location
+                    {
+                        Id = Guid.NewGuid(),
+                        Longitude = eventEntity.Location.Longitude,
+                        Latitude = eventEntity.Location.Latitude,
+                        City = eventEntity.Location.City,
+                        Country = eventEntity.Location.Country
+                    };
+
+                    _moodAppContext.Locations.Add(locationDbEntity);
+
+                    eventToUpdate.Location = locationDbEntity;
+                }
+            }
 
 
             eventToUpdate.EventPersonRelations.Clear();
@@ -155,11 +188,18 @@ namespace Repository
 
         public EventEntity GetEventById(Guid id)
         {
-            return _moodAppContext.Events.Where(x => x.Id == id).Select(x => new EventEntity
+            var searchedEvent = _moodAppContext.Events.Where(x => x.Id == id).Select(x => new EventEntity
             {
                 Id = x.Id,
                 Title = x.Title,
-                LocationId = x.LocationId,
+                Location = x.LocationId != null ? new LocationEntity
+                {
+                    City = x.Location.City,
+                    Country = x.Location.Country,
+                    Longitude = x.Location.Longitude,
+                    Latitude = x.Location.Latitude,
+                    Id = x.Location.Id
+                } : null,
                 People = MapPeople(x.EventPersonRelations.Select(x => x.Person).ToList()),
                 StartingTime = x.StartingTime,
                 EndingTime = x.EndingTime,
@@ -168,7 +208,11 @@ namespace Repository
                 Type = (EventType)x.Type,
                 Season = (Season)x.Season,
                 AmountSpent = x.AmountSpent
-            }).ToList()[0];
+            }).ToList();
+
+            if (searchedEvent.Count != 0)
+                return searchedEvent.First();
+            return null;
         }
 
         public Event GetById(Guid id)

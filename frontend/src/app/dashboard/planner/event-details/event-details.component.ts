@@ -1,16 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {EventModel} from '../../common/models/event.model';
-import {EventsService} from '../../common/services/events.service';
+import {EventActionModel, EventModel} from '../../common/models/event.model';
 import {EventStatus} from '../../common/enums/event-status.enum';
 import {PersonModel} from '../../common/models/person.model';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {EventType} from '../../common/enums/event-type.enum';
 import {Router} from '@angular/router';
 import {Geolocation} from '@capacitor/geolocation';
-import {
-  NativeGeocoder,
-  NativeGeocoderOptions
-} from '@awesome-cordova-plugins/native-geocoder/ngx';
+import {NativeGeocoder, NativeGeocoderOptions} from '@awesome-cordova-plugins/native-geocoder/ngx';
+import {AlertController} from "@ionic/angular";
 
 @Component({
   selector: 'app-event-details',
@@ -24,7 +21,10 @@ export class EventDetailsComponent implements OnInit {
   @Output()
   public deleteEventEmitter: EventEmitter<string> = new EventEmitter<string>();
 
-  public hasEndEventButtonBeenCliked = false;
+  @Output()
+  public updateEventEmitter: EventEmitter<EventActionModel> = new EventEmitter<EventActionModel>();
+
+  public hasEndEventButtonBeenClicked = false;
 
   public form!: FormGroup;
 
@@ -33,16 +33,31 @@ export class EventDetailsComponent implements OnInit {
     maxResults: 5
   };
 
-  constructor(private eventsService: EventsService,
-              private router: Router,
-              private nativeGeocoder: NativeGeocoder) { }
+  constructor(private router: Router,
+              private nativeGeocoder: NativeGeocoder,
+              private alertController: AlertController) { }
 
   public ngOnInit() {
     this.setupForm();
   }
 
   public async deleteEvent() {
-    this.deleteEventEmitter.emit(this.event.id);
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Alert',
+      message: `Are you sure you want to delete event ${this.event.title}?`,
+      buttons: [{
+        text: 'Delete',
+        handler: async () => {
+          await this.deleteEventEmitter.emit(this.event.id);
+        }
+      },
+        {
+          text: 'Cancel'
+        }]
+    });
+
+    await alert.present();
   }
 
   public async updateEvent() {
@@ -57,10 +72,6 @@ export class EventDetailsComponent implements OnInit {
         const position = await Geolocation.getCurrentPosition();
 
         const location = await this.nativeGeocoder.reverseGeocode(position.coords.latitude, position.coords.longitude);
-  /*        .then((result: NativeGeocoderResult[]) => {
-            console.log(result[0]);
-          })
-          .catch((error: any) => console.log(error));*/
 
         this.event.location = {
           latitude: Number(location[0].latitude),
@@ -69,16 +80,24 @@ export class EventDetailsComponent implements OnInit {
           country: location[0].countryName
         };
 
+        await this.updateEventEmitter.emit({
+          eventModel: this.event,
+          actionType: 'Start'
+        });
+
         break;
       case EventStatus.InProgress:
         this.event.status = EventStatus.Finished;
         this.event.endingTime = new Date(Date.now());
         this.event.grade = this.form.controls.grade.value;
         this.event.amountSpent = this.form.controls.amountSpent.value;
+
+        await this.updateEventEmitter.emit({
+          eventModel: this.event,
+          actionType: 'End'
+        });
         break;
     }
-
-    await this.eventsService.updateEvent(this.event);
   }
 
   public async navigateToUpdateEvent() {
@@ -125,7 +144,7 @@ export class EventDetailsComponent implements OnInit {
   }
 
   public async onSubmit() {
-    this.hasEndEventButtonBeenCliked = true;
+    this.hasEndEventButtonBeenClicked = true;
     if(this.form.valid) {
       await this.updateEvent();
     }

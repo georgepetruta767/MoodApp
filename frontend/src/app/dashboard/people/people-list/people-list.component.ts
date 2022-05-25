@@ -12,10 +12,6 @@ import {Gender} from "../../common/enums/gender.enum";
 })
 
 export class PeopleListComponent implements OnInit {
-  public async ionViewWillEnter() {
-    await this.loadPeople();
-  }
-
   public people: Array<PersonModel>;
 
   public searchTerm: any = {firstName: '', lastName: ''};
@@ -25,6 +21,10 @@ export class PeopleListComponent implements OnInit {
   constructor(private peopleService: PeopleService,
               private modalController: ModalController,
               private alertController: AlertController) { }
+
+  public async ionViewWillEnter() {
+    await this.loadPeople();
+  }
 
   public async ngOnInit() {
     this.handleCloseModalEvent();
@@ -52,10 +52,15 @@ export class PeopleListComponent implements OnInit {
         text: 'Delete',
         handler: async () => {
           await this.peopleService.deletePerson(person.id);
-          this.loadPeople();
+          await this.loadPeople();
         }
       },
-        'Cancel']
+        {
+          text: 'Cancel',
+          handler: () => {
+
+          }
+        }]
     });
 
     await alert.present();
@@ -67,7 +72,7 @@ export class PeopleListComponent implements OnInit {
         'dismissed': true
       });
       await this.loadPeople();
-    })
+    });
   }
 
   private async loadPeople() {

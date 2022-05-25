@@ -7,13 +7,21 @@
     display: flex;
   }
 
-  .edit-button {
-    padding-left: 32.5%;
-    padding-right: 2%;
+  .subtitle {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
-  .status-chip {
-    margin-bottom: 5%;
-    margin-left: -30px;
+  .buttons {
+    display: flex;
+    align-items: center;
+  }
+
+  ion-icon{
+    font-size: 25px;
+    padding-right: 5px;
   }
 }

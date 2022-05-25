@@ -8,7 +8,6 @@ namespace Repository.Entities
     {
         public Guid? Id { get; set; }
         public string Title { get; set; }
-        public Guid? LocationId { get; set; }
         public EventType Type { get; set; }
         public Season Season { get; set; }
         public List<PersonEntity> People { get; set; }
@@ -17,5 +16,6 @@ namespace Repository.Entities
         public DateTime? EndingTime { get; set; }
         public int? Grade { get; set; }
         public int? AmountSpent { get; set; }
+        public LocationEntity? Location { get; set; }
     }
 }

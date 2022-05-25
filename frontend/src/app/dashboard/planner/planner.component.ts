@@ -1,9 +1,9 @@
 import {Component, ViewChild} from '@angular/core';
-import {EventModel} from "../common/models/event.model";
-import {EventsService} from "../common/services/events.service";
-import {FormControl, FormGroup} from "@angular/forms";
-import {IonContent} from "@ionic/angular";
-import {CalendarComponentOptions, DayConfig} from "ion5-calendar";
+import {EventModel} from '../common/models/event.model';
+import {EventsService} from '../common/services/events.service';
+import {FormControl, FormGroup} from '@angular/forms';
+import {CalendarComponentOptions, DayConfig} from 'ion5-calendar';
+import {IonContent} from '@ionic/angular';
 
 @Component({
   selector: 'app-planner',
@@ -12,10 +12,18 @@ import {CalendarComponentOptions, DayConfig} from "ion5-calendar";
 })
 
 export class PlannerComponent {
-  @ViewChild('content', { static: true })
+  @ViewChild('content')
   public content: IonContent;
 
   public calendarConfig!: CalendarComponentOptions;
+
+  public dateForm!: FormGroup;
+
+  public isEventsListVisible = false;
+
+  public events!: Array<EventModel>;
+
+  constructor(private eventsService: EventsService) { }
 
   public async ionViewWillEnter(){
     this.isEventsListVisible = false;
@@ -26,22 +34,17 @@ export class PlannerComponent {
 
     this.setupForm();
 
-    this.dateForm.controls.selectedDate.valueChanges.subscribe((x) => {
-      this.showEventsList();
-    })
+    this.dateForm.controls.selectedDate.valueChanges.subscribe(async () => {
+      await this.showEventsList();
+      setTimeout(async () => {
+        await this.content.scrollToBottom(300);
+      }, 100);
+    });
   }
-
-  public dateForm!: FormGroup;
-
-  public isEventsListVisible = false;
-
-  public events!: Array<EventModel>;
-
-  constructor(private eventsService: EventsService) { }
 
   public setupForm() {
     this.dateForm = new FormGroup({
-      'selectedDate': new FormControl()
+      selectedDate: new FormControl()
     });
   }
 
@@ -59,20 +62,18 @@ export class PlannerComponent {
       daysConfig.push({
         date: event.startingTime,
         cssClass: 'circled'
-      })
-    })
+      });
+    });
 
     this.calendarConfig = {
       showToggleButtons: true,
       showMonthPicker: true,
       from: new Date(1),
-      daysConfig: daysConfig
-    }
+      daysConfig
+    };
   }
 
   public async showEventsList() {
-    await this.content.scrollToBottom(300);
-
     if(this.calendarConfig.daysConfig.find(x => x.date.toString().slice(0, 10) === this.dateForm.controls.selectedDate.value)) {
       this.isEventsListVisible = true;
     }

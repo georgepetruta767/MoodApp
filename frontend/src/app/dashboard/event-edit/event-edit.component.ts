@@ -1,12 +1,13 @@
-import {Component, Output} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {PeopleService} from "../common/services/people.service";
-import {PersonModel} from "../common/models/person.model";
-import {EventsService} from "../common/services/events.service";
-import {EventStatus} from "../common/enums/event-status.enum";
-import {ActivatedRoute, Router} from "@angular/router";
-import {EventModel} from "../common/models/event.model";
-import {Season} from "../common/enums/season.enum";
+import {Component, ViewChild} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {PeopleService} from '../common/services/people.service';
+import {PersonModel} from '../common/models/person.model';
+import {EventsService} from '../common/services/events.service';
+import {EventStatus} from '../common/enums/event-status.enum';
+import {ActivatedRoute, Router} from '@angular/router';
+import {EventModel} from '../common/models/event.model';
+import {Season} from '../common/enums/season.enum';
+import {IonAccordion} from '@ionic/angular';
 
 @Component({
   selector: 'app-event-edit',
@@ -15,17 +16,8 @@ import {Season} from "../common/enums/season.enum";
 })
 
 export class EventEditComponent {
-  public async ionViewWillEnter() {
-    this.setupForm();
-
-    await this.getAllPeople();
-
-    if(this.activatedRoute.snapshot.params.id) {
-      this.eventToEdit = await this.eventsService.getEventById(this.activatedRoute.snapshot.params.id);
-    }
-
-    this.setupForm();
-  }
+  @ViewChild(IonAccordion)
+  public accordion!: IonAccordion;
 
   public eventToEdit: EventModel;
 
@@ -42,23 +34,23 @@ export class EventEditComponent {
     return new Date().toISOString();
   }
 
+  public async ionViewWillEnter() {
+    this.setupForm();
+
+    await this.getAllPeople();
+
+    if(this.activatedRoute.snapshot.params.id) {
+      this.eventToEdit = await this.eventsService.getEventById(this.activatedRoute.snapshot.params.id);
+    }
+
+    this.setupForm();
+  }
+
   public formatEventTime(date: Date) {
-    if(date)
-      return new Date(date).toLocaleDateString(navigator.language, {day: '2-digit', month: "long", year: "numeric"});
+    if(date) {
+      return new Date(date).toLocaleDateString(navigator.language, {day: '2-digit', month: 'long', year: 'numeric'});
+    }
     return '';
-  }
-
-  private setupForm() {
-    this.form = new FormGroup({
-      title: new FormControl(this.eventToEdit ? this.eventToEdit.title : '', [Validators.required]),
-      people: new FormControl(this.eventToEdit ? this.eventToEdit.people.map(x => x.id) : ''),
-      eventDate: new FormControl(this.eventToEdit ? this.eventToEdit.startingTime : '', [Validators.required]),
-      type: new FormControl(this.eventToEdit ? this.eventToEdit.type : '', [Validators.required])
-    })
-  }
-
-  public async getAllPeople() {
-    this.people = await this.peopleService.getPeople();
   }
 
   public async addEvent() {
@@ -113,5 +105,22 @@ export class EventEditComponent {
 
   public getButtonLabel() {
     return this.eventToEdit ? 'Save' : 'Add';
+  }
+
+  public selected() {
+    console.log(this.accordion.toggleIcon);
+  }
+
+  private setupForm() {
+    this.form = new FormGroup({
+      title: new FormControl(this.eventToEdit ? this.eventToEdit.title : '', [Validators.required]),
+      people: new FormControl(this.eventToEdit ? this.eventToEdit.people.map(x => x.id) : ''),
+      eventDate: new FormControl(this.eventToEdit ? this.eventToEdit.startingTime : '', [Validators.required]),
+      type: new FormControl(this.eventToEdit ? this.eventToEdit.type : '', [Validators.required])
+    });
+  }
+
+  private async getAllPeople() {
+    this.people = await this.peopleService.getPeople();
   }
 }
