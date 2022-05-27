@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {SecurityService} from "../../dashboard/common/services/security.service";
-import {Router} from "@angular/router";
-import {PopoverController} from "@ionic/angular";
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {SecurityService} from '../../dashboard/common/services/security.service';
+import {Router} from '@angular/router';
+import {PopoverController} from '@ionic/angular';
 
 @Component({
   selector: 'app-signup',
@@ -10,10 +10,6 @@ import {PopoverController} from "@ionic/angular";
   styleUrls: ['./signup.component.scss'],
 })
 export class SignupComponent implements OnInit {
-  public ionViewWillEnter() {
-    this.form.reset();
-  }
-
   public isSubmitted = false;
 
   public form!: FormGroup;
@@ -22,28 +18,21 @@ export class SignupComponent implements OnInit {
               private popoverController: PopoverController,
               private router: Router) { }
 
-  ngOnInit() {
-    this.setupForm();
-  }
-
-  get errorControl() {
+  public get errorControl() {
     return this.form.controls;
   }
 
-  private setupForm() {
-    this.form = new FormGroup({
-      firstName: new FormControl('', [Validators.required]),
-      lastName: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required, Validators.pattern("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")]),
-      password: new FormControl('', [Validators.required,
-        Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]),
-      confirmPassword: new FormControl('', [Validators.required,
-        Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')])
-    }, {validators: this.matchingPasswords('password', 'confirmPassword')});
+  public ionViewWillEnter() {
+    this.form.reset();
   }
 
+  public ngOnInit() {
+    this.setupForm();
+  }
 
   public async onSubmit() {
+    console.log(this.form);
+
     this.isSubmitted = true;
     if(this.form.valid) {
       await this.securityService.signUp({
@@ -53,22 +42,23 @@ export class SignupComponent implements OnInit {
         password: this.form.controls.password.value
       }).then(() => {
         this.router.navigateByUrl('security/login');
-      })
+      });
     }
   }
 
-  matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
+  private matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
     return (group: FormGroup): {[key: string]: any} => {
-      let password = group.controls[passwordKey];
-      let confirmPassword = group.controls[confirmPasswordKey];
+      const password = group.controls[passwordKey];
+      const confirmPassword = group.controls[confirmPasswordKey];
 
       if (password.value !== confirmPassword.value) {
         return {
           mismatchedPasswords: true
         };
       }
-    }
+    };
   }
+
   public async navigateToLogin() {
     await this.router.navigateByUrl('security/login');
   }
@@ -91,5 +81,17 @@ export class SignupComponent implements OnInit {
       .catch((error) => {
         console.log(error);
       });*/
+  }
+
+  private setupForm() {
+    this.form = new FormGroup({
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.pattern('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')]),
+      password: new FormControl('', [Validators.required,
+        Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')]),
+      confirmPassword: new FormControl('', [Validators.required,
+        Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,}')])
+    }, {validators: this.matchingPasswords('password', 'confirmPassword')});
   }
 }

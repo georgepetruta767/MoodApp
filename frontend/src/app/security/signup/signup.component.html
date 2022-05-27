@@ -5,7 +5,7 @@
 </ion-header>
 <ion-content>
   <section class="ion-justify-content-between content">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="ion-padding-bottom">
       <ion-item>
         <ion-label position="floating">First Name</ion-label>
         <ion-input formControlName="firstName" type="text"></ion-input>
@@ -27,16 +27,20 @@
         <span *ngIf="form.controls.password.hasError('pattern')" slot="error">
       Passwords should be at least 8 characters long and contain 1 number,
     1 lowercase letter, 1 uppercase letter and one of the following special characters: $, @, $, !, %, *, ? or &.
-    </span>
+        </span>
       </ion-item>
 
       <ion-item>
         <ion-label position="floating">Confirm Password</ion-label>
         <ion-input formControlName="confirmPassword" type="password"></ion-input>
         <span *ngIf="form.controls.confirmPassword.hasError('pattern')" slot="error">
-      Passwords should be at least 8 characters long and contain one number,
-    one character and one of the following special characters: $, @, $, !, %, *, ? or &.
-    </span>
+          Passwords should be at least 8 characters long and contain one number,
+          one character and one of the following special characters: $, @, $, !, %, *, ? or &.
+        </span>
+
+        <span *ngIf="form.hasError('mismatchedPasswords')" slot="error">
+          Passwords do not match.
+        </span>
       </ion-item>
 
       <ion-row>
@@ -46,7 +50,9 @@
       </ion-row>
     </form>
 
-    <section>
+    <span class="divider line one-line">or</span>
+
+    <section class="ion-padding-top">
       <ion-row>
         <ion-col>
           <ion-button (click)="googleAuthentication()" expand="block">

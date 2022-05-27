@@ -5,7 +5,7 @@
     </ion-toolbar>
   </ion-header>
   <section class="ion-justify-content-between content">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="ion-padding-bottom">
       <ion-item>
         <ion-label position="floating">Email</ion-label>
         <ion-input formControlName="email" type="text" autocomplete="on"></ion-input>
@@ -23,7 +23,9 @@
       </ion-row>
     </form>
 
-    <section>
+    <span class="divider line one-line">or</span>
+
+    <section class="ion-padding-top">
       <ion-row>
         <ion-col>
           <ion-button expand="block" (click)="googleAuthentication()">

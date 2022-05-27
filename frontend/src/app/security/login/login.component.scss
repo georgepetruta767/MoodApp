@@ -1,9 +1,32 @@
 :host {
   display: block;
 
-  .content {
-    height: calc(100vh - 15%);
+  .divider {
     display: flex;
-    flex-direction: column;
+
+    &:before,
+    &:after {
+      content: "";
+      flex: 1;
+    }
+  }
+
+  .line {
+    align-items: center;
+    margin: 1em -1em;
+    color: #cccccc;
+
+    &:before,
+    &:after {
+      height: 1px;
+      margin: 0 1em;
+    }
+  }
+
+  .one-line {
+    &:before,
+    &:after {
+      background: #cccccc;
+    }
   }
 }

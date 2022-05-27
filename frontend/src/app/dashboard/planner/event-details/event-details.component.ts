@@ -7,7 +7,7 @@ import {EventType} from '../../common/enums/event-type.enum';
 import {Router} from '@angular/router';
 import {Geolocation} from '@capacitor/geolocation';
 import {NativeGeocoder, NativeGeocoderOptions} from '@awesome-cordova-plugins/native-geocoder/ngx';
-import {AlertController} from "@ionic/angular";
+import {AlertController, LoadingController} from '@ionic/angular';
 
 @Component({
   selector: 'app-event-details',
@@ -35,7 +35,8 @@ export class EventDetailsComponent implements OnInit {
 
   constructor(private router: Router,
               private nativeGeocoder: NativeGeocoder,
-              private alertController: AlertController) { }
+              private alertController: AlertController,
+              private loadingController: LoadingController) { }
 
   public ngOnInit() {
     this.setupForm();
@@ -61,11 +62,10 @@ export class EventDetailsComponent implements OnInit {
   }
 
   public async updateEvent() {
+    await this.presentLoading();
+
     switch(this.event.status) {
       case EventStatus.Incoming:
-        this.event.status = EventStatus.InProgress;
-        this.event.startingTime = new Date(Date.now());
-
         await Geolocation.checkPermissions();
         await Geolocation.requestPermissions();
 
@@ -73,7 +73,7 @@ export class EventDetailsComponent implements OnInit {
 
         const location = await this.nativeGeocoder.reverseGeocode(position.coords.latitude, position.coords.longitude);
 
-        this.event.location = {
+        const eventLocation = {
           latitude: Number(location[0].latitude),
           longitude: Number(location[0].longitude),
           city: location[0].locality,
@@ -81,7 +81,17 @@ export class EventDetailsComponent implements OnInit {
         };
 
         await this.updateEventEmitter.emit({
-          eventModel: this.event,
+          eventModel: {
+            id: this.event.id,
+            title: this.event.title,
+            people: this.event.people,
+            startingTime: new Date(Date.now()),
+            type: this.event.type,
+            status: EventStatus.InProgress,
+            amountSpent: this.event.amountSpent,
+            location: eventLocation
+          },
+
           actionType: 'Start'
         });
 
@@ -202,5 +212,13 @@ export class EventDetailsComponent implements OnInit {
       grade: new FormControl('', [Validators.required, Validators.min(1), Validators.max(10)]),
       amountSpent: new FormControl(null, [Validators.min(0)])
     });
+  }
+
+  private async presentLoading() {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Please wait...'
+    });
+    await loading.present();
   }
 }

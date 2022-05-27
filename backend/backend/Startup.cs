@@ -128,7 +128,7 @@ namespace backend
             services.AddTransient<Repository.AccountRepository>();
             services.AddTransient<Worker.AccountWorker>();
             services.AddIdentity<UserEntity, IdentityRole>().AddEntityFrameworkStores<MoodAppContext>();
-            services.AddTransient<Repository.IMoodAppDbContext,MoodAppContext>();
+           // services.AddTransient<Repository.IMoodAppDbContext,MoodAppContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -140,7 +140,6 @@ namespace backend
             }
 
             app.UseCors(_cors);
-
 
             app.UseHttpsRedirection();
 

@@ -7,7 +7,7 @@ using Repository.Entities;
 
 namespace Repository.EF
 {
-    public partial class MoodAppContext : IdentityDbContext<UserEntity>, IMoodAppDbContext
+    public partial class MoodAppContext : IdentityDbContext<UserEntity>
     {
         public MoodAppContext()
         {

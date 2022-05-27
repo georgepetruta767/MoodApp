@@ -2,7 +2,7 @@ import {AfterViewInit, Component, ElementRef, Input, OnChanges, ViewChild} from 
 import {EventActionModel, EventModel} from '../../common/models/event.model';
 import {EventsService} from '../../common/services/events.service';
 import SwiperCore, {EffectCoverflow, Pagination} from 'swiper';
-import {AlertController, AnimationController} from '@ionic/angular';
+import {AlertController, AnimationController, IonContent, LoadingController} from '@ionic/angular';
 import {EventStatus} from '../../common/enums/event-status.enum';
 
 SwiperCore.use([EffectCoverflow, Pagination]);
@@ -13,10 +13,7 @@ SwiperCore.use([EffectCoverflow, Pagination]);
   styleUrls: ['./events-list.component.scss'],
 })
 
-export class EventsListComponent implements OnChanges, AfterViewInit {
-  @ViewChild('button', { read: ElementRef, static: true })
-  public button: ElementRef;
-
+export class EventsListComponent implements OnChanges {
   @Input()
   public eventsDate: Date;
 
@@ -24,11 +21,8 @@ export class EventsListComponent implements OnChanges, AfterViewInit {
 
   constructor(private eventService: EventsService,
               private animationController: AnimationController,
-              private alertController: AlertController) {}
-
-  public async ngAfterViewInit() {
-    await this.animateButton();
-  }
+              private alertController: AlertController,
+              private loadingController: LoadingController) {}
 
   public async ionViewWillEnter() {
     await this.loadEvents();
@@ -44,35 +38,26 @@ export class EventsListComponent implements OnChanges, AfterViewInit {
   }
 
   public async updateEvent(eventActionModel: EventActionModel) {
-    if(eventActionModel.actionType === 'Start' && this.events.filter(x => x.status === EventStatus.InProgress).length > 1) {
+    if(eventActionModel.actionType === 'Start' && this.events.filter(x => x.status === EventStatus.InProgress).length > 0) {
       const alert = await this.alertController.create({
         cssClass: 'my-custom-class',
         header: 'Alert',
         message: 'You cannot start this event, as you have another one in progress.',
         buttons: [{
-            text: 'Cancel'
+            text: 'Ok'
           }]
       });
 
       await alert.present();
-    } else if(eventActionModel.actionType === 'End') {
+    } else {
       await this.eventService.updateEvent(eventActionModel.eventModel);
       await this.loadEvents();
     }
+
+    await this.loadingController.dismiss();
   }
 
   private async loadEvents() {
     this.events = await this.eventService.getEventsByDate(this.eventsDate);
-  }
-
-  private async animateButton() {
-    const animation = this.animationController
-      .create()
-      .addElement(this.button.nativeElement)
-      .duration(3000)
-      .iterations(Infinity)
-      .fromTo('transform', 'translateX(0)', 'translateX(100%)');
-
-    await animation.play();
   }
 }
