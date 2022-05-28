@@ -4,6 +4,7 @@ import {SecurityService} from '../../dashboard/common/services/security.service'
 import {Router} from '@angular/router';
 import {IdentityService} from '../../common/identity.service';
 import {ToastController} from '@ionic/angular';
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 
 @Component({
   selector: 'app-login',
@@ -47,7 +48,9 @@ export class LoginComponent implements OnInit {
     await this.router.navigateByUrl('security/signup');
   }
 
-  public googleAuthentication() {
+  public async googleAuthentication() {
+    const user = await GoogleAuth.signIn();
+    if (user) { console.log(user); }
    // return this.AuthLogin(new GoogleAuthProvider());
   }
 
