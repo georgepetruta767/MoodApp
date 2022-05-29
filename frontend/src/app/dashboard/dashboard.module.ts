@@ -1,18 +1,18 @@
 import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from "@angular/router";
-import {IonicModule} from "@ionic/angular";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {PlannerComponent} from "./planner/planner.component";
-import {PlannerModule} from "./planner/planner.module";
-import {PeopleListComponent} from "./people/people-list/people-list.component";
-import {EventEditComponent} from "./event-edit/event-edit.component";
-import {CommonModule} from "@angular/common";
-import {PeopleEditComponent} from "./people/people-edit/people-edit.component";
-import {Ng2FilterPipeModule} from "ng2-filter-pipe";
-import {SecurityGuard} from "../security/security.guard";
-import {ResultsComponent} from "./results/results.component";
-import {NgxEchartsModule} from "ngx-echarts";
-import {EventsListComponent} from "./planner/events-list/events-list.component";
+import {RouterModule, Routes} from '@angular/router';
+import {IonicModule} from '@ionic/angular';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {PlannerComponent} from './planner/planner.component';
+import {PlannerModule} from './planner/planner.module';
+import {PeopleListComponent} from './people/people-list/people-list.component';
+import {EventEditComponent} from './event-edit/event-edit.component';
+import {CommonModule} from '@angular/common';
+import {PeopleEditComponent} from './people/people-edit/people-edit.component';
+import {Ng2FilterPipeModule} from 'ng2-filter-pipe';
+import {SecurityGuard} from '../security/security.guard';
+import {ResultsComponent} from './results/results.component';
+import {NgxEchartsModule} from 'ngx-echarts';
+import {EventsListComponent} from './planner/events-list/events-list.component';
 
 const routes: Routes = [
   {
@@ -34,8 +34,8 @@ const routes: Routes = [
     component: EventsListComponent
   },
   {
-    path: 'event/:id',
-    component: EventEditComponent,
+    path: 'event/:id/:date',
+    component: EventEditComponent
   },
   {
     path: '',
@@ -45,7 +45,7 @@ const routes: Routes = [
     path: 'results',
     component: ResultsComponent
   }
-]
+];
 
 @NgModule({
   declarations: [PeopleListComponent, PeopleEditComponent, EventEditComponent, ResultsComponent, EventEditComponent],

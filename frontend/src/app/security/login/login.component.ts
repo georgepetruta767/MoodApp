@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ContentChild, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {SecurityService} from '../../dashboard/common/services/security.service';
 import {Router} from '@angular/router';
 import {IdentityService} from '../../common/identity.service';
-import {ToastController} from '@ionic/angular';
+import {IonInput, ToastController} from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +12,8 @@ import {ToastController} from '@ionic/angular';
 })
 export class LoginComponent implements OnInit {
   public form!: FormGroup;
+
+  public isPasswordVisible = false;
 
   constructor(private securityService: SecurityService,
               private identityService: IdentityService,

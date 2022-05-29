@@ -4,6 +4,7 @@ import {EventsService} from '../common/services/events.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {CalendarComponentOptions, DayConfig} from 'ion5-calendar';
 import {IonContent} from '@ionic/angular';
+import {EventsListComponent} from './events-list/events-list.component';
 
 @Component({
   selector: 'app-planner',
@@ -15,19 +16,18 @@ export class PlannerComponent {
   @ViewChild('content')
   public content: IonContent;
 
+  @ViewChild(EventsListComponent, { static: true })
+  public eventsList: EventsListComponent;
+
   public calendarConfig!: CalendarComponentOptions;
 
   public dateForm!: FormGroup;
-
-  public isEventsListVisible = false;
 
   public events!: Array<EventModel>;
 
   constructor(private eventsService: EventsService) { }
 
-  public async ionViewWillEnter(){
-    this.isEventsListVisible = false;
-
+  public async ionViewWillEnter() {
     await this.loadEvents();
 
     this.setupCalendar();
@@ -35,28 +35,16 @@ export class PlannerComponent {
     this.setupForm();
 
     this.dateForm.controls.selectedDate.valueChanges.subscribe(async () => {
-      await this.showEventsList();
+      console.log(this.eventsList)
+
       setTimeout(async () => {
         await this.content.scrollToBottom(300);
+        //scrollToBottom(300);
       }, 100);
     });
   }
 
-  public setupForm() {
-    this.dateForm = new FormGroup({
-      selectedDate: new FormControl()
-    });
-  }
-
-  public async loadEvents() {
-    this.events = await this.eventsService.getEvents();
-  }
-
-  public monthChange() {
-    this.isEventsListVisible = false;
-  }
-
-  public setupCalendar() {
+  private setupCalendar() {
     const daysConfig = new Array<DayConfig>();
     this.events.forEach(event => {
       daysConfig.push({
@@ -73,9 +61,13 @@ export class PlannerComponent {
     };
   }
 
-  public async showEventsList() {
-    if(this.calendarConfig.daysConfig.find(x => x.date.toString().slice(0, 10) === this.dateForm.controls.selectedDate.value)) {
-      this.isEventsListVisible = true;
-    }
+  private setupForm() {
+    this.dateForm = new FormGroup({
+      selectedDate: new FormControl()
+    });
+  }
+
+  private async loadEvents() {
+    this.events = await this.eventsService.getEvents();
   }
 }

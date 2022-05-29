@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Subscription} from "rxjs";
-import {Router} from "@angular/router";
-import {AlertController} from "@ionic/angular";
+import {Subscription} from 'rxjs';
+import {Router} from '@angular/router';
+import {AlertController} from '@ionic/angular';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,28 +18,28 @@ export class DashboardPage implements OnInit {
 
   ngOnInit() {
     this.pageChangeSubscription = this.router.events.subscribe(() => {
-      let page = this.router.url.slice(1, this.router.url.length);
+      const page = this.router.url.slice(1, this.router.url.length);
       switch(page) {
-        case "event":
-          this.activePage = "Add Event";
+        case 'event':
+          this.activePage = 'Add Event';
           break;
-        case "calendar":
-          this.activePage = "Events";
+        case 'calendar':
+          this.activePage = 'Events';
           break;
-        case "people":
-          this.activePage = "People";
+        case 'people':
+          this.activePage = 'People';
           break;
-        case "results":
-          this.activePage = "Results";
+        case 'results':
+          this.activePage = 'Results';
           break;
-        case "list":
-          this.activePage = "List";
+        case 'list':
+          this.activePage = 'List';
           break;
         default:
-          this.activePage = "Edit event";
+          this.activePage = 'Edit event';
           break;
       }
-    })
+    });
   }
 
   public async logout() {

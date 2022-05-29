@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {PeopleService} from "../../common/services/people.service";
-import {PersonModel} from "../../common/models/person.model";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {PeopleService} from '../../common/services/people.service';
+import {PersonModel} from '../../common/models/person.model';
 
 @Component({
   selector: 'app-people-edit',
@@ -9,10 +9,6 @@ import {PersonModel} from "../../common/models/person.model";
   styleUrls: ['./people-edit.component.scss'],
 })
 export class PeopleEditComponent {
-  public ionViewWillEnter() {
-    this.setupForm();
-  }
-
   @Output()
   public closeModalEvent = new EventEmitter<string>();
 
@@ -23,14 +19,8 @@ export class PeopleEditComponent {
 
   constructor(private peopleService: PeopleService) { }
 
-  private setupForm() {
-    this.form = new FormGroup({
-      firstName: new FormControl(this.personToEdit ? this.personToEdit.firstName : '', [Validators.required]),
-      lastName: new FormControl(this.personToEdit ? this.personToEdit.lastName : '', [Validators.required]),
-      age: new FormControl(this.personToEdit ? this.personToEdit.age : '', [Validators.required, Validators.min(0), Validators.max(100)]),
-      gender: new FormControl( this.personToEdit ? this.personToEdit.gender : '', [Validators.required]),
-      socialStatus: new FormControl(this.personToEdit ? this.personToEdit.socialStatus : '', [Validators.required])
-    });
+  public ionViewWillEnter() {
+    this.setupForm();
   }
 
   public getPersonStatus() {
@@ -64,5 +54,15 @@ export class PeopleEditComponent {
 
   public getCorrectHeaderTitle() {
     return this.personToEdit ? `${this.personToEdit.firstName} ${this.personToEdit.lastName}` : 'Add a new person';
+  }
+
+  private setupForm() {
+    this.form = new FormGroup({
+      firstName: new FormControl(this.personToEdit ? this.personToEdit.firstName : '', [Validators.required]),
+      lastName: new FormControl(this.personToEdit ? this.personToEdit.lastName : '', [Validators.required]),
+      age: new FormControl(this.personToEdit ? this.personToEdit.age : '', [Validators.required, Validators.min(0), Validators.max(100)]),
+      gender: new FormControl( this.personToEdit ? this.personToEdit.gender : '', [Validators.required]),
+      socialStatus: new FormControl(this.personToEdit ? this.personToEdit.socialStatus : '', [Validators.required])
+    });
   }
 }

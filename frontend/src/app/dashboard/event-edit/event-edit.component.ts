@@ -21,6 +21,8 @@ export class EventEditComponent {
 
   public eventToEdit: EventModel;
 
+  public selectedDate: Date;
+
   public form!: FormGroup;
 
   public people!: Array<PersonModel>;
@@ -38,6 +40,10 @@ export class EventEditComponent {
     this.setupForm();
 
     await this.getAllPeople();
+
+    if(this.activatedRoute.snapshot.params.date) {
+      this.selectedDate = new Date(this.activatedRoute.snapshot.params.selectedDate);
+    }
 
     if(this.activatedRoute.snapshot.params.id) {
       this.eventToEdit = await this.eventsService.getEventById(this.activatedRoute.snapshot.params.id);

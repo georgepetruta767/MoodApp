@@ -14,6 +14,7 @@
       <ion-item>
         <ion-label position="floating">Password</ion-label>
         <ion-input formControlName="password" type="password" autocomplete="on"></ion-input>
+        <ion-icon slot="end" (click)="isPasswordVisible = !isPasswordVisible"> {{ isPasswordVisible ? 'HIDE' : 'SHOW' }} </ion-icon>
       </ion-item>
 
       <ion-row>

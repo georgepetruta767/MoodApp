@@ -111,7 +111,7 @@ export class EventDetailsComponent implements OnInit {
   }
 
   public async navigateToUpdateEvent() {
-    await this.router.navigateByUrl(`event/${this.event.id}`);
+    await this.router.navigateByUrl(`event/${this.event.id}/${null}`);
   }
 
   public getPersonName(person: PersonModel) {

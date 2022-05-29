@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, ElementRef, Input, OnChanges, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import {EventActionModel, EventModel} from '../../common/models/event.model';
 import {EventsService} from '../../common/services/events.service';
 import SwiperCore, {EffectCoverflow, Pagination} from 'swiper';
-import {AlertController, AnimationController, IonContent, LoadingController} from '@ionic/angular';
+import {AlertController, AnimationController, LoadingController} from '@ionic/angular';
 import {EventStatus} from '../../common/enums/event-status.enum';
 
 SwiperCore.use([EffectCoverflow, Pagination]);
