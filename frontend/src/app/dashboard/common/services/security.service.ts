@@ -24,10 +24,11 @@ export class SecurityService {
   }
 
   public getUserId(): Promise<string> {
-    return this.http.get<string>(`${environment.api}/Account/GetUserId`, {
+    return this.http.get(`${environment.api}/Account/GetUserId`, {
       headers: new HttpHeaders({
-        "Authorization": `Bearer ${sessionStorage.getItem('bearerToken')}`
-      })
+        'Authorization': `Bearer ${sessionStorage.getItem('bearerToken')}`
+      }),
+      responseType: 'text'
     }).toPromise();
   }
 }

@@ -12,6 +12,8 @@ import {PopoverController} from '@ionic/angular';
 export class SignupComponent implements OnInit {
   public isSubmitted = false;
 
+  public arePasswordsVisible: boolean[] = [false, false];
+
   public form!: FormGroup;
 
   constructor(private securityService: SecurityService,
@@ -31,9 +33,12 @@ export class SignupComponent implements OnInit {
   }
 
   public async onSubmit() {
-    console.log(this.form);
-
     this.isSubmitted = true;
+
+    setTimeout(() => {
+      this.isSubmitted = false;
+    }, 3000);
+
     if(this.form.valid) {
       await this.securityService.signUp({
         firstName: this.form.controls.firstName.value,
@@ -46,28 +51,15 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  private matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
-    return (group: FormGroup): {[key: string]: any} => {
-      const password = group.controls[passwordKey];
-      const confirmPassword = group.controls[confirmPasswordKey];
-
-      if (password.value !== confirmPassword.value) {
-        return {
-          mismatchedPasswords: true
-        };
-      }
-    };
-  }
-
   public async navigateToLogin() {
     await this.router.navigateByUrl('security/login');
   }
 
   public googleAuthentication() {
-    //return this.AuthLogin(new GoogleAuthProvider());
+    //return this.authLogin(new GoogleAuthProvider());
   }
 
-  public AuthLogin(provider) {
+  public authLogin(provider) {
     /*return this.afAuth
       .signInWithPopup(provider)
       .then(async result => {
@@ -81,6 +73,19 @@ export class SignupComponent implements OnInit {
       .catch((error) => {
         console.log(error);
       });*/
+  }
+
+  private matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
+    return (group: FormGroup): {[key: string]: any} => {
+      const password = group.controls[passwordKey];
+      const confirmPassword = group.controls[confirmPasswordKey];
+
+      if (password.value !== confirmPassword.value) {
+        return {
+          mismatchedPasswords: true
+        };
+      }
+    };
   }
 
   private setupForm() {

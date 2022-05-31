@@ -35,11 +35,8 @@ export class PlannerComponent {
     this.setupForm();
 
     this.dateForm.controls.selectedDate.valueChanges.subscribe(async () => {
-      console.log(this.eventsList)
-
       setTimeout(async () => {
         await this.content.scrollToBottom(300);
-        //scrollToBottom(300);
       }, 100);
     });
   }

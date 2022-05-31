@@ -16,7 +16,7 @@ export class DashboardPage implements OnInit {
   constructor(private router: Router,
               private alertController: AlertController) { }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.pageChangeSubscription = this.router.events.subscribe(() => {
       const page = this.router.url.slice(1, this.router.url.length);
       switch(page) {

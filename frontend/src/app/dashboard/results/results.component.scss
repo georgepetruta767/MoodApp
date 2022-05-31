@@ -1,9 +1,25 @@
 :host {
   display: block;
 
-  padding-top: calc(100vh - 190%);
+  padding-top: 56px;
 
   .demo-chart {
-    height: 275px;
+    height: calc(100vh - 400px);
+  }
+
+  .card-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .title-text {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .select {
+    margin-left: -16px;
   }
 }

@@ -1,6 +1,6 @@
 <ion-content>
   <section *ngIf="people && people.length">
-    <ion-searchbar [(ngModel)]="searchTerm.firstName"></ion-searchbar>
+    <ion-searchbar [(ngModel)]="searchTerm.firstName" placeholder="Search by first name:"></ion-searchbar>
     <ion-list>
       <ion-item-sliding *ngFor="let person of people | filterBy: searchTerm">
         <ion-item-options side="end">

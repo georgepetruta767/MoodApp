@@ -54,6 +54,14 @@ drop table events;
 drop table locations;
 drop table Context;
 
+SELECT amount_spent, AVG(grade) FROM events
+WHERE context_id = (select id from context where aspnetuserid = 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0')
+GROUP BY amount_spent;
+
+SELECT amount_spent, PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY grade) FROM events
+WHERE context_id = (select id from context where aspnetuserid = 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0')
+GROUP BY amount_spent;
+
 delete from event_person_relation
     where 1 = 1
 
@@ -62,6 +70,7 @@ set starting_time = starting_time - interval '1 year';
 
 update events
 set ending_time = ending_time - interval '1 year';
+
 
 insert into events(id, title, location_id, grade, status, type, starting_time, ending_time, season, amount_spent, context_id) values('744d5b74-cbb7-11ec-940f-2cfda1aeea94', 'IWerjrJY', 'a3eacd12-9326-11ec-a896-2cfda1aeea94', '6', '2', '0', '2022-11-22 20:15:00', '2022-11-23 01:23:00', '2', '78', 'f430c649-b67e-47c7-8e2a-7123796bea70');
 insert into events(id, title, location_id, grade, status, type, starting_time, ending_time, season, amount_spent, context_id) values('744fbd07-cbb7-11ec-9c0b-2cfda1aeea94', 'SGjFuwWd', 'a3eacd12-9326-11ec-a896-2cfda1aeea94', '4', '2', '2', '2022-05-27 11:44:00', '2022-05-27 14:38:00', '0', '8', 'f430c649-b67e-47c7-8e2a-7123796bea70');

@@ -24,14 +24,7 @@ export class EventDetailsComponent implements OnInit {
   @Output()
   public updateEventEmitter: EventEmitter<EventActionModel> = new EventEmitter<EventActionModel>();
 
-  public hasEndEventButtonBeenClicked = false;
-
   public form!: FormGroup;
-
-  public options: NativeGeocoderOptions = {
-    useLocale: true,
-    maxResults: 5
-  };
 
   constructor(private router: Router,
               private nativeGeocoder: NativeGeocoder,
@@ -44,7 +37,6 @@ export class EventDetailsComponent implements OnInit {
 
   public async deleteEvent() {
     const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
       header: 'Alert',
       message: `Are you sure you want to delete event ${this.event.title}?`,
       buttons: [{
@@ -62,6 +54,10 @@ export class EventDetailsComponent implements OnInit {
   }
 
   public async updateEvent() {
+    if(!this.form.valid) {
+      return;
+    }
+
     await this.presentLoading();
 
     switch(this.event.status) {
@@ -150,14 +146,7 @@ export class EventDetailsComponent implements OnInit {
   }
 
   public isEnabled() {
-    return this.event.status !== EventStatus.Finished && this.event.status !== EventStatus.InProgress;
-  }
-
-  public async onSubmit() {
-    this.hasEndEventButtonBeenClicked = true;
-    if(this.form.valid) {
-      await this.updateEvent();
-    }
+    return (this.event.status !== EventStatus.Finished && this.event.status !== EventStatus.InProgress);
   }
 
   public formatEventDate(date: Date) {
@@ -194,17 +183,25 @@ export class EventDetailsComponent implements OnInit {
   }
 
   public isStartEventButtonDisabled() {
-    if(this.event.status !== EventStatus.Incoming)
-      {return false;}
-
-
-    if(new Date(Date.now()).getFullYear() === new Date(this.event.startingTime).getFullYear() &&
-      new Date(Date.now()).getMonth() === new Date(this.event.startingTime).getMonth() &&
-      new Date(Date.now()).getDate() !== new Date(this.event.startingTime).getDate()
-    ) {
-      return true;
+    if (this.event.status !== EventStatus.Incoming) {
+      return false;
     }
-    return false;
+
+    return this.isEventDateDifferentThanToday(this.event.startingTime);
+  }
+
+  private isEventDateDifferentThanToday(eventDate: Date) {
+      return (new Date(Date.now()).getFullYear() === new Date(eventDate).getFullYear() &&
+        new Date(Date.now()).getMonth() === new Date(eventDate).getMonth() &&
+        new Date(Date.now()).getDate() !== new Date(eventDate).getDate()) ||
+
+        (new Date(Date.now()).getFullYear() === new Date(eventDate).getFullYear() &&
+          new Date(Date.now()).getMonth() !== new Date(eventDate).getMonth() &&
+          new Date(Date.now()).getDate() === new Date(eventDate).getDate()) ||
+
+        (new Date(Date.now()).getFullYear() === new Date(eventDate).getFullYear() &&
+          new Date(Date.now()).getMonth() !== new Date(eventDate).getMonth() &&
+          new Date(Date.now()).getDate() !== new Date(eventDate).getDate())
   }
 
   private setupForm() {
@@ -216,7 +213,6 @@ export class EventDetailsComponent implements OnInit {
 
   private async presentLoading() {
     const loading = await this.loadingController.create({
-      cssClass: 'my-custom-class',
       message: 'Please wait...'
     });
     await loading.present();

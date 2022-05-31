@@ -40,7 +40,6 @@ export class EventsListComponent implements OnChanges {
   public async updateEvent(eventActionModel: EventActionModel) {
     if(eventActionModel.actionType === 'Start' && this.events.filter(x => x.status === EventStatus.InProgress).length > 0) {
       const alert = await this.alertController.create({
-        cssClass: 'my-custom-class',
         header: 'Alert',
         message: 'You cannot start this event, as you have another one in progress.',
         buttons: [{

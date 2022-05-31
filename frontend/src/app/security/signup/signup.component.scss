@@ -1,14 +1,12 @@
 :host{
   display: block;
-/*  .content {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 15%);
-  }*/
 
-  .errors-container {
+  .password-input {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
   }
 
   .divider {

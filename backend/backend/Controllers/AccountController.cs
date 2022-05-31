@@ -86,9 +86,10 @@ namespace backend.Controllers
         }
 
         [HttpGet]
-        public async Task<string> GetUserId()
+        [Authorize]
+        public async Task<IActionResult> GetUserId()
         {
-            return User.FindFirstValue(ClaimTypes.Name);
+            return Ok(User.FindFirstValue(ClaimTypes.Name));
         }
 
         [HttpPost]

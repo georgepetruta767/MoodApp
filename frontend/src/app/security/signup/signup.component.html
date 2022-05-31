@@ -23,7 +23,11 @@
 
       <ion-item>
         <ion-label position="floating">Password</ion-label>
-        <ion-input formControlName="password" type="password"></ion-input>
+        <div class="password-input">
+          <ion-input formControlName="password" [type]="arePasswordsVisible[0] ? 'text' : 'password'"></ion-input>
+          <ion-icon class="show-option" [hidden]="arePasswordsVisible[0]" name="eye-off-outline" (click)="arePasswordsVisible[0] = true"></ion-icon>
+          <ion-icon class="hide-option" [hidden]="!arePasswordsVisible[0]" name="eye-outline" (click)="arePasswordsVisible[0] = false"></ion-icon>
+        </div>
         <span *ngIf="form.controls.password.hasError('pattern')" slot="error">
       Passwords should be at least 8 characters long and contain 1 number,
     1 lowercase letter, 1 uppercase letter and one of the following special characters: $, @, $, !, %, *, ? or &.
@@ -32,16 +36,20 @@
 
       <ion-item>
         <ion-label position="floating">Confirm Password</ion-label>
-        <ion-input formControlName="confirmPassword" type="password"></ion-input>
+        <div class="password-input">
+          <ion-input formControlName="confirmPassword" [type]="arePasswordsVisible[1] ? 'text' : 'password'"></ion-input>
+          <ion-icon class="show-option" [hidden]="arePasswordsVisible[1]" name="eye-off-outline" (click)="arePasswordsVisible[1] = true"></ion-icon>
+          <ion-icon class="hide-option" [hidden]="!arePasswordsVisible[1]" name="eye-outline" (click)="arePasswordsVisible[1] = false"></ion-icon>
+        </div>
         <span *ngIf="form.controls.confirmPassword.hasError('pattern')" slot="error">
           Passwords should be at least 8 characters long and contain one number,
           one character and one of the following special characters: $, @, $, !, %, *, ? or &.
         </span>
-
-        <span *ngIf="form.hasError('mismatchedPasswords')" slot="error">
-          Passwords do not match.
-        </span>
       </ion-item>
+
+      <ion-text class="ion-padding" color="danger" *ngIf="isSubmitted && form.hasError('mismatchedPasswords')">
+        Passwords do not match.
+      </ion-text>
 
       <ion-row>
         <ion-col>

@@ -1,13 +1,41 @@
 <ion-content>
-  <ion-button color="primary" class="ion-padding ion-margin-bottom"> Run analysis </ion-button>
-  <ion-card class="ion-margin">
+  <ion-card class="ion-margin" *ngIf="barChartOption">
     <ion-card-header>
-      <ion-card-title>Mean grade over season </ion-card-title>
-      <ion-card-subtitle> This is how your mood was influenced by season</ion-card-subtitle>
+      <ion-card-title>
+        <form class="card-title" [formGroup]="barChartForm">
+          <ion-select formControlName="type" class="select" (ionChange)="loadChart()">
+            <ion-select-option [value]="'mean'">Mean</ion-select-option>
+            <ion-select-option [value]="'median'">Median</ion-select-option>
+          </ion-select>
+
+          <ion-text class="title-text"> grade over </ion-text>
+
+          <ion-select formControlName="category" class="select" (ionChange)="loadChart()">
+            <ion-select-option [value]="'season'">season</ion-select-option>
+            <ion-select-option [value]="'type'">event type</ion-select-option>
+          </ion-select>
+        </form>
+      </ion-card-title>
+      <ion-card-subtitle> This is how your mood was influenced by different seasons or event types</ion-card-subtitle>
     </ion-card-header>
 
     <ion-card-content>
-      <div *ngIf="meanGradeOverSeasonChart" echarts [options]="meanGradeOverSeasonChart" class="demo-chart"></div>
+      <div echarts [options]="barChartOption" class="demo-chart"></div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="ion-margin" *ngIf="scatterPlotOption">
+    <ion-card-header>
+      <ion-card-title>
+        ashsafkjh
+      </ion-card-title>
+
+      <ion-card-subtitle>
+        This is how your mood was influenced by the amounts of money you've spent, the duration of the events, people's ages and the number of participants.
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <div echarts [options]="scatterPlotOption" class="demo-chart"></div>
     </ion-card-content>
   </ion-card>
 </ion-content>

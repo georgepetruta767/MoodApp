@@ -73,11 +73,11 @@
     </ion-badge>
   </ion-item>
 
-  <form *ngIf="event.status === 1" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form *ngIf="event.status === 1" [formGroup]="form" #ngForm="ngForm" (ngSubmit)="updateEvent()">
     <ion-item>
       <ion-label position="floating">Grade*</ion-label>
       <ion-input formControlName="grade" type="number"></ion-input>
-      <span *ngIf="hasEndEventButtonBeenClicked && form.controls.grade.hasError('required')" slot="error">
+      <span *ngIf="ngForm.submitted && form.controls.grade.hasError('required')" slot="error">
         Field is required
       </span>
       <span *ngIf="form.controls.grade.hasError('max') || form.controls.grade.hasError('min')" slot="error">

@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-
+import {Component} from '@angular/core';
 import * as echarts from 'echarts';
 import {ResultService} from './result.service';
 import {SecurityService} from '../common/services/security.service';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 type EChartsOption = echarts.EChartsOption;
 
@@ -11,17 +11,31 @@ type EChartsOption = echarts.EChartsOption;
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss'],
 })
-export class ResultsComponent implements OnInit {
-  public meanGradeOverSeasonChart: EChartsOption;
+export class ResultsComponent {
+  public barChartOption: EChartsOption;
+
+  public scatterPlotOption: EChartsOption;
+
+  public barChartForm!: FormGroup;
 
   public userId: string;
 
   constructor(private resultsService: ResultService,
-              private accountService: SecurityService) { }
+              private accountService: SecurityService,
+              private formBuilder: FormBuilder) { }
 
-  public async ngOnInit() {
+  public async ionViewWillEnter() {
+    this.barChartForm = this.formBuilder.group({
+      type: new FormControl('mean', [Validators.required]),
+      category: new FormControl('season', [Validators.required])
+    });
+
     this.userId = await this.accountService.getUserId();
-    this.meanGradeOverSeasonChart = await this.resultsService.getMeanGradePerSeasonValues(this.userId);
-    console.log(this.meanGradeOverSeasonChart)
+    await this.loadChart();
+  }
+
+  public async loadChart() {
+    this.barChartOption = await this.resultsService.getBarChartOptions(this.barChartForm.controls.category.value, this.barChartForm.controls.type.value, this.userId);
+    this.scatterPlotOption = await this.resultsService.getScatterPlotOptions();
   }
 }

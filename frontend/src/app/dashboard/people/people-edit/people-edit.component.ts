@@ -40,12 +40,8 @@ export class PeopleEditComponent {
 
       this.personToEdit ? await this.peopleService.updatePerson(personModel) : await this.peopleService.addPerson(personModel);
 
-      this.emitCloseModalEvent();
+      this.closeModalEvent.emit();
     }
-  }
-
-  public emitCloseModalEvent() {
-    this.closeModalEvent.emit();
   }
 
   public getActionLabel() {

@@ -8,7 +8,7 @@
 
       <ion-item>
         <ion-label>People</ion-label>
-        <ion-select formControlName="people" multiple="true" cancelText="Nah" okText="Okay!">
+        <ion-select [disabled]="!people.length" formControlName="people" multiple="true" cancelText="Nah" okText="Okay!">
           <ion-select-option *ngFor="let person of people" [value]="person.id"> {{getPersonName(person)}} </ion-select-option>
         </ion-select>
       </ion-item>
@@ -28,7 +28,7 @@
             <ion-label>Date*</ion-label>
             <ion-note slot="end"> {{ formatEventTime(this.form.controls.eventDate.value) }} </ion-note>
           </ion-item>
-          <ion-datetime size="cover" (ionChange)="selected()" [min]="today" formControlName="eventDate" slot="content" presentation="date"></ion-datetime>
+          <ion-datetime size="cover" [min]="today" formControlName="eventDate" slot="content" presentation="date"></ion-datetime>
         </ion-accordion>
       </ion-accordion-group>
     </ion-list>
