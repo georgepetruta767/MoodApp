@@ -54,14 +54,10 @@ export class EventDetailsComponent implements OnInit {
   }
 
   public async updateEvent() {
-    if(!this.form.valid) {
-      return;
-    }
-
-    await this.presentLoading();
-
     switch(this.event.status) {
       case EventStatus.Incoming:
+        await this.presentLoading();
+
         await Geolocation.checkPermissions();
         await Geolocation.requestPermissions();
 
@@ -93,6 +89,12 @@ export class EventDetailsComponent implements OnInit {
 
         break;
       case EventStatus.InProgress:
+        if(!this.form.valid) {
+          return;
+        }
+
+        await this.presentLoading();
+
         this.event.status = EventStatus.Finished;
         this.event.endingTime = new Date(Date.now());
         this.event.grade = this.form.controls.grade.value;

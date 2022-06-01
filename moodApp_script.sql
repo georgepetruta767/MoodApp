@@ -63,7 +63,20 @@ WHERE context_id = (select id from context where aspnetuserid = 'f1d9d883-fcaf-4
 GROUP BY amount_spent;
 
 delete from event_person_relation
-    where 1 = 1
+    where 1 = 1;
+
+
+
+delete from People E
+where E.context_id in (select C.id from Context C
+where C.aspnetuserid in (select U."Id" from "AspNetUsers" U where U."UserName" in ('EdiTobicu', 'RobertCrisan', 'PetrutaGheorghe', 'GheorghePetruta')));
+
+delete from context C
+where C.aspnetuserid in (select U."Id" from "AspNetUsers" U where U."UserName" in ('RobertCrisan', 'PetrutaGheorghe', 'GheorghePetruta'));
+
+
+delete from "AspNetUsers" U
+where U."UserName" in ('RobertCrisan', 'PetrutaGheorghe', 'GheorghePetruta');
 
 update events
 set starting_time = starting_time - interval '1 year';
