@@ -14,9 +14,17 @@ type EChartsOption = echarts.EChartsOption;
 export class ResultsComponent {
   public barChartOption: EChartsOption;
 
-  public scatterPlotOption: EChartsOption;
+  public scatterChartOption: EChartsOption;
+
+  public lineChartOption: EChartsOption;
+
+  public pieChartOption: EChartsOption;
 
   public barChartForm!: FormGroup;
+
+  public pieChartForm!: FormGroup;
+
+  public lineChartForm!: FormGroup;
 
   public userId: string;
 
@@ -25,17 +33,49 @@ export class ResultsComponent {
               private formBuilder: FormBuilder) { }
 
   public async ionViewWillEnter() {
+    this.setupForms();
+
+    this.userId = await this.accountService.getUserId();
+    await this.loadBarChart();
+    await this.loadScatterChart();
+    await this.loadLineChart();
+    await this.loadPieChart();
+  }
+
+  public async loadBarChart() {
+    this.barChartOption = await this.resultsService.getBarChartOptions(this.barChartForm.controls.category.value, this.barChartForm.controls.type.value, this.userId);
+  }
+
+  public async loadScatterChart() {
+    this.scatterChartOption = await this.resultsService.getScatterChartOptions('amount_spent', 'grade', this.userId);
+  }
+
+  public async loadLineChart() {
+    this.lineChartOption = await this.resultsService.getLineChartOptions(this.lineChartForm.controls.year.value, this.lineChartForm.controls.month.value, -1, this.userId);
+  }
+
+  public async loadPieChart() {
+    if(!this.pieChartForm.valid) {
+      return;
+    }
+
+    this.pieChartOption = await this.resultsService.getPieChartOptions(this.pieChartForm.controls.top.value, this.pieChartForm.controls.nrPeople.value, this.userId);
+  }
+
+  private setupForms() {
     this.barChartForm = this.formBuilder.group({
       type: new FormControl('mean', [Validators.required]),
       category: new FormControl('season', [Validators.required])
     });
 
-    this.userId = await this.accountService.getUserId();
-    await this.loadChart();
-  }
+    this.pieChartForm = this.formBuilder.group({
+      top: new FormControl(true, [Validators.required]),
+      nrPeople: new FormControl(3, [Validators.required])
+    });
 
-  public async loadChart() {
-    this.barChartOption = await this.resultsService.getBarChartOptions(this.barChartForm.controls.category.value, this.barChartForm.controls.type.value, this.userId);
-    this.scatterPlotOption = await this.resultsService.getScatterPlotOptions();
+    this.lineChartForm = this.formBuilder.group({
+      year: new FormControl(-1),
+      month: new FormControl(-1)
+    });
   }
 }

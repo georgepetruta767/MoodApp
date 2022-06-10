@@ -3,14 +3,14 @@
     <ion-card-header>
       <ion-card-title>
         <form class="card-title" [formGroup]="barChartForm">
-          <ion-select formControlName="type" class="select" (ionChange)="loadChart()">
+          <ion-select formControlName="type" class="select" (ionChange)="loadBarChart()">
             <ion-select-option [value]="'mean'">Mean</ion-select-option>
             <ion-select-option [value]="'median'">Median</ion-select-option>
           </ion-select>
 
           <ion-text class="title-text"> grade over </ion-text>
 
-          <ion-select formControlName="category" class="select" (ionChange)="loadChart()">
+          <ion-select formControlName="category" class="select" (ionChange)="loadBarChart()">
             <ion-select-option [value]="'season'">season</ion-select-option>
             <ion-select-option [value]="'type'">event type</ion-select-option>
           </ion-select>
@@ -24,10 +24,10 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card class="ion-margin" *ngIf="scatterPlotOption">
+  <ion-card class="ion-margin" *ngIf="scatterChartOption">
     <ion-card-header>
       <ion-card-title>
-        ashsafkjh
+        Mean grade over amount spent
       </ion-card-title>
 
       <ion-card-subtitle>
@@ -35,7 +35,75 @@
       </ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <div echarts [options]="scatterPlotOption" class="demo-chart"></div>
+      <div echarts [options]="scatterChartOption" class="demo-chart"></div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="ion-margin" *ngIf="lineChartOption">
+    <ion-card-header>
+      <ion-card-title>
+        Mean grade over time
+
+        <form *ngIf="lineChartForm" [formGroup]="lineChartForm">
+          <ion-item>
+            <ion-label>Year</ion-label>
+            <ion-select formControlName="year" (ionChange)="loadLineChart()">
+              <ion-select-option value="2021">2021</ion-select-option>
+              <ion-select-option value="2022">2022</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Month</ion-label>
+            <ion-select disabled="{{lineChartForm.controls.year.value === -1}}" value="12" (ionChange)="loadLineChart()">
+              <ion-select-option value="01">January</ion-select-option>
+              <ion-select-option value="02">February</ion-select-option>
+              <ion-select-option value="03">March</ion-select-option>
+              <ion-select-option value="04">April</ion-select-option>
+              <ion-select-option value="05">May</ion-select-option>
+              <ion-select-option value="06">June</ion-select-option>
+              <ion-select-option value="07">July</ion-select-option>
+              <ion-select-option value="08">August</ion-select-option>
+              <ion-select-option value="09">September</ion-select-option>
+              <ion-select-option value="10">October</ion-select-option>
+              <ion-select-option value="11">November</ion-select-option>
+              <ion-select-option value="12">December</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </form>
+      </ion-card-title>
+
+      <ion-card-subtitle>
+        This is how your mood was influenced by time.
+      </ion-card-subtitle>
+
+    </ion-card-header>
+    <ion-card-content>
+      <div echarts [options]="lineChartOption" class="demo-chart"></div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="ion-margin" *ngIf="pieChartOption">
+    <ion-card-header>
+      <ion-card-title>
+        <form class="card-title" [formGroup]="pieChartForm">
+          <ion-select formControlName="top" class="select" (ionChange)="loadPieChart()">
+            <ion-select-option [value]="true">Top</ion-select-option>
+            <ion-select-option [value]="false">Bottom</ion-select-option>
+          </ion-select>
+
+          <ion-input formControlName="nrPeople" type="number" (ionChange)="loadPieChart()"></ion-input>
+
+          <ion-text class="title-text"> people </ion-text>
+        </form>
+      </ion-card-title>
+
+      <ion-card-subtitle>
+        This is how your mood was influenced by time.
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="d-flex" echarts [options]="pieChartOption"></div>
     </ion-card-content>
   </ion-card>
 </ion-content>

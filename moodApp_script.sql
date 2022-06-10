@@ -54,7 +54,102 @@ drop table events;
 drop table locations;
 drop table Context;
 
-SELECT amount_spent, AVG(grade) FROM events
+WITH cte_grade_over_date AS (
+        SELECT EXTRACT(MONTH FROM starting_time) AS month, EXTRACT(YEAR FROM starting_time) AS year, grade
+        FROM events E
+        WHERE E.context_id = (select id from context where aspnetuserid = '{user_id}' AND E.status = 2)
+    )
+    SELECT month, year, AVG(grade)
+    FROM cte_grade_over_date
+    GROUP BY month, year
+    ORDER BY month, year;
+
+SELECT CONCAT(ppl.firstname, ' ', ppl.lastname), AVG(evt.grade)
+        FROM (select * from events
+        WHERE context_id = (select id from context where aspnetuserid = 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0' AND status = 2)) as evt
+        INNER JOIN people ppl on evt.context_id = ppl.context_id
+        GROUP BY CONCAT(ppl.firstname, ' ', ppl.lastname)
+        ORDER BY AVG(evt.grade) DESC
+        LIMIT 5;
+
+WITH cte_grade_over_date AS (
+        SELECT EXTRACT(MONTH FROM starting_time) AS month, EXTRACT(YEAR FROM starting_time) AS year, grade
+        FROM events E
+        WHERE E.context_id = (select id from context where aspnetuserid = '6f69901a-a348-4dc7-b4d1-3a65a9a31853' AND E.status = 2)
+    )
+    SELECT month, year, AVG(grade)
+    FROM cte_grade_over_date
+    GROUP BY month, year
+    ORDER BY month, year;
+
+SELECT *
+        FROM events E
+        WHERE E.context_id = (select id from context where aspnetuserid = '6f69901a-a348-4dc7-b4d1-3a65a9a31853' AND E.status = 2);
+
+select * from events E
+where E.context_id = (select id from context C where C.aspnetuserid = '1971eefe-9fb9-4683-93fa-292b18c41608');
+
+WITH cte_grade_over_date AS (
+    SELECT EXTRACT(MONTH FROM starting_time) AS month, EXTRACT(YEAR FROM starting_time) AS year, grade
+    FROM events E
+    WHERE E.context_id = (select id from context where aspnetuserid = 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0' AND E.status = 2)
+)
+SELECT month, year, AVG(grade)
+FROM cte_grade_over_date
+GROUP BY month, year
+ORDER BY month, year;
+
+
+--year
+WITH cte_grade_over_date AS (
+    SELECT EXTRACT(YEAR FROM starting_time) AS year, grade
+    FROM events E
+    WHERE E.context_id = (select id from context where aspnetuserid = 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0' AND E.status = 2)
+)
+SELECT year, AVG(grade)
+FROM cte_grade_over_date
+GROUP BY year
+ORDER BY year;
+
+
+--month + year 2021
+WITH cte_grade_over_date AS (
+    SELECT EXTRACT(MONTH FROM starting_time) AS month, grade
+    FROM events E
+    WHERE (E.context_id = (select id from context where aspnetuserid = 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0' AND E.status = 2) and EXTRACT(YEAR FROM starting_time) = 2021)
+)
+SELECT month, AVG(grade)
+FROM cte_grade_over_date
+GROUP BY month
+ORDER BY month;
+
+--day + month 7 + year 2021
+WITH cte_grade_over_date AS (
+    SELECT EXTRACT(DAY FROM starting_time) as day, grade
+    FROM events E
+    WHERE (E.context_id = (select id from context where aspnetuserid = 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0' AND E.status = 2) and EXTRACT(MONTH FROM starting_time) = 7 and EXTRACT(YEAR FROM starting_time) = 2021)
+)
+SELECT day, AVG(grade)
+FROM cte_grade_over_date
+GROUP BY day
+ORDER BY day;
+
+SELECT amount_spent, grade FROM events E
+            WHERE (E.context_id = (select id from context where aspnetuserid = '6f69901a-a348-4dc7-b4d1-3a65a9a31853') AND E.status = 2 and E.amount_spent is not null)
+
+--hour + day = 4 month = 6 year = 2022
+/*WITH cte_grade_over_date AS (
+    SELECT EXTRACT(HOUR FROM starting_time) AS hour, EXTRACT(YEAR FROM starting_time) AS year, grade
+    FROM events E
+    WHERE (E.context_id = (select id from context where aspnetuserid = '6f69901a-a348-4dc7-b4d1-3a65a9a31853' AND E.status = 2) and
+           EXTRACT(MONTH FROM starting_time) = 6 and EXTRACT(YEAR FROM starting_time) = 2022 and EXTRACT(DAY FROM starting_time) = 4)
+)
+SELECT hour, AVG(grade)
+FROM cte_grade_over_date
+GROUP BY hour
+ORDER BY hour;*/
+
+/*SELECT amount_spent, AVG(grade) FROM events
 WHERE context_id = (select id from context where aspnetuserid = 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0')
 GROUP BY amount_spent;
 
@@ -73,6 +168,13 @@ where C.aspnetuserid in (select U."Id" from "AspNetUsers" U where U."UserName" i
 
 delete from context C
 where C.aspnetuserid in (select U."Id" from "AspNetUsers" U where U."UserName" in ('RobertCrisan', 'PetrutaGheorghe', 'GheorghePetruta'));
+
+SELECT amount_spent, grade FROM events E
+WHERE E.context_id = (select id from context where aspnetuserid = 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0') AND E.status = 2;
+
+
+select amount_spent, grade from events E
+where E.status = 2 and context_id = (select id from context C where C.aspnetuserid = (select U."Id" from "AspNetUsers" U where U."UserName" = 'GeorgePetruta'));
 
 
 delete from "AspNetUsers" U
@@ -230,4 +332,4 @@ insert into people(id, firstname, lastName, age, gender, social_status, context_
 insert into people(id, firstname, lastName, age, gender, social_status, context_id) values('ca0e8f01-cbaf-11ec-8dd4-2cfda1aeea94', 'Laura', 'Smith', '97', '0', '1', 'f430c649-b67e-47c7-8e2a-7123796bea70');
 insert into people(id, firstname, lastName, age, gender, social_status, context_id) values('ca0e8f02-cbaf-11ec-9c7a-2cfda1aeea94', 'Claudio', 'Payne', '98', '1', '1', 'f430c649-b67e-47c7-8e2a-7123796bea70');
 insert into people(id, firstname, lastName, age, gender, social_status, context_id) values('ca0e8f03-cbaf-11ec-a1b7-2cfda1aeea94', 'Lana', 'Strong', '99', '0', '1', 'f430c649-b67e-47c7-8e2a-7123796bea70');
-insert into people(id, firstname, lastName, age, gender, social_status, context_id) values('ca0e8f04-cbaf-11ec-9b92-2cfda1aeea94', 'Michael', 'Beeson', '100', '1', '1', 'f430c649-b67e-47c7-8e2a-7123796bea70');
+insert into people(id, firstname, lastName, age, gender, social_status, context_id) values('ca0e8f04-cbaf-11ec-9b92-2cfda1aeea94', 'Michael', 'Beeson', '100', '1', '1', 'f430c649-b67e-47c7-8e2a-7123796bea70');*/

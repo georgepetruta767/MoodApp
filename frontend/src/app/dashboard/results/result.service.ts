@@ -13,7 +13,15 @@ export class ResultService {
     return this.http.get(`${environment.resultsApi}/get-bar-grade/${category}/${type}/${userId}`).toPromise();
   }
 
-  public getScatterPlotOptions(): Promise<any> {
-    return this.http.get(`${environment.resultsApi}/get-scatter-plot`).toPromise();
+  public getScatterChartOptions(column1: string, column2: string, userId: string): Promise<any> {
+    return this.http.get(`${environment.resultsApi}/get-scatter/${column1}/${column2}/${userId}`).toPromise();
+  }
+
+  public getLineChartOptions(year: number, month: number, day: number, userId: string): Promise<any> {
+    return this.http.get(`${environment.resultsApi}/get-moving-average/${year}/${month}/${day}/${userId}`).toPromise();
+  }
+
+  public getPieChartOptions(top: boolean, nrPeople: number, userId: string): Promise<any> {
+    return this.http.get(`${environment.resultsApi}/get-top-bottom-friends/${top}/${nrPeople}/${userId}`).toPromise();
   }
 }

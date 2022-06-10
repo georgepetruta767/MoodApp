@@ -98,7 +98,7 @@ namespace RepositoryTests
                         {
                             context.Contexts.Add(new Context
                             {
-                                Id = Guid.NewGuid(),
+                                Id = Guid.NewGuid(),tre 
                                 Aspnetuserid = _mockUserId
                             });
                             context.SaveChanges();
