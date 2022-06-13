@@ -54,7 +54,54 @@ drop table events;
 drop table locations;
 drop table Context;
 
+
+SELECT CONCAT(ppl.firstname, ' ', ppl.lastname), AVG(evt.grade)
+    FROM (select * from events
+         WHERE context_id = (select id from context where aspnetuserid = 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0' AND status = 2)) as evt
+    /*INNER JOIN people ppl on evt.context_id = ppl.context_id*/
+    GROUP BY CONCAT(ppl.firstname, ' ', ppl.lastname)
+    ORDER BY AVG(evt.grade) DESC
+    LIMIT 3;
+
+select * from people P
+where P.context_id = (select id from context where Context.aspNetUserId =  '6f69901a-a348-4dc7-b4d1-3a65a9a31853');
+
+select R.person_id from event_person_relation R
+where R.event_id in (select E.id from events E where context_id = (select id from context where aspnetuserid = '6f69901a-a348-4dc7-b4d1-3a65a9a31853') AND status = 2));
+
+
+select X.person_id, AVG(X.grade) from
+(select * from event_person_relation inner join events e on e.id = event_person_relation.event_id where e.context_id = (select id from context where aspnetuserid = '6f69901a-a348-4dc7-b4d1-3a65a9a31853')) as X
+group by X.person_id;
+
+select CONCAT(X.firstName, ' ', X.lastName), AVG(X.grade) from
+(select * from (select a.firstname, a.lastName, r.event_id from people a inner join event_person_relation r on a.id = r.person_id) as lNei inner join events e on e.id = lNei.event_id where e.context_id = (select id from context where aspnetuserid = 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0')) as X
+group by CONCAT(X.firstName, ' ', X.lastName)
+order by AVG(x.grade) DESC
+LIMIT 10;
+
+
+delete from event_person_relation R
+where R.person_id in (select person_id from people where context_id in (select id from context where Context.aspNetUserId != 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0'));
+
+
+select a.firstname, a.lastName, r.event_id from people a inner join event_person_relation r on a.id = r.person_id) as lNei
+    inner join events e on e.id = lNei.event_id where e.context_id = (select id from context where aspnetuserid = 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0')
+
+
+delete from "AspNetUsers" E
+where E."Id" != 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0'
+
 WITH cte_grade_over_date AS (
+                SELECT EXTRACT(YEAR FROM starting_time) AS year, grade
+                FROM events E
+                WHERE E.context_id = (select id from context where aspnetuserid = '535588be-9379-4592-9d2a-c3f5023741a9' AND E.status = 2))
+            SELECT year, AVG(grade)
+            FROM cte_grade_over_date
+            GROUP BY year
+            ORDER BY year;
+
+/* WITH cte_grade_over_date AS (
         SELECT EXTRACT(MONTH FROM starting_time) AS month, EXTRACT(YEAR FROM starting_time) AS year, grade
         FROM events E
         WHERE E.context_id = (select id from context where aspnetuserid = '{user_id}' AND E.status = 2)
@@ -138,7 +185,7 @@ SELECT amount_spent, grade FROM events E
             WHERE (E.context_id = (select id from context where aspnetuserid = '6f69901a-a348-4dc7-b4d1-3a65a9a31853') AND E.status = 2 and E.amount_spent is not null)
 
 --hour + day = 4 month = 6 year = 2022
-/*WITH cte_grade_over_date AS (
+WITH cte_grade_over_date AS (
     SELECT EXTRACT(HOUR FROM starting_time) AS hour, EXTRACT(YEAR FROM starting_time) AS year, grade
     FROM events E
     WHERE (E.context_id = (select id from context where aspnetuserid = '6f69901a-a348-4dc7-b4d1-3a65a9a31853' AND E.status = 2) and

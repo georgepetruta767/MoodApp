@@ -62,6 +62,18 @@ export class ResultsComponent {
     this.pieChartOption = await this.resultsService.getPieChartOptions(this.pieChartForm.controls.top.value, this.pieChartForm.controls.nrPeople.value, this.userId);
   }
 
+  public async clearYearControl() {
+    console.log('sdgdgsdg');
+    this.lineChartForm.controls.year.setValue(-1);
+    await this.loadLineChart();
+  }
+
+  public async clearMonthControl() {
+    console.log('month')
+    this.lineChartForm.controls.month.setValue(-1);
+    await this.loadLineChart();
+  }
+
   private setupForms() {
     this.barChartForm = this.formBuilder.group({
       type: new FormControl('mean', [Validators.required]),

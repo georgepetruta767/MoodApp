@@ -18,6 +18,10 @@
     flex-wrap: wrap;
   }
 
+  .card-title-size {
+    width: calc(100vw - 215px);
+  }
+
   .title-text {
     padding-left: 5%;
     padding-right: 5%;
@@ -25,5 +29,9 @@
 
   .select {
     margin-left: -16px;
+  }
+
+  .top-margin {
+    margin-top: 2%;
   }
 }

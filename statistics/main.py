@@ -67,10 +67,12 @@ async def get_bar(group: str, ctd_measure: str, user_id: str):
 
     api_data = {
         'xAxis': {
+            'name': group,
             'type': 'category',
             'data': data.values[:, 0].tolist()
         },
         'yAxis': {
+            'name': 'grade',
             'type': 'value',
         },
         'series': [{
@@ -151,9 +153,7 @@ async def moving_average(year: int, month: int, day: int, user_id: str):
         data['date'] = data['year'].astype(str) + '-05'
         data['date'] = pd.to_datetime(data['date'])
 
-        print(data)
-        print(data.values)
-        dates = data.values[:, len(data.values)].tolist()
+        dates = data.values[:, 2].tolist()
 
         formatted_dates = []
         for date_time in dates:
@@ -161,10 +161,12 @@ async def moving_average(year: int, month: int, day: int, user_id: str):
 
         ma_dict = {
             'xAxis': {
+                'name': 'time',
                 'type': 'category',
                 'data': formatted_dates
             },
             'yAxis': {
+                'name': 'grade',
                 'type': 'value'
             },
             'series': [
@@ -191,8 +193,6 @@ async def moving_average(year: int, month: int, day: int, user_id: str):
 
         data = get_data_by_query(query)
 
-        print(data)
-
         data['month'] = data['month'].astype(int).astype(str)
         data['date'] = str(year) + '-' + data['month'].astype(str)
         data['date'] = pd.to_datetime(data['date'])
@@ -205,10 +205,12 @@ async def moving_average(year: int, month: int, day: int, user_id: str):
 
         ma_dict = {
             'xAxis': {
+                'name': 'time',
                 'type': 'category',
                 'data': formatted_dates
             },
             'yAxis': {
+                'name': 'grade',
                 'type': 'value'
             },
             'series': [
@@ -246,10 +248,12 @@ async def moving_average(year: int, month: int, day: int, user_id: str):
 
         ma_dict = {
             'xAxis': {
+                'name': 'time',
                 'type': 'category',
                 'data': formatted_dates
             },
             'yAxis': {
+                'name': 'grade',
                 'type': 'value'
             },
             'series': [
@@ -273,13 +277,11 @@ async def get_top_bottom(top: bool, nr_people: int, user_id: str):
         order = 'ASC'
 
     query = f"""
-        SELECT CONCAT(ppl.firstname, ' ', ppl.lastname), AVG(evt.grade)
-        FROM (select * from events
-        WHERE context_id = (select id from context where aspnetuserid = '{user_id}' AND status = 2)) as evt
-        INNER JOIN people ppl on evt.context_id = ppl.context_id
-        GROUP BY CONCAT(ppl.firstname, ' ', ppl.lastname)
-        ORDER BY AVG(evt.grade) {order}
-        LIMIT '{nr_people}';
+        select CONCAT(X.firstName, ' ', X.lastName), AVG(X.grade) from
+        (select * from (select a.firstname, a.lastName, r.event_id from people a inner join event_person_relation r on a.id = r.person_id) as lNei inner join events e on e.id = lNei.event_id where e.context_id = (select id from context where aspnetuserid = '{user_id}')) as X
+        group by CONCAT(X.firstName, ' ', X.lastName)
+        order by AVG(x.grade) {order}
+        LIMIT {nr_people};
     """
 
     data = get_data_by_query(query)

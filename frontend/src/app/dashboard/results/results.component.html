@@ -51,11 +51,12 @@
               <ion-select-option value="2021">2021</ion-select-option>
               <ion-select-option value="2022">2022</ion-select-option>
             </ion-select>
+            <ion-button disabled="{{lineChartForm.controls.year.value === -1 || (lineChartForm.controls.year.value !== -1 && lineChartForm.controls.month.value !== -1)}}" class="ion-margin-start" (click)="clearYearControl()"> Clear </ion-button>
           </ion-item>
 
           <ion-item>
             <ion-label>Month</ion-label>
-            <ion-select disabled="{{lineChartForm.controls.year.value === -1}}" value="12" (ionChange)="loadLineChart()">
+            <ion-select formControlName="month" disabled="{{lineChartForm.controls.year.value === -1}}" (ionChange)="loadLineChart()">
               <ion-select-option value="01">January</ion-select-option>
               <ion-select-option value="02">February</ion-select-option>
               <ion-select-option value="03">March</ion-select-option>
@@ -69,6 +70,7 @@
               <ion-select-option value="11">November</ion-select-option>
               <ion-select-option value="12">December</ion-select-option>
             </ion-select>
+            <ion-button disabled="{{lineChartForm.controls.month.value === -1}}" class="ion-margin-start" (click)="clearMonthControl()"> Clear </ion-button>
           </ion-item>
         </form>
       </ion-card-title>
@@ -86,15 +88,15 @@
   <ion-card class="ion-margin" *ngIf="pieChartOption">
     <ion-card-header>
       <ion-card-title>
-        <form class="card-title" [formGroup]="pieChartForm">
+        <form class="card-title card-title-size" [formGroup]="pieChartForm">
           <ion-select formControlName="top" class="select" (ionChange)="loadPieChart()">
             <ion-select-option [value]="true">Top</ion-select-option>
             <ion-select-option [value]="false">Bottom</ion-select-option>
           </ion-select>
 
-          <ion-input formControlName="nrPeople" type="number" (ionChange)="loadPieChart()"></ion-input>
+          <ion-input class="top-margin" formControlName="nrPeople" type="number" (ionChange)="loadPieChart()"></ion-input>
 
-          <ion-text class="title-text"> people </ion-text>
+          <ion-text> people </ion-text>
         </form>
       </ion-card-title>
 
