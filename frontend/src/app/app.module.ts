@@ -9,6 +9,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {DashboardPage} from './dashboard/dashboard.page';
 import {SecurityGuard} from './security/security.guard';
 
+
 const routes: Routes = [
   {
     path: '',

@@ -1,4 +1,6 @@
 # http://127.0.0.1:8000/get-bar-grade/season/mean/f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0
+import json
+
 import psycopg2 as psycopg2
 from fastapi import FastAPI
 import pandas as pd
@@ -108,27 +110,7 @@ async def get_scatter(col1: str, col2: str, user_id: str):
     return scatter_dict
 
 
-async def get_histogram(group: str, ctd_measure: str, user_id: str):
-    pass
-
-
 async def get_polygon_map():
-    pass
-
-
-async def get_tree_map():
-    pass
-
-
-async def get_table():
-    pass
-
-
-async def get_bar_2():
-    pass
-
-
-async def gradient_stack_area():
     pass
 
 
@@ -317,3 +299,72 @@ async def get_top_bottom(top: bool, nr_people: int, user_id: str):
         ]
     }
     return top_bottom_dict
+
+
+@app.get("/geo-scatter/{column}/{user_id}")
+def geo_scatter(column: str, user_id: str):
+    query = f"""SELECT city, longitude, latitude, AVG({column})
+        FROM events e
+        INNER JOIN locations l
+        ON e.location_id = l.id
+        WHERE E.context_id = (select id from context where aspnetuserid = '{user_id}' AND E.status = 2)
+        GROUP BY city, longitude, latitude;"""
+
+    data = get_data_by_query(query)
+
+    chartData = []
+    for obj in data.values:
+        dict = {}
+        dict['value'] = obj[3]*10
+        dict['name'] = obj[0]
+        chartData.append(dict)
+
+
+    api_data = {
+      'tooltip': {
+        'trigger': 'item',
+        'formatter': '{a} <br/>{b} : {c}%'
+      },
+      'legend': {
+        'data': ['Show', 'Click', 'Visit', 'Inquiry', 'Order']
+      },
+      'series': [
+        {
+          'name': 'Funnel',
+          'type': 'funnel',
+          'left': '10%',
+          'top': 60,
+          'bottom': 60,
+          'width': '80%',
+          'min': 0,
+          'max': 100,
+          'minSize': '0%',
+          'maxSize': '100%',
+          'sort': 'descending',
+          'gap': 2,
+          'label': {
+            'show': 'true',
+            'position': 'inside'
+          },
+          'labelLine': {
+            'length': 10,
+            'lineStyle': {
+              'width': 1,
+              'type': 'solid'
+            }
+          },
+          'itemStyle': {
+            'borderColor': '#fff',
+            'borderWidth': 1
+          },
+          'emphasis': {
+            'label': {
+              'fontSize': 20
+            }
+          },
+          'data': chartData
+        }
+      ]
+    }
+
+    return api_data

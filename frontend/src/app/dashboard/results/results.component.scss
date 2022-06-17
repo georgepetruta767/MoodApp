@@ -34,4 +34,10 @@
   .top-margin {
     margin-top: 2%;
   }
+
+  .chart-container {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+  }
 }

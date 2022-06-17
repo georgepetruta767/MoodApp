@@ -24,4 +24,8 @@ export class ResultService {
   public getPieChartOptions(top: boolean, nrPeople: number, userId: string): Promise<any> {
     return this.http.get(`${environment.resultsApi}/get-top-bottom-friends/${top}/${nrPeople}/${userId}`).toPromise();
   }
+
+  public getGeoChartOptions(userId: string): Promise<any> {
+    return this.http.get(`${environment.resultsApi}/geo-scatter/grade/${userId}`).toPromise();
+  }
 }

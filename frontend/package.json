@@ -34,6 +34,7 @@
     "ion5-calendar": "^1.0.0",
     "moment": "^2.29.3",
     "ng2-filter-pipe": "^0.1.10",
+    "ng2-google-charts": "^7.0.0",
     "ngx-echarts": "^8.0.1",
     "rxjs": "~6.6.0",
     "swiper": "^8.1.5",

@@ -1,9 +1,10 @@
-import {Component, ContentChild, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {SecurityService} from '../../dashboard/common/services/security.service';
 import {Router} from '@angular/router';
 import {IdentityService} from '../../common/identity.service';
-import {IonInput, ToastController} from '@ionic/angular';
+import {ToastController} from '@ionic/angular';
+import { GoogleChartInterface } from 'ng2-google-charts';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +14,8 @@ import {IonInput, ToastController} from '@ionic/angular';
 export class LoginComponent implements OnInit {
   public form!: FormGroup;
 
+  public columnChart1: GoogleChartInterface;
+
   public isPasswordVisible = false;
 
   constructor(private securityService: SecurityService,
@@ -21,6 +24,19 @@ export class LoginComponent implements OnInit {
               private toastController: ToastController) { }
 
   public async ionViewWillEnter(){
+    this.columnChart1 = {
+      chartType: 'GeoChart',
+      dataTable: [
+        ['City', 'Popularity'],
+        ['Berlin', 200],
+      ],
+      //opt_firstRowIsData: true,
+/*      options: {
+        region: 'IT',
+        displayMode: 'markers',
+        colorAxis: {colors: ['green', 'blue']}
+      },*/
+    };
     await this.identityService.removeAuthToken();
     this.form.reset();
   }

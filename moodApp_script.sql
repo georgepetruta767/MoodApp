@@ -101,6 +101,14 @@ WITH cte_grade_over_date AS (
             GROUP BY year
             ORDER BY year;
 
+SELECT city, longitude, latitude, AVG(grade)
+        FROM events e
+        INNER JOIN locations l
+        ON e.location_id = l.id
+        WHERE E.context_id = (select id from context where aspnetuserid = '535588be-9379-4592-9d2a-c3f5023741a9' AND E.status = 2)
+        GROUP BY city, longitude, latitude;
+
+
 /* WITH cte_grade_over_date AS (
         SELECT EXTRACT(MONTH FROM starting_time) AS month, EXTRACT(YEAR FROM starting_time) AS year, grade
         FROM events E

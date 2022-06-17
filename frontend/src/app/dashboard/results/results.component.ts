@@ -20,6 +20,8 @@ export class ResultsComponent {
 
   public pieChartOption: EChartsOption;
 
+  public geoChartOption!: EChartsOption;
+
   public barChartForm!: FormGroup;
 
   public pieChartForm!: FormGroup;
@@ -40,6 +42,7 @@ export class ResultsComponent {
     await this.loadScatterChart();
     await this.loadLineChart();
     await this.loadPieChart();
+    await this.loadGeoChart();
   }
 
   public async loadBarChart() {
@@ -62,14 +65,16 @@ export class ResultsComponent {
     this.pieChartOption = await this.resultsService.getPieChartOptions(this.pieChartForm.controls.top.value, this.pieChartForm.controls.nrPeople.value, this.userId);
   }
 
+  public async loadGeoChart() {
+    this.geoChartOption = await this.resultsService.getGeoChartOptions(this.userId);
+  }
+
   public async clearYearControl() {
-    console.log('sdgdgsdg');
     this.lineChartForm.controls.year.setValue(-1);
     await this.loadLineChart();
   }
 
   public async clearMonthControl() {
-    console.log('month')
     this.lineChartForm.controls.month.setValue(-1);
     await this.loadLineChart();
   }
