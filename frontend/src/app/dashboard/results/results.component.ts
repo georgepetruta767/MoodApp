@@ -24,6 +24,8 @@ export class ResultsComponent {
 
   public barChartForm!: FormGroup;
 
+  public scatterChartForm!: FormGroup;
+
   public pieChartForm!: FormGroup;
 
   public lineChartForm!: FormGroup;
@@ -50,7 +52,7 @@ export class ResultsComponent {
   }
 
   public async loadScatterChart() {
-    this.scatterChartOption = await this.resultsService.getScatterChartOptions('amount_spent', 'grade', this.userId);
+    this.scatterChartOption = await this.resultsService.getScatterChartOptions(this.scatterChartForm.controls.type.value, 'grade', this.userId);
   }
 
   public async loadLineChart() {
@@ -83,6 +85,10 @@ export class ResultsComponent {
     this.barChartForm = this.formBuilder.group({
       type: new FormControl('mean', [Validators.required]),
       category: new FormControl('season', [Validators.required])
+    });
+
+    this.scatterChartForm = this.formBuilder.group({
+      type: new FormControl('amount_spent', [Validators.required])
     });
 
     this.pieChartForm = this.formBuilder.group({

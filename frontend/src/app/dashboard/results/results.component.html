@@ -27,12 +27,16 @@
   <ion-card class="ion-margin" *ngIf="scatterChartOption">
     <ion-card-header>
       <ion-card-title>
-        Mean grade over amount spent
-      </ion-card-title>
+        <form class="card-title" [formGroup]="scatterChartForm">
+          <ion-text class="title-text select"> Mean grade over </ion-text>
 
-      <ion-card-subtitle>
-        This is how your mood was influenced by the amounts of money you've spent, the duration of the events, people's ages and the number of participants.
-      </ion-card-subtitle>
+          <ion-select formControlName="type" class="select" (ionChange)="loadScatterChart()">
+            <ion-select-option [value]="'amount_spent'">amount spent</ion-select-option>
+            <ion-select-option [value]="'nrPeople'">number of people</ion-select-option>
+          </ion-select>
+        </form>
+      </ion-card-title>
+      <ion-card-subtitle> This is how your mood was influenced by different seasons or event types</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <div echarts [options]="scatterChartOption" class="demo-chart"></div>

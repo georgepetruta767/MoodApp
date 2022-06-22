@@ -109,6 +109,17 @@ SELECT city, longitude, latitude, AVG(grade)
         GROUP BY city, longitude, latitude;
 
 
+SELECT COUNT(*), AVG(e.grade)
+FROM events e
+LEFT JOIN event_person_relation epr ON epr.event_id = e.id
+LEFT JOIN people per ON per.id = epr.person_id
+WHERE E.context_id = (select id from context where aspnetuserid = 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0' AND E.status = 2)
+GROUP BY e.id;
+
+SELECT * FROM events e
+LEFT JOIN event_person_relation epr ON epr.event_id = e.id
+LEFT JOIN people per ON per.id = epr.person_id
+
 /* WITH cte_grade_over_date AS (
         SELECT EXTRACT(MONTH FROM starting_time) AS month, EXTRACT(YEAR FROM starting_time) AS year, grade
         FROM events E

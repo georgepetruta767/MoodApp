@@ -89,8 +89,18 @@ async def get_bar(group: str, ctd_measure: str, user_id: str):
 
 @app.get("/get-scatter/{col1}/{col2}/{user_id}")
 async def get_scatter(col1: str, col2: str, user_id: str):
-    query = f"SELECT {col1}, {col2} FROM events E " + \
-            f"WHERE E.context_id = (select id from context where aspnetuserid = '{user_id}') AND E.status = 2 AND E.amount_spent is not null"
+    query = ''
+    if(col1 == 'amount_spent'):
+        query = f"SELECT {col1}, {col2} FROM events E " + \
+                f"WHERE E.context_id = (select id from context where aspnetuserid = '{user_id}') AND E.status = 2 AND E.amount_spent is not null"
+    if(col1 == 'nrPeople'):
+        query = f"SELECT COUNT(*), AVG(e.grade) " + \
+                f"FROM events e " + \
+                f"LEFT JOIN event_person_relation epr ON epr.event_id = e.id " + \
+                f"LEFT JOIN people per ON per.id = epr.person_id " + \
+                f"WHERE E.context_id = (select id from context where aspnetuserid = 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0' AND E.status = 2) " + \
+                f"GROUP BY e.id;"
+
     data = get_data_by_query(query)
 
     scatter_dict = {
