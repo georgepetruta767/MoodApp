@@ -26,6 +26,19 @@ event_type_dict = {
     2: 'WorkRelated'
 }
 
+social_status_dict = {
+    0: 'Employed',
+    1: 'Retired',
+    2: 'Student',
+    3: 'Child',
+    4: 'Unemployed'
+}
+
+gender_dict = {
+    0: 'Female',
+    1: 'Male'
+}
+
 
 def get_data_by_query(db_query):
     conn = psycopg2.connect("dbname=moodapp user=postgres password=postgres")
@@ -46,18 +59,49 @@ def preprocess_data(data):
 
 @app.get("/get-bar-grade/{group}/{ctd_measure}/{user_id}")
 async def get_bar(group: str, ctd_measure: str, user_id: str):
-    if ctd_measure == 'mean':
-        query = f"SELECT {group}, AVG(grade) FROM events " + \
-                f"WHERE context_id = (select id from context where aspnetuserid = '{user_id}') " + \
-                f"GROUP BY {group};"
-    elif ctd_measure == 'median':
-        query = f"SELECT {group}, PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY grade) FROM events " + \
-                f"WHERE context_id = (select id from context where aspnetuserid = '{user_id}') " + \
-                f"GROUP BY {group};"
+    if group in ['season', 'type']:
+        if ctd_measure == 'mean':
+            query = f"SELECT {group}, AVG(grade) FROM events " + \
+                    f"WHERE context_id = (select id from context where aspnetuserid = '{user_id}') " + \
+                    f"GROUP BY {group};"
+        elif ctd_measure == 'median':
+            query = f"SELECT {group}, PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY grade) FROM events " + \
+                    f"WHERE context_id = (select id from context where aspnetuserid = '{user_id}') " + \
+                    f"GROUP BY {group};"
+        else:
+            return {
+                "No": "Data"
+            }
     else:
-        return {
-            "No": "Data"
-        }
+        query = f"""
+            WITH extended_events AS (
+                SELECT *, 
+                    CASE 
+                        WHEN EXTRACT(HOUR FROM starting_time) < 12 THEN 'Morning'
+                        WHEN EXTRACT(HOUR FROM starting_time) < 18 THEN 'Afternoon'
+                        ELSE 'Evening'
+                    END AS time_of_day,
+                    (ending_time - starting_time) AS event_duration
+                FROM events
+                WHERE context_id = (select id from context where aspnetuserid = '{user_id}' AND status = 2)
+            ),
+            extended_people AS (
+                SELECT *,
+                    CASE
+                        WHEN age < 18 THEN 'young'
+                        WHEN age < 28 THEN 'young adult'
+                        WHEN age < 55 THEN 'adult'
+                        ELSE 'old'
+                    END AS age_group
+                FROM people
+                WHERE context_id = (select id from context where aspnetuserid = '{user_id}')
+            )
+            SELECT e.time_of_day, AVG(e.grade)
+            FROM extended_events e
+            INNER JOIN event_person_relation epr ON e.id = epr.event_id
+            INNER JOIN extended_people ppl ON epr.person_id = ppl.id
+            GROUP BY e.time_of_day;
+            """
 
     data = get_data_by_query(query)
 
@@ -100,6 +144,25 @@ async def get_scatter(col1: str, col2: str, user_id: str):
                 f"LEFT JOIN people per ON per.id = epr.person_id " + \
                 f"WHERE E.context_id = (select id from context where aspnetuserid = 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0' AND E.status = 2) " + \
                 f"GROUP BY e.id;"
+    if(col1 == 'age'):
+        query = f"WITH extended_events AS (" + \
+                f"SELECT * " + \
+                f"FROM events " + \
+                f"WHERE context_id = (select id from context where aspnetuserid = '{user_id}' AND status = 2))," + \
+                f"extended_people AS ( " + \
+                f"SELECT *, " + \
+                f"CASE " + \
+                    f"WHEN age < 18 THEN 'Young' " + \
+                    f"WHEN age < 28 THEN 'Young adult' " + \
+                    f"WHEN age < 55 THEN 'Adult' " + \
+                    f"ELSE 'Old' " + \
+                f"END AS age_group " + \
+                f"FROM people " + \
+                f"WHERE context_id = (select id from context where aspnetuserid = '{user_id}')) " + \
+                f"SELECT age, e.grade " + \
+                f"FROM extended_events e " + \
+                f"INNER JOIN event_person_relation epr ON e.id = epr.event_id " + \
+                f"INNER JOIN extended_people ppl ON epr.person_id = ppl.id;"
 
     data = get_data_by_query(query)
 
@@ -375,6 +438,77 @@ def geo_scatter(column: str, user_id: str):
           'data': chartData
         }
       ]
+    }
+
+    return api_data
+
+
+@app.get("/bar-extended/{group}/{user_id}")
+def get_bar_mean_grade_extened(group: str, user_id: str):
+    # ppl.social_status, ppl.gender, e.time_of_day
+    if group == 'social_status':
+        agg_group = 'ppl.social_status'
+    elif group == 'gender':
+        agg_group = 'ppl.gender'
+    elif group == 'time_of_day':
+        agg_group = 'e.time_of_day'
+    else:
+        return {"No": "Data"}
+
+    query = f"""
+    WITH extended_events AS (
+        SELECT *, 
+            CASE 
+                WHEN EXTRACT(HOUR FROM starting_time) < 12 THEN 'Morning'
+                WHEN EXTRACT(HOUR FROM starting_time) < 18 THEN 'Afternoon'
+                ELSE 'Evening'
+            END AS time_of_day,
+            (ending_time - starting_time) AS event_duration
+        FROM events
+        WHERE context_id = (select id from context where aspnetuserid = '{user_id}' AND status = 2)
+    ),
+    extended_people AS (
+        SELECT *,
+            CASE
+                WHEN age < 18 THEN 'young'
+                WHEN age < 28 THEN 'young adult'
+                WHEN age < 55 THEN 'adult'
+                ELSE 'old'
+            END AS age_group
+        FROM people
+        WHERE context_id = (select id from context where aspnetuserid = '{user_id}')
+    )
+    SELECT {agg_group}, AVG(e.grade)
+    FROM extended_events e
+    INNER JOIN event_person_relation epr ON e.id = epr.event_id
+    INNER JOIN extended_people ppl ON epr.person_id = ppl.id
+    GROUP BY {agg_group};
+    """
+
+    data = get_data_by_query(query)
+
+    if 'gender' in data.columns:
+        data['gender'] = data['gender'].map(gender_dict)
+
+    if 'social_status' in data.columns:
+        data['social_status'] = data['social_status'].map(social_status_dict)
+
+
+    api_data = {
+        'xAxis': {
+            'name': group,
+            'type': 'category',
+            'data': data.values[:, 0].tolist()
+        },
+        'yAxis': {
+            'name': 'grade',
+            'type': 'value',
+        },
+        'series': [{
+            'data': data.values[:, 1].tolist(),
+            'type': 'bar'
+        }
+        ]
     }
 
     return api_data

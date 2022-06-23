@@ -14,7 +14,11 @@ type EChartsOption = echarts.EChartsOption;
 export class ResultsComponent {
   public barChartOption: EChartsOption;
 
+  public extendedBarChartOption: EChartsOption;
+
   public scatterChartOption: EChartsOption;
+
+  public extendedScatterChartOption: EChartsOption;
 
   public lineChartOption: EChartsOption;
 
@@ -24,7 +28,11 @@ export class ResultsComponent {
 
   public barChartForm!: FormGroup;
 
+  public extendedBarChartForm!: FormGroup;
+
   public scatterChartForm!: FormGroup;
+
+  public extendedScatterChartForm!: FormGroup;
 
   public pieChartForm!: FormGroup;
 
@@ -41,6 +49,7 @@ export class ResultsComponent {
 
     this.userId = await this.accountService.getUserId();
     await this.loadBarChart();
+    await this.loadExtendedBarChart();
     await this.loadScatterChart();
     await this.loadLineChart();
     await this.loadPieChart();
@@ -49,6 +58,10 @@ export class ResultsComponent {
 
   public async loadBarChart() {
     this.barChartOption = await this.resultsService.getBarChartOptions(this.barChartForm.controls.category.value, this.barChartForm.controls.type.value, this.userId);
+  }
+
+  public async loadExtendedBarChart() {
+    this.extendedBarChartOption = await this.resultsService.getExtendedBarChartOptions(this.extendedBarChartForm.controls.type.value, this.userId);
   }
 
   public async loadScatterChart() {
@@ -85,6 +98,10 @@ export class ResultsComponent {
     this.barChartForm = this.formBuilder.group({
       type: new FormControl('mean', [Validators.required]),
       category: new FormControl('season', [Validators.required])
+    });
+
+    this.extendedBarChartForm = this.formBuilder.group({
+      type: new FormControl('social_status', [Validators.required])
     });
 
     this.scatterChartForm = this.formBuilder.group({

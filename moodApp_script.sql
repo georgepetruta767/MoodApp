@@ -118,8 +118,60 @@ GROUP BY e.id;
 
 SELECT * FROM events e
 LEFT JOIN event_person_relation epr ON epr.event_id = e.id
-LEFT JOIN people per ON per.id = epr.person_id
+LEFT JOIN people per ON per.id = epr.person_id;
 
+WITH extended_events AS (
+        SELECT *,
+            CASE
+                WHEN EXTRACT(HOUR FROM starting_time) < 12 THEN 'Morning'
+                WHEN EXTRACT(HOUR FROM starting_time) < 18 THEN 'Afternoon'
+                ELSE 'Evening'
+            END AS time_of_day,
+            (ending_time - starting_time) AS event_duration
+        FROM events
+        WHERE context_id = (select id from context where aspnetuserid = '535588be-9379-4592-9d2a-c3f5023741a9' AND status = 2)
+    ),
+    extended_people AS (
+        SELECT *,
+            CASE
+                WHEN age < 18 THEN 'Child'
+                WHEN age < 28 THEN 'Young adult'
+                WHEN age < 55 THEN 'Adult'
+                ELSE 'Old'
+            END AS age_group
+        FROM people
+        WHERE context_id = (select id from context where aspnetuserid = '535588be-9379-4592-9d2a-c3f5023741a9')
+    )
+    SELECT ppl.social_status, AVG(e.grade)
+    FROM extended_events e
+    inner JOIN event_person_relation epr ON e.id = epr.event_id
+    inner JOIN extended_people ppl ON epr.person_id = ppl.id
+    GROUP BY ppl.social_status;
+
+WITH extended_events AS (
+        SELECT *
+        FROM events
+        WHERE context_id = (select id from context where aspnetuserid = 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0' AND status = 2)
+    ),
+    extended_people AS (
+        SELECT *,
+            CASE
+                WHEN age < 18 THEN 'young'
+                WHEN age < 28 THEN 'young adult'
+                WHEN age < 55 THEN 'adult'
+                ELSE 'old'
+            END AS age_group
+        FROM people
+        WHERE context_id = (select id from context where aspnetuserid = 'f1d9d883-fcaf-4a02-8f90-e20b4c2f1da0')
+    )
+    SELECT age, e.grade
+    FROM extended_events e
+    INNER JOIN event_person_relation epr ON e.id = epr.event_id
+    INNER JOIN extended_people ppl ON epr.person_id = ppl.id;
+
+
+delete from locations
+where id = '6ef6e616-cf86-40bb-8afa-6ee9b381fa39';
 /* WITH cte_grade_over_date AS (
         SELECT EXTRACT(MONTH FROM starting_time) AS month, EXTRACT(YEAR FROM starting_time) AS year, grade
         FROM events E

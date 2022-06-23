@@ -64,7 +64,7 @@ export class EventDetailsComponent implements OnInit {
         const position = await Geolocation.getCurrentPosition();
 
         const location = await this.nativeGeocoder.reverseGeocode(position.coords.latitude, position.coords.longitude);
-
+        
         const eventLocation = {
           latitude: Number(location[0].latitude),
           longitude: Number(location[0].longitude),

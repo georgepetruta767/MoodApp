@@ -28,4 +28,8 @@ export class ResultService {
   public getGeoChartOptions(userId: string): Promise<any> {
     return this.http.get(`${environment.resultsApi}/geo-scatter/grade/${userId}`).toPromise();
   }
+
+  async getExtendedBarChartOptions(type: string, userId: string): Promise<any> {
+    return this.http.get(`${environment.resultsApi}/bar-extended/${type}/${userId}`).toPromise();
+  }
 }
