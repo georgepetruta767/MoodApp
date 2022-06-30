@@ -4,7 +4,6 @@ import {SecurityService} from '../../dashboard/common/services/security.service'
 import {Router} from '@angular/router';
 import {IdentityService} from '../../common/identity.service';
 import {ToastController} from '@ionic/angular';
-import { GoogleChartInterface } from 'ng2-google-charts';
 
 @Component({
   selector: 'app-login',
@@ -14,8 +13,6 @@ import { GoogleChartInterface } from 'ng2-google-charts';
 export class LoginComponent implements OnInit {
   public form!: FormGroup;
 
-  public columnChart1: GoogleChartInterface;
-
   public isPasswordVisible = false;
 
   constructor(private securityService: SecurityService,
@@ -24,19 +21,6 @@ export class LoginComponent implements OnInit {
               private toastController: ToastController) { }
 
   public async ionViewWillEnter(){
-    this.columnChart1 = {
-      chartType: 'GeoChart',
-      dataTable: [
-        ['City', 'Popularity'],
-        ['Berlin', 200],
-      ],
-      //opt_firstRowIsData: true,
-/*      options: {
-        region: 'IT',
-        displayMode: 'markers',
-        colorAxis: {colors: ['green', 'blue']}
-      },*/
-    };
     await this.identityService.removeAuthToken();
     this.form.reset();
   }
@@ -63,30 +47,6 @@ export class LoginComponent implements OnInit {
 
   public async navigateToSignUp() {
     await this.router.navigateByUrl('security/signup');
-  }
-
-  public googleAuthentication() {
-   // return this.AuthLogin(new GoogleAuthProvider());
-  }
-
-  public AuthLogin(provider) {
-    /*return this.afAuth
-      .signInWithPopup(provider)
-      .then(async result => {
-        const tok = await result.user.getIdToken(true);
-        let bearerToken = await this.securityService.googleSignIn({
-          provider: result.credential.providerId,
-          idToken: tok
-        });
-
-        if(bearerToken) {
-          this.identityService.storeAuthToken(bearerToken);
-          await this.router.navigateByUrl('calendar');
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });*/
   }
 
   private setupForm() {

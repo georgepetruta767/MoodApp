@@ -53,10 +53,6 @@ def get_data_by_query(db_query):
     return records
 
 
-def preprocess_data(data):
-    ...
-
-
 @app.get("/get-bar-grade/{group}/{ctd_measure}/{user_id}")
 async def get_bar(group: str, ctd_measure: str, user_id: str):
     if group in ['season', 'type']:

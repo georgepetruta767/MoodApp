@@ -170,8 +170,7 @@ WITH extended_events AS (
     INNER JOIN extended_people ppl ON epr.person_id = ppl.id;
 
 
-delete from locations
-where id = '6ef6e616-cf86-40bb-8afa-6ee9b381fa39';
+
 /* WITH cte_grade_over_date AS (
         SELECT EXTRACT(MONTH FROM starting_time) AS month, EXTRACT(YEAR FROM starting_time) AS year, grade
         FROM events E

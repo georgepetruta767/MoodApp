@@ -28,32 +28,10 @@
     </form>
 
     <span class="divider line one-line">or</span>
-
-    <section class="ion-padding-top">
-      <ion-row>
-        <ion-col>
-          <ion-button expand="block" (click)="googleAuthentication()">
-            <ion-icon name="logo-google" class="ion-padding-end"></ion-icon>
-            <ion-label> Log in with google</ion-label>
-          </ion-button>
-        </ion-col>
-      </ion-row>
-
       <div class="ion-text-center ion-padding-top">
         <ion-label> Are you new? </ion-label>
         <ion-text color="primary" (click)="navigateToSignUp()">Sign Up</ion-text>
       </div>
-    </section>
   </section>
-
-<!--  <ion-card class="welcome-card">
-    <ion-card-header>
-      <ion-card-subtitle>Simple Column Chart</ion-card-subtitle>
-      <ion-card-title>Population of Largest U.S. Cities</ion-card-title>
-    </ion-card-header>
-    <ion-card-content *ngIf="columnChart1">
-      <google-chart [data]="columnChart1"></google-chart>
-    </ion-card-content>
-  </ion-card>-->
 </ion-content>
 
